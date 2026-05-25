@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="es">
   <head>
     <meta charset="utf-8">
@@ -16,8 +16,8 @@
         <span>K</span>
       </a>
       <nav class="nav-links" aria-label="Secciones del portfolio">
-        <a href="#quien-soy">Quién soy</a>
-        <a href="#que-hago">Qué hago</a>
+        <a href="#quien-soy" data-view-link="about">Quién soy</a>
+        <a href="#que-hago" data-view-link="work">Qué hago</a>
         <a href="#que-pienso">Qué pienso</a>
         <a href="#contacto">Contacto</a>
         <a href="assets/dariaCV.pdf" target="_blank" rel="noreferrer">CV</a>
@@ -86,7 +86,7 @@
           <div class="about-copy">
             <p class="section-kicker">02 / Quién soy</p>
             <h1>Chica, <span>qué dices?</span><small>?</small></h1>
-            <p>Es en el margen entre lo que decimos y lo que hacemos donde nos descubrimos como personas. Por eso prefiero que me conozcas <a href="#que-hago">a través de mis proyectos</a>.</p>
+            <p>Es en el margen entre lo que decimos y lo que hacemos donde nos descubrimos como personas. Por eso prefiero que me conozcas <a href="#que-hago" data-view-link="work">a través de mis proyectos</a>.</p>
             <p>Aunque si lo que quieres es cotillear un poco sobre mi historia personal (very valid, won't judge) sigue scrolleando.</p>
           </div>
           <figure class="about-portrait">
@@ -208,6 +208,345 @@
             <video src="assets/quienSoy.mp4" controls preload="metadata" playsinline></video>
           </div>
         </div>
+      </section>
+
+      <section class="work-section is-hidden" id="que-hago" aria-label="Qué hago">
+        <div class="work-smoke" aria-hidden="true">
+          <video src="assets/smoke-bg.mp4" autoplay muted loop playsinline preload="metadata"></video>
+        </div>
+
+        <div class="work-chooser" data-work-view="index">
+          <p class="section-kicker">03 / Qué hago</p>
+          <div class="work-switch" aria-label="Categorías de proyectos">
+            <button class="is-active" type="button" data-work-tab="publicidad">PUBLICIDAD</button>
+            <button type="button" data-work-tab="films">FILMS</button>
+          </div>
+
+          <div class="publicidad-board" data-work-panel="publicidad">
+            <div class="project-pair">
+              <button class="project-tile tile-poster" type="button" data-project="beefeater" aria-label="Abrir Beefeater #RESP3CT">
+                <img src="assets/pub-beefeater-poster.png" alt="Beefeater #RESP3CT">
+                <span><b>Beefeater #RESP3CT</b><small>Proceso creativo</small></span>
+              </button>
+              <button class="project-tile tile-text" type="button" data-project="beefeater" aria-label="Abrir Beefeater #RESP3CT">
+                <img src="assets/pub-beefeater-text.jpg" alt="">
+                <span><b>Beefeater #RESP3CT</b><small>Proceso creativo</small></span>
+              </button>
+            </div>
+            <div class="project-pair">
+              <button class="project-tile tile-text" type="button" data-project="ecoembes" aria-label="Abrir Ecoembes">
+                <img src="assets/pub-ecoembes-text.jpg" alt="Ecoembes">
+                <span><b>Ecoembes</b><small>Campaña gráfica</small></span>
+              </button>
+              <button class="project-tile tile-poster" type="button" data-project="ecoembes" aria-label="Abrir Ecoembes">
+                <img src="assets/pub-ecoembes-poster.png" alt="Ecoembes cartel">
+                <span><b>Ecoembes</b><small>#CuidemLaTerreta</small></span>
+              </button>
+            </div>
+            <div class="project-pair">
+              <button class="project-tile tile-poster" type="button" data-project="bruma" aria-label="Abrir Bruma">
+                <img src="assets/pub-item-5.png" alt="Bruma">
+                <span><b>Bruma</b><small>Primavera</small></span>
+              </button>
+              <button class="project-tile tile-text" type="button" data-project="bruma" aria-label="Abrir Bruma">
+                <img src="assets/pub-item-6.jpg" alt="Bruma">
+                <span><b>Bruma</b><small>Identidad de marca</small></span>
+              </button>
+            </div>
+            <div class="project-pair">
+              <button class="project-tile tile-text" type="button" data-project="durex" aria-label="Abrir Durex">
+                <img src="assets/pub-item-7.jpg" alt="Durex">
+                <span><b>Durex</b><small>#ProtégeteDelCalentón</small></span>
+              </button>
+              <button class="project-tile tile-poster" type="button" data-project="durex" aria-label="Abrir Durex">
+                <img src="assets/pub-item-8.png" alt="Durex cartel">
+                <span><b>Durex</b><small>Campaña digital</small></span>
+              </button>
+            </div>
+          </div>
+
+          <div class="films-placeholder" data-work-panel="films" hidden>
+            <h2>FILMS</h2>
+            <p>Sección preparada para la siguiente fase.</p>
+          </div>
+        </div>
+
+        <article class="project-detail beefeater-detail is-hidden" data-project-detail="beefeater" aria-label="Beefeater #RESP3CT">
+          <button class="detail-back" type="button" data-close-project>Volver arriba</button>
+
+          <header class="beefeater-hero">
+            <div class="beefeater-copy">
+              <p class="client-label">EL CLIENTE:</p>
+              <h1>BEEFEATER</h1>
+              <p>La marca aterriza con una idea clave: celebrar la diversidad en tono positivo. Partiendo del <em>insight</em> de que el respeto en su pura definición es un ideal difícil de conquistar, apostamos por empezar dándole el valor que realmente merecen a esas pequeñas declaraciones de respeto que practicamos en nuestro día a día, pues son precisamente estas las que encaminan a la sociedad hacia una más tolerante.</p>
+            </div>
+            <figure class="beefeater-lights">
+              <img src="assets/beefeater-lights.png" alt="Luces Beefeater">
+            </figure>
+            <blockquote>"In theory, people have respect for the other,<br>but daily life demonstrates exactly the opposite"</blockquote>
+          </header>
+
+          <section class="beefeater-intention">
+            <div class="intention-card">
+              <h2>But first,<br>una declaración de intenciones</h2>
+              <p>Para interpretar el punto de partida de Beefeater, era necesario entender su lucha: una revolución que empezaba desde lo más pequeño de cada uno.</p>
+            </div>
+            <img src="assets/beefeater-card-1.png" alt="Manifesto Beefeater">
+          </section>
+
+          <section class="beefeater-statement">
+            <p>De esta manera, nace:</p>
+            <button class="beefeater-video-trigger" type="button" data-video-open aria-label="Reproducir vídeo Beefeater #RESP3CT">
+              <img src="assets/beefeater-bottle.png" alt="Beefeater #RESP3CT">
+              <span aria-hidden="true"></span>
+            </button>
+            <h2>Y sus pequeñas obras de arte</h2>
+          </section>
+
+          <section class="beefeater-axis">
+            <div>
+              <h2>EL EJE</h2>
+              <p>Beefeater celebra las pequeñas acciones, que son las que cambian el mundo.</p>
+              <h3>¿CÓMO?</h3>
+              <p>Otorgándole un gran valor a esas pequeñas acciones, hasta el punto de valorarlas como obras de arte.</p>
+              <h3>¿POR QUÉ?</h3>
+              <p>Porque, al igual que cada pincelada de Van Gogh o cada palabra de Jane Austen, las pequeñas acciones de respeto pueden acabar dándole la vuelta al mundo.</p>
+              <p class="claim">CLAIM: "El arte de las pequeñas acciones"</p>
+            </div>
+            <img src="assets/beefeater-card-2.png" alt="Gráfica Beefeater">
+          </section>
+
+          <section class="beefeater-collage">
+            <h2>EL COLLAGE</h2>
+            <p>Pues reinventa una obra del pasado y la plantea desde una perspectiva diferente. Así, constituye en sí una pequeña revolución.</p>
+            <div class="collage-grid">
+              <article>
+                <img src="assets/el-greco-caballero.jpg" alt="El caballero de la mano en el pecho">
+                <h3>EL CABALLERO DE LA MANO EN EL PECHO <span>(El Greco, 1578)</span></h3>
+                <p>Supone una deconstrucción de los atributos que antaño definían a los hombres y de la denominada "masculinidad frágil".</p>
+              </article>
+              <article>
+                <img src="assets/rubens-three-graces.jpg" alt="Las tres gracias">
+                <h3>LAS TRES GRACIAS <span>(Rubens, 1630)</span></h3>
+                <p>El canon de belleza es aún más inclusivo pues también participan mujeres transexuales y de otras culturas no caucásicas, todas despojadas de los rasgos tradicionalmente femeninos.</p>
+              </article>
+            </div>
+          </section>
+
+          <section class="beefeater-storydoing">
+            <p class="storydoing-kicker">Por último, un paso más allá:</p>
+            <h2>STORYDOING</h2>
+            <div class="storydoing-grid">
+              <figure class="storydoing-image storydoing-museum">
+                <img src="assets/beefeater-detail-art.png" alt="Sala de museo vacía con firma Beefeater">
+              </figure>
+              <article class="storydoing-card storydoing-museums">
+                <h3>MUSEOS VACÍOS</h3>
+                <p>Beefeater crea expectación con un acto de rebeldía: vaciando las salas de los museos más importantes de las ciudades españolas, en las que solo deja una firma tras su paso.</p>
+                <span class="storydoing-arrow" aria-hidden="true"></span>
+                <small>POSTERIOR FIESTA DE INAUGURACIÓN</small>
+              </article>
+              <article class="storydoing-card storydoing-respect">
+                <h3>REPRESENTACIÓN DEL RESPETO</h3>
+                <p>La marca abre un sorteo en su página de Instagram donde los usuarios pueden enviar qué es para ellos el respeto, así como todas aquellas pequeñas acciones relacionadas con este.</p>
+                <p>Los ganadores del mismo verán sus ideas plasmadas por pequeños artistas de cada ciudad (en forma de pintura, baile, teatro, música o performance). De esta forma y mediante la participación del consumidor, se pretende representar el respeto como un arte más.</p>
+              </article>
+              <figure class="storydoing-image storydoing-phone">
+                <img src="assets/beefeater-card-3.png" alt="Perfil de Instagram de Beefeater para representar el respeto">
+              </figure>
+            </div>
+          </section>
+
+          <div class="video-modal is-hidden" data-video-modal aria-hidden="true">
+            <button class="video-modal-close" type="button" data-video-close aria-label="Cerrar vídeo">Cerrar</button>
+            <video src="assets/beefeater-resp3ct.mp4" controls preload="metadata" playsinline></video>
+          </div>
+        </article>
+
+        <article class="project-detail case-detail ecoembes-detail is-hidden" data-project-detail="ecoembes" aria-label="Ecoembes">
+          <button class="detail-back" type="button" data-close-project>Volver arriba</button>
+
+          <header class="case-hero case-eco">
+            <div class="case-copy">
+              <p class="client-label">EL CLIENTE:</p>
+              <h1>ECOEMBES</h1>
+              <blockquote>"Los jóvenes de hoy en día no están comprometidos con el reciclaje a pesar de conocer sus consecuencias"</blockquote>
+              <p>Ecoembes, una organización sin ánimo de lucro, se enfrenta a su público más rebelde: los jóvenes. Y es que, tras realizar una investigación, la mayoría de ellos reciclan en sus hogares, pero remarcan su frustración ante la imposibilidad de poder hacerlo cuando se encuentran en la calle. He aquí el reto.</p>
+            </div>
+            <figure>
+              <img src="assets/ecoembes-hero.jpg" alt="Logo de Ecoembes">
+            </figure>
+          </header>
+
+          <section class="case-band case-band-warm">
+            <h2>UN PROPÓSITO,</h2>
+            <p>Una nueva sociedad que apuesta por el cuidado del medio ambiente necesita las herramientas y los medios para poder hacerlo. Y la publicidad no debe quedarse atrás. Más allá de comunicar una marca o un producto, la publicidad ha de ser útil. Ha de solucionar los problemas de los ciudadanos. Ha de ayudar.</p>
+          </section>
+
+          <section class="eco-change">
+            <div class="soft-card">
+              <h2>UN PEQUEÑO CAMBIO</h2>
+              <p>Un mupi publicitario que, tras predicar un mensaje sobre la concienciación de la importancia del reciclaje, lo pudiera tangibilizar de alguna manera. Palabras y hechos.</p>
+              <p>Algo tan sencillo como añadir a los carteles existentes una papelera que diferenciase entre plásticos y papel era la solución que empujaría no solo a los jóvenes a reciclar incluso en la calle.</p>
+            </div>
+            <figure>
+              <img src="assets/ecoembes-mupi.png" alt="Mupi con papelera de reciclaje">
+            </figure>
+          </section>
+
+          <section class="eco-message">
+            <h2>Y UN MENSAJE: ¡RECICLA!</h2>
+            <div class="poster-row">
+              <img src="assets/ecoembes-poster-green.png" alt="Cartel Ecoembes verde">
+              <img src="assets/ecoembes-poster-blue.png" alt="Cartel Ecoembes azul">
+              <img src="assets/ecoembes-poster-yellow.png" alt="Cartel Ecoembes amarillo">
+            </div>
+          </section>
+
+          <section class="eco-why">
+            <article>
+              <h3>¿POR QUÉ?</h3>
+              <p>Una campaña dirigida a los jóvenes valencianos tenía que conectar con ellos sin demasiada palabrería. No hacía falta convencerles de que lo hicieran, pues ellos ya sabían bien la importancia que tiene reciclar. Lo único que les faltaba era el medio. Ah, y una frase que les sacara una sonrisa.</p>
+            </article>
+            <img src="assets/ecoembes-plastics.jpg" alt="Botellas y plásticos verdes">
+            <article>
+              <h3>LA TERRETA</h3>
+              <p>Un recordatorio de las raíces, de aquello que siempre les pertenecerá durante toda su vida. Ya sea de una manera más tradicional que casi nos recuerda a nuestros abuelos de una manera nostálgica (gráficas 1 y 3) o algo más modernillo como la famosa frase de Miquel Montoro (gráfica 2).</p>
+            </article>
+          </section>
+        </article>
+
+        <article class="project-detail case-detail bruma-detail is-hidden" data-project-detail="bruma" aria-label="Bruma">
+          <button class="detail-back" type="button" data-close-project>Volver arriba</button>
+
+          <header class="case-hero case-bruma">
+            <div class="case-copy">
+              <p class="client-label">EL CASO</p>
+              <h1>BRUMA</h1>
+              <blockquote>"Necesitábamos crear una marca que representase nuestra manera de entender el mundo de los aromas"</blockquote>
+              <p>Una pequeña familia de la Comunidad Valenciana con una gran pasión por los beneficios de los aceites esenciales deseaba regalar al mundo un producto único. Una mirada nueva que, siendo respetuosa con el medio ambiente, seduciera el sentido olfativo de cualquier persona.</p>
+            </div>
+            <figure>
+              <img src="assets/bruma-hero.jpg" alt="Ilustración principal de Bruma">
+            </figure>
+          </header>
+
+          <section class="bruma-reform">
+            <img src="assets/bruma-diffuser.png" alt="Difusor Bruma">
+            <article>
+              <h2>REFORMULACIÓN</h2>
+              <p>Con ánimo de crear una marca natural, única y, como el producto mismo, "hecha a mano", se crea un formato digital del curioso difusor de aceites esenciales. Este respira una estética más desenfada, cercana y familiar. Los valores de Bruma.</p>
+            </article>
+            <img src="assets/bruma-diffuser.png" alt="">
+          </section>
+
+          <section class="bruma-aroma">
+            <h2>COMUNICAR EL AROMA</h2>
+            <div class="poster-row">
+              <img src="assets/bruma-poster-1.png" alt="Cartel Bruma olor favorito">
+              <img src="assets/bruma-poster-2.png" alt="Cartel Bruma primavera">
+              <img src="assets/bruma-poster-3.png" alt="Cartel Bruma domingo en casa">
+            </div>
+          </section>
+
+          <section class="bruma-values">
+            <article>
+              <h3>PERSONALIZACIÓN</h3>
+              <p>El funcionamiento del propio difusor hace que el usuario/a pueda elegir entre una infinidad de olores diferentes. E incluso juntar los existentes para crear el que más le reconforte. Es por ello que, para cada persona, Bruma huele a su olor favorito.</p>
+            </article>
+            <video src="assets/bruma-motion.mp4" autoplay muted loop playsinline preload="metadata"></video>
+            <article>
+              <h3>OLORES HOGAREÑOS</h3>
+              <p>En la realización de las gráficas intervino la artista Petra Braun, que plasmó el funcionamiento de Bruma en su uso doméstico, empleando "formas de casa". De esta manera, el difusor se dibuja como ese elemento que hace de una casa un hogar.</p>
+            </article>
+          </section>
+        </article>
+
+        <article class="project-detail case-detail durex-detail is-hidden" data-project-detail="durex" aria-label="Durex">
+          <button class="detail-back" type="button" data-close-project>Volver arriba</button>
+
+          <header class="case-hero case-durex">
+            <div class="case-copy">
+              <p class="client-label">EL CLIENTE:</p>
+              <h1>DUREX</h1>
+              <blockquote>"Durex ha de dar el siguiente paso y solucionar una tensión social existente en la actualidad"</blockquote>
+              <p>La marca quería conectar con sus consumidores de una manera diferente, creando un producto-obsequio que reflejase los valores de Durex. Porque las marcas van más allá de vender sus productos, deseaban resolver de una manera simple pero creativa esos pequeños conflictos presentes en la sociedad.</p>
+            </div>
+            <figure>
+              <img src="assets/durex-hero.jpg" alt="Pareja en blanco y negro">
+            </figure>
+          </header>
+
+          <section class="durex-solution">
+            <img src="assets/durex-product.png" alt="Funda isotérmica Durex">
+            <article>
+              <h2>TENSIÓN SOCIAL</h2>
+              <p>El teléfono móvil se recalienta en días de mucho calor y puede dejar de funcionar. Especialmente en la playa.</p>
+              <hr>
+              <h2>SOLUCIÓN</h2>
+              <p>Una funda de móvil isotérmica resistente a esos días tan calurosos del verano. Hecha con doble laminado de plástico de poliestireno + lámina de foam (aislante).</p>
+            </article>
+          </section>
+
+          <section class="durex-birth">
+            <h2>Así, nace:<br><span>#ProtégeteDelCalentón</span></h2>
+            <div class="poster-row">
+              <figure class="durex-poster-frame">
+                <img src="assets/durex-poster-1.png" alt="Cartel Durex">
+              </figure>
+              <figure class="durex-poster-frame">
+                <img src="assets/durex-mupi.jpg" alt="Cartel explicativo Durex">
+              </figure>
+            </div>
+          </section>
+
+          <section class="durex-comms">
+            <article>
+              <h3>CLAIM</h3>
+              <p>"No todos los calentones son buenos"</p>
+              <h3>HASHTAG</h3>
+              <p>#ProtégeteDelCalentón</p>
+              <h3>MEDIOS</h3>
+              <p>Mupis de las principales ciudades de España, especialmente en aquellas zonas costeras.</p>
+            </article>
+            <img src="assets/durex-mupi-street.png" alt="Mupi Durex en exterior">
+            <article>
+              <h3>EJE DE COMUNICACIÓN</h3>
+              <p>"Durex te protege a ti y a tu teléfono móvil"</p>
+              <h3>CONCEPTO</h3>
+              <p>Representar la utilidad del producto mediante la cultura visual y la jerga del target.</p>
+              <h3>TONO</h3>
+              <p>Un estilo de comunicación fresco, divertido y descarado. Igual que su target (23 a 35 años).</p>
+            </article>
+          </section>
+
+          <section class="durex-social">
+            <h2>SALTO A LAS <span>REDES</span></h2>
+            <div class="durex-social-grid">
+              <article class="social-copy">
+                <p>La campaña de comunicación se centra además en las redes sociales preferidas del target (Instagram y Twitter) con el objetivo de llegar de manera más directa al público objetivo.</p>
+                <p>Siguen ese estilo macarra, directo y desenfadado.</p>
+              </article>
+              <div class="social-video-row">
+                <div class="social-video">
+                  <video src="assets/durex-social-1.mp4" controls preload="metadata" playsinline></video>
+                </div>
+                <div class="social-video">
+                  <video src="assets/durex-social-2.mp4" controls preload="metadata" playsinline></video>
+                </div>
+              </div>
+              <div class="social-filter">
+                <div class="social-video">
+                  <video src="assets/durex-social-3.mp4" controls preload="metadata" playsinline></video>
+                </div>
+                <article class="rounded-note">
+                  <p>Además, se ha creado un filtro para Instagram cuyo objetivo es que el target se sienta en el centro de la comunicación e interactúe con la marca a través de sus stories con la posibilidad de añadir el hashtag:</p>
+                  <strong>#ProtégeteDelCalentón</strong>
+                </article>
+              </div>
+            </div>
+          </section>
+        </article>
       </section>
     </main>
 
