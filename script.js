@@ -114,12 +114,12 @@
   }
 
   function openProject(project) {
-    if (!workChooser) return;
+    const activeDetail = document.querySelector(`[data-project-detail="${project}"]`);
+    if (!workChooser || !activeDetail) return;
     workChooser.classList.add("is-hidden");
     projectDetails.forEach((detail) => {
       detail.classList.toggle("is-hidden", detail.dataset.projectDetail !== project);
     });
-    const activeDetail = document.querySelector(`[data-project-detail="${project}"]`);
     if (activeDetail) {
       activeDetail.querySelectorAll("video[autoplay]").forEach((projectVideo) => {
         projectVideo.play().catch(() => {});

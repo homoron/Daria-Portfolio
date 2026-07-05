@@ -1185,23 +1185,8 @@ a {
   font-size: 0.85rem;
 }
 
-.films-placeholder {
-  min-height: 30rem;
-  display: grid;
-  place-content: center;
-  color: var(--ink);
-  text-align: center;
-  border: 1px solid rgba(244, 241, 232, 0.16);
-}
-
 [data-work-panel][hidden] {
   display: none;
-}
-
-.films-placeholder h2 {
-  margin: 0;
-  color: var(--acid);
-  font-size: clamp(4rem, 10vw, 9rem);
 }
 
 .detail-back {
