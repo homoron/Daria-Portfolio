@@ -77,6 +77,8 @@
 
   const aboutSection = document.getElementById("quien-soy");
   const workSection = document.getElementById("que-hago");
+  const thinkSection = document.getElementById("que-pienso");
+  const contactSection = document.getElementById("contacto");
   const viewLinks = document.querySelectorAll("[data-view-link]");
   const workTabs = document.querySelectorAll("[data-work-tab]");
   const workPanels = document.querySelectorAll("[data-work-panel]");
@@ -91,18 +93,31 @@
 
   function showView(view, shouldScroll = true) {
     if (!aboutSection || !workSection) return;
-    const isWork = view === "work";
-    aboutSection.classList.toggle("is-hidden", isWork);
-    workSection.classList.toggle("is-hidden", !isWork);
+    const sections = { about: aboutSection, work: workSection, think: thinkSection, contact: contactSection };
+    if (!sections[view]) return;
+    Object.keys(sections).forEach((name) => {
+      if (sections[name]) sections[name].classList.toggle("is-hidden", name !== view);
+    });
     viewLinks.forEach((link) => link.classList.toggle("is-active", link.dataset.viewLink === view));
-    if (isWork) {
+    if (view === "work") {
       closeProject();
       workSection.querySelectorAll(".work-smoke video").forEach((sectionVideo) => {
         sectionVideo.play().catch(() => {});
       });
     }
+    if (view === "think") {
+      closePost();
+      thinkSection.querySelectorAll(".work-smoke video").forEach((sectionVideo) => {
+        sectionVideo.play().catch(() => {});
+      });
+    }
+    if (view === "contact") {
+      contactSection.querySelectorAll(".work-smoke video").forEach((sectionVideo) => {
+        sectionVideo.play().catch(() => {});
+      });
+    }
     if (shouldScroll) {
-      (isWork ? workSection : aboutSection).scrollIntoView({ behavior: "smooth", block: "start" });
+      sections[view].scrollIntoView({ behavior: "smooth", block: "start" });
     }
   }
 
@@ -154,11 +169,43 @@
 
   viewLinks.forEach((link) => {
     link.addEventListener("click", (event) => {
-      if (link.dataset.viewLink === "about" || link.dataset.viewLink === "work") {
+      const view = link.dataset.viewLink;
+      if (view === "about" || view === "work" || view === "think" || view === "contact") {
         event.preventDefault();
         history.replaceState(null, "", link.getAttribute("href"));
-        showView(link.dataset.viewLink);
+        showView(view);
       }
+    });
+  });
+
+  const postButtons = document.querySelectorAll("[data-post]");
+  const postDetails = document.querySelectorAll("[data-post-detail]");
+  const thinkChooser = document.querySelector("[data-think-view='index']");
+  const closePostButtons = document.querySelectorAll("[data-close-post]");
+
+  function openPost(post) {
+    const activePost = document.querySelector(`[data-post-detail="${post}"]`);
+    if (!thinkChooser || !activePost) return;
+    thinkChooser.classList.add("is-hidden");
+    postDetails.forEach((detail) => {
+      detail.classList.toggle("is-hidden", detail.dataset.postDetail !== post);
+    });
+    thinkSection.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+
+  function closePost() {
+    if (thinkChooser) thinkChooser.classList.remove("is-hidden");
+    postDetails.forEach((detail) => detail.classList.add("is-hidden"));
+  }
+
+  postButtons.forEach((button) => {
+    button.addEventListener("click", () => openPost(button.dataset.post));
+  });
+
+  closePostButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      closePost();
+      thinkSection.scrollIntoView({ behavior: "smooth", block: "start" });
     });
   });
 
@@ -194,6 +241,10 @@
 
   if (window.location.hash === "#que-hago") {
     showView("work", true);
+  } else if (window.location.hash === "#que-pienso") {
+    showView("think", true);
+  } else if (window.location.hash === "#contacto") {
+    showView("contact", true);
   } else {
     showView("about", false);
   }
