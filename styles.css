@@ -1503,22 +1503,38 @@ a {
 
 .reel-layout {
   position: relative;
-  padding: 1rem 2.6rem 0 0;
-}
-
-.reel-item {
   display: grid;
   grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
   column-gap: clamp(2.5rem, 5vw, 6rem);
+  padding-top: 1rem;
+}
+
+.reel-strip {
+  min-width: 0;
+}
+
+.reel-panel {
+  position: relative;
+  min-width: 0;
+}
+
+.reel-panel-inner {
+  position: sticky;
+  top: 0;
+  display: flex;
+  align-items: center;
+  height: 100vh;
+  padding-right: 2.6rem;
+}
+
+.reel-captions {
+  flex: 1;
+  display: grid;
+  min-width: 0;
 }
 
 .reel-frame {
   position: relative;
-  height: 100%;
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
   margin: 0;
   padding: 1.5rem 2.5rem;
   background: #060706;
@@ -1612,11 +1628,9 @@ a {
 }
 
 .reel-caption {
-  position: sticky;
-  top: clamp(7rem, 16vh, 10rem);
-  align-self: start;
+  grid-area: 1 / 1;
+  align-self: center;
   max-width: 34rem;
-  padding: 0.5rem 0 clamp(3rem, 8vh, 6rem);
   opacity: 0;
   transition: opacity 420ms ease;
 }
@@ -1629,21 +1643,21 @@ a {
   margin: 0 0 1rem;
   max-width: 30rem;
   color: rgba(244, 241, 232, 0.82);
-  font-size: 0.93rem;
-  line-height: 1.85;
+  font-size: 1.02rem;
+  line-height: 1.8;
 }
 
 .reel-caption .reel-count {
   margin: 0 0 1.4rem;
   color: var(--acid);
-  font-size: 0.72rem;
+  font-size: 0.76rem;
   letter-spacing: 0.22em;
 }
 
 .reel-caption .reel-kicker {
   margin: 0 0 0.65rem;
   color: var(--acid);
-  font-size: 0.78rem;
+  font-size: 0.84rem;
   letter-spacing: 0.14em;
   text-transform: uppercase;
 }
@@ -1659,7 +1673,7 @@ a {
 .reel-caption h3 {
   margin: 1.7rem 0 0.6rem;
   color: var(--acid);
-  font-size: 0.95rem;
+  font-size: 1.05rem;
   letter-spacing: 0.05em;
   line-height: 1.5;
 }
@@ -1681,7 +1695,7 @@ a {
   padding-left: 1.2rem;
   border-left: 2px solid var(--acid);
   font-family: Georgia, "Times New Roman", serif;
-  font-size: clamp(1rem, 1.4vw, 1.25rem);
+  font-size: clamp(1.08rem, 1.5vw, 1.3rem);
   font-style: italic;
   line-height: 1.75;
 }
@@ -1690,7 +1704,7 @@ a {
   display: block;
   margin-top: 1.4rem;
   color: var(--acid);
-  font-size: 0.72rem;
+  font-size: 0.78rem;
   letter-spacing: 0.16em;
 }
 
@@ -1731,15 +1745,9 @@ a {
 
 .reel-dots {
   position: absolute;
-  top: 0;
   right: 0;
-  bottom: 0;
-  width: 1rem;
-}
-
-.reel-dots div {
-  position: sticky;
-  top: 44vh;
+  top: 50%;
+  transform: translateY(-50%);
   display: grid;
   gap: 0.6rem;
   justify-items: center;
@@ -4660,22 +4668,32 @@ a {
   }
 
   .reel-layout {
-    padding-right: 0;
-  }
-
-  .reel-item {
     grid-template-columns: 1fr;
   }
 
-  .reel-frame {
-    height: auto;
+  .reel-panel {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+
+  .reel-panel-inner {
+    align-items: flex-end;
+    padding: 0 0 0.9rem;
   }
 
   .reel-caption {
-    position: static;
+    align-self: end;
     max-width: none;
-    opacity: 1;
-    padding: 1.6rem 0 3rem;
+    max-height: 58vh;
+    overflow-y: auto;
+    padding: 1.1rem 1.2rem;
+    background: rgba(4, 5, 4, 0.92);
+    border: 1px solid rgba(244, 241, 232, 0.25);
+  }
+
+  .reel-caption.is-active {
+    pointer-events: auto;
   }
 
   .reel-dots {
