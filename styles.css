@@ -1511,6 +1511,9 @@ a {
 
 .reel-strip {
   min-width: 0;
+  /* Lower the strip so the first (and last) frame rests centered against
+     the sticky caption. Half of a frame is ~19.5vw at these column widths. */
+  padding-block: max(1rem, calc(50vh - 19.5vw));
 }
 
 .reel-panel {
@@ -4669,6 +4672,10 @@ a {
 
   .reel-layout {
     grid-template-columns: 1fr;
+  }
+
+  .reel-strip {
+    padding-block: 0;
   }
 
   .reel-panel {
