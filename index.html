@@ -240,8 +240,13 @@
           <div class="camera-playback" data-camera-playback tabindex="0" aria-label="Reproductor de proyectos. Usa el scroll para cambiar de proyecto.">
             <header class="camera-topbar">
               <div class="work-switch" aria-label="Categorías de proyectos">
-                <button class="is-active" type="button" data-work-tab="publicidad">PUBLICIDAD</button>
-                <button type="button" data-work-tab="films">FILMS</button>
+                <span class="work-switch-label"><small>BIBLIOTECA</small><b>ELIGE COLECCIÓN</b></span>
+                <button class="is-active" type="button" data-work-tab="publicidad" aria-pressed="true">
+                  <span aria-hidden="true">01</span><b>PUBLICIDAD</b><small>09 PROYECTOS</small>
+                </button>
+                <button type="button" data-work-tab="films" aria-pressed="false">
+                  <span aria-hidden="true">02</span><b>FILMS</b><small>05 PROYECTOS</small>
+                </button>
               </div>
               <div class="camera-status" aria-hidden="true">
                 <span class="camera-rec"><i></i> REC</span>

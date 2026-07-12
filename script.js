@@ -156,7 +156,11 @@
   }
 
   function showWorkPanel(panelName) {
-    workTabs.forEach((tab) => tab.classList.toggle("is-active", tab.dataset.workTab === panelName));
+    workTabs.forEach((tab) => {
+      const isActive = tab.dataset.workTab === panelName;
+      tab.classList.toggle("is-active", isActive);
+      tab.setAttribute("aria-pressed", String(isActive));
+    });
     const source = Array.from(projectSources).find((panel) => panel.dataset.projectSource === panelName);
     if (!source) return;
     activeWorkPanel = panelName;
