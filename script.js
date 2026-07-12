@@ -81,7 +81,7 @@
   const contactSection = document.getElementById("contacto");
   const viewLinks = document.querySelectorAll("[data-view-link]");
   const workTabs = document.querySelectorAll("[data-work-tab]");
-  const workPanels = document.querySelectorAll("[data-work-panel]");
+  const projectSources = document.querySelectorAll("[data-project-source]");
   const workChooser = document.querySelector("[data-work-view='index']");
   const projectButtons = document.querySelectorAll("[data-project]");
   const projectDetails = document.querySelectorAll("[data-project-detail]");
@@ -90,6 +90,34 @@
   const videoOpen = document.querySelector("[data-video-open]");
   const videoClose = document.querySelector("[data-video-close]");
   const detailVideo = videoModal ? videoModal.querySelector("video") : null;
+  const cameraPlayback = document.querySelector("[data-camera-playback]");
+  const cameraImage = document.querySelector("[data-camera-image]");
+  const cameraTitle = document.querySelector("[data-camera-title]");
+  const cameraSubtitle = document.querySelector("[data-camera-subtitle]");
+  const cameraCounter = document.querySelector("[data-camera-counter]");
+  const cameraTimecode = document.querySelector("[data-camera-timecode]");
+  const cameraThumbs = document.querySelector("[data-camera-thumbs]");
+  const cameraOpenButtons = document.querySelectorAll("[data-camera-open], [data-camera-play]");
+  const previewOverrides = {
+    beefeater: "assets/pub-beefeater-text.jpg",
+    ecoembes: "assets/pub-ecoembes-text.jpg",
+    bruma: "assets/bruma-hero.jpg",
+    durex: "assets/durex-hero.jpg",
+    crocs: "assets/crocs-hero.png",
+    cultura: "assets/cultura-hero.png",
+    cinecas: "assets/cinecas-seats.jpg",
+    lafede: "assets/lafede-collage.jpg",
+    villarreal: "assets/villarreal-collage.jpg",
+    kachevnitsa: "assets/film-kachevnitsa-collage.jpg",
+    instant36: "assets/film-instant36-collage.jpg",
+    mejorno: "assets/film-mejorno-collage.jpg",
+    musidora: "assets/film-musidora-collage.jpg",
+    fahrenheit: "assets/film-fahrenheit-collage.jpg"
+  };
+  let activeProjects = [];
+  let activeProjectIndex = 0;
+  let wheelLocked = false;
+  let touchStartY = 0;
 
   function showView(view, shouldScroll = true) {
     if (!aboutSection || !workSection) return;
@@ -123,9 +151,84 @@
 
   function showWorkPanel(panelName) {
     workTabs.forEach((tab) => tab.classList.toggle("is-active", tab.dataset.workTab === panelName));
-    workPanels.forEach((panel) => {
-      panel.hidden = panel.dataset.workPanel !== panelName;
+    const source = Array.from(projectSources).find((panel) => panel.dataset.projectSource === panelName);
+    if (!source) return;
+
+    const seen = new Set();
+    activeProjects = Array.from(source.querySelectorAll("[data-project]"))
+      .filter((button) => {
+        if (seen.has(button.dataset.project)) return false;
+        seen.add(button.dataset.project);
+        return true;
+      })
+      .map((button) => {
+        const title = button.querySelector("span b")?.textContent.trim() || button.dataset.project;
+        const subtitle = button.querySelector("span small")?.textContent.trim() || "Proyecto audiovisual";
+        const image = previewOverrides[button.dataset.project] || button.querySelector("img")?.getAttribute("src");
+        return { id: button.dataset.project, title, subtitle, image };
+      });
+
+    activeProjectIndex = 0;
+    renderCameraThumbnails();
+    renderCameraProject(false);
+  }
+
+  function renderCameraThumbnails() {
+    if (!cameraThumbs) return;
+    cameraThumbs.replaceChildren();
+    activeProjects.forEach((project, index) => {
+      const button = document.createElement("button");
+      const image = document.createElement("img");
+      const number = document.createElement("span");
+      button.type = "button";
+      button.className = "camera-thumb";
+      button.setAttribute("aria-label", `Seleccionar ${project.title}`);
+      button.dataset.cameraIndex = String(index);
+      image.src = project.image;
+      image.alt = "";
+      number.textContent = String(index + 1).padStart(2, "0");
+      button.append(image, number);
+      button.addEventListener("click", () => {
+        activeProjectIndex = index;
+        renderCameraProject();
+      });
+      cameraThumbs.append(button);
     });
+  }
+
+  function renderCameraProject(animate = true) {
+    const project = activeProjects[activeProjectIndex];
+    if (!project || !cameraImage) return;
+    if (animate) {
+      cameraPlayback?.classList.remove("is-advancing");
+      void cameraPlayback?.offsetWidth;
+      cameraPlayback?.classList.add("is-advancing");
+    }
+    cameraImage.src = project.image;
+    cameraImage.alt = project.title;
+    cameraTitle.textContent = project.title;
+    cameraSubtitle.textContent = project.subtitle;
+    cameraCounter.textContent = `${String(activeProjectIndex + 1).padStart(2, "0")} / ${String(activeProjects.length).padStart(2, "0")}`;
+    cameraTimecode.textContent = `00:00:${String(activeProjectIndex * 7 + 3).padStart(2, "0")}`;
+    cameraThumbs?.querySelectorAll(".camera-thumb").forEach((thumb, index) => {
+      const isActive = index === activeProjectIndex;
+      thumb.classList.toggle("is-active", isActive);
+      thumb.setAttribute("aria-current", isActive ? "true" : "false");
+      if (isActive) thumb.scrollIntoView({ block: "nearest", behavior: animate ? "smooth" : "auto" });
+    });
+  }
+
+  function stepCamera(direction) {
+    const nextIndex = activeProjectIndex + direction;
+    if (nextIndex < 0 || nextIndex >= activeProjects.length) return false;
+    activeProjectIndex = nextIndex;
+    renderCameraProject();
+    return true;
+  }
+
+  function openCameraProject() {
+    const project = activeProjects[activeProjectIndex];
+    if (project) openProject(project.id);
   }
 
   function openProject(project) {
@@ -213,6 +316,34 @@
     tab.addEventListener("click", () => showWorkPanel(tab.dataset.workTab));
   });
 
+  cameraOpenButtons.forEach((button) => button.addEventListener("click", openCameraProject));
+
+  if (cameraPlayback) {
+    cameraPlayback.addEventListener("wheel", (event) => {
+      if (Math.abs(event.deltaY) < 12 || wheelLocked) return;
+      const direction = event.deltaY > 0 ? 1 : -1;
+      if (!stepCamera(direction)) return;
+      event.preventDefault();
+      wheelLocked = true;
+      window.setTimeout(() => { wheelLocked = false; }, 360);
+    }, { passive: false });
+
+    cameraPlayback.addEventListener("keydown", (event) => {
+      if (event.key !== "ArrowDown" && event.key !== "ArrowRight" && event.key !== "ArrowUp" && event.key !== "ArrowLeft") return;
+      const direction = event.key === "ArrowDown" || event.key === "ArrowRight" ? 1 : -1;
+      if (stepCamera(direction)) event.preventDefault();
+    });
+
+    cameraPlayback.addEventListener("touchstart", (event) => {
+      touchStartY = event.changedTouches[0].clientY;
+    }, { passive: true });
+
+    cameraPlayback.addEventListener("touchend", (event) => {
+      const distance = touchStartY - event.changedTouches[0].clientY;
+      if (Math.abs(distance) > 48) stepCamera(distance > 0 ? 1 : -1);
+    }, { passive: true });
+  }
+
   projectButtons.forEach((button) => {
     button.addEventListener("click", () => openProject(button.dataset.project));
   });
@@ -248,4 +379,6 @@
   } else {
     showView("about", false);
   }
+
+  showWorkPanel("publicidad");
 })();
