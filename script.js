@@ -80,6 +80,8 @@
   const thinkSection = document.getElementById("que-pienso");
   const contactSection = document.getElementById("contacto");
   const viewLinks = document.querySelectorAll("[data-view-link]");
+  const homeLink = document.querySelector(".nav-links a[href='#inicio']");
+  let currentView = "about";
   const workTabs = document.querySelectorAll("[data-work-tab]");
   const projectSources = document.querySelectorAll("[data-project-source]");
   const workChooser = document.querySelector("[data-work-view='index']");
@@ -116,8 +118,11 @@
   };
   let activeProjects = [];
   let activeProjectIndex = 0;
+  let activeWorkPanel = "publicidad";
   let wheelLocked = false;
+  let wheelUnlockTimer = 0;
   let touchStartY = 0;
+  let touchCurrentY = 0;
 
   function showView(view, shouldScroll = true) {
     if (!aboutSection || !workSection) return;
@@ -126,7 +131,8 @@
     Object.keys(sections).forEach((name) => {
       if (sections[name]) sections[name].classList.toggle("is-hidden", name !== view);
     });
-    viewLinks.forEach((link) => link.classList.toggle("is-active", link.dataset.viewLink === view));
+    currentView = view;
+    updateNavSpy();
     if (view === "work") {
       closeProject();
       workSection.querySelectorAll(".work-smoke video").forEach((sectionVideo) => {
@@ -153,6 +159,7 @@
     workTabs.forEach((tab) => tab.classList.toggle("is-active", tab.dataset.workTab === panelName));
     const source = Array.from(projectSources).find((panel) => panel.dataset.projectSource === panelName);
     if (!source) return;
+    activeWorkPanel = panelName;
 
     const seen = new Set();
     activeProjects = Array.from(source.querySelectorAll("[data-project]"))
@@ -214,7 +221,24 @@
       const isActive = index === activeProjectIndex;
       thumb.classList.toggle("is-active", isActive);
       thumb.setAttribute("aria-current", isActive ? "true" : "false");
-      if (isActive) thumb.scrollIntoView({ block: "nearest", behavior: animate ? "smooth" : "auto" });
+      if (isActive) scrollCameraThumbIntoView(thumb, animate);
+    });
+  }
+
+  function scrollCameraThumbIntoView(thumb, animate) {
+    if (!cameraThumbs) return;
+    const horizontal = window.getComputedStyle(cameraThumbs).flexDirection === "row";
+    const start = horizontal ? thumb.offsetLeft : thumb.offsetTop;
+    const size = horizontal ? thumb.offsetWidth : thumb.offsetHeight;
+    const viewportSize = horizontal ? cameraThumbs.clientWidth : cameraThumbs.clientHeight;
+    const current = horizontal ? cameraThumbs.scrollLeft : cameraThumbs.scrollTop;
+    let target = current;
+    if (start < current) target = start;
+    if (start + size > current + viewportSize) target = start + size - viewportSize;
+    cameraThumbs.scrollTo({
+      left: horizontal ? target : cameraThumbs.scrollLeft,
+      top: horizontal ? cameraThumbs.scrollTop : target,
+      behavior: animate ? "smooth" : "auto"
     });
   }
 
@@ -231,9 +255,27 @@
     if (project) openProject(project.id);
   }
 
-  function openProject(project) {
+  function selectCameraProject(project) {
+    const source = Array.from(projectSources).find((panel) => panel.querySelector(`[data-project="${project}"]`));
+    if (!source) return false;
+    if (source.dataset.projectSource !== activeWorkPanel) showWorkPanel(source.dataset.projectSource);
+    const projectIndex = activeProjects.findIndex((item) => item.id === project);
+    if (projectIndex < 0) return false;
+    activeProjectIndex = projectIndex;
+    renderCameraProject(false);
+    return true;
+  }
+
+  function openProject(project, updateHistory = true) {
     const activeDetail = document.querySelector(`[data-project-detail="${project}"]`);
     if (!workChooser || !activeDetail) return;
+    if (updateHistory) {
+      history.pushState(
+        { portfolioRoute: "project", project, panel: activeWorkPanel, parentHash: "#que-hago" },
+        "",
+        `#que-hago/${encodeURIComponent(project)}`
+      );
+    }
     workChooser.classList.add("is-hidden");
     projectDetails.forEach((detail) => {
       detail.classList.toggle("is-hidden", detail.dataset.projectDetail !== project);
@@ -253,6 +295,16 @@
     });
     projectDetails.forEach((detail) => detail.classList.add("is-hidden"));
     closeVideoModal();
+  }
+
+  function returnFromProject() {
+    if (history.state?.portfolioRoute === "project" && history.state?.parentHash) {
+      history.back();
+      return;
+    }
+    history.replaceState({ portfolioRoute: "view", view: "work" }, "", "#que-hago");
+    closeProject();
+    workSection.scrollIntoView({ behavior: "smooth", block: "start" });
   }
 
   function openVideoModal() {
@@ -275,20 +327,37 @@
       const view = link.dataset.viewLink;
       if (view === "about" || view === "work" || view === "think" || view === "contact") {
         event.preventDefault();
-        history.replaceState(null, "", link.getAttribute("href"));
+        history.pushState({ portfolioRoute: "view", view }, "", link.getAttribute("href"));
         showView(view);
       }
     });
   });
+
+  function updateNavSpy() {
+    const inHero = hero.getBoundingClientRect().bottom > window.innerHeight * 0.5;
+    if (homeLink) homeLink.classList.toggle("is-active", inHero);
+    viewLinks.forEach((link) => {
+      link.classList.toggle("is-active", !inHero && link.dataset.viewLink === currentView);
+    });
+  }
+
+  window.addEventListener("scroll", updateNavSpy, { passive: true });
 
   const postButtons = document.querySelectorAll("[data-post]");
   const postDetails = document.querySelectorAll("[data-post-detail]");
   const thinkChooser = document.querySelector("[data-think-view='index']");
   const closePostButtons = document.querySelectorAll("[data-close-post]");
 
-  function openPost(post) {
+  function openPost(post, updateHistory = true) {
     const activePost = document.querySelector(`[data-post-detail="${post}"]`);
     if (!thinkChooser || !activePost) return;
+    if (updateHistory) {
+      history.pushState(
+        { portfolioRoute: "post", post, parentHash: "#que-pienso" },
+        "",
+        `#que-pienso/${encodeURIComponent(post)}`
+      );
+    }
     thinkChooser.classList.add("is-hidden");
     postDetails.forEach((detail) => {
       detail.classList.toggle("is-hidden", detail.dataset.postDetail !== post);
@@ -301,15 +370,22 @@
     postDetails.forEach((detail) => detail.classList.add("is-hidden"));
   }
 
+  function returnFromPost() {
+    if (history.state?.portfolioRoute === "post" && history.state?.parentHash) {
+      history.back();
+      return;
+    }
+    history.replaceState({ portfolioRoute: "view", view: "think" }, "", "#que-pienso");
+    closePost();
+    thinkSection.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+
   postButtons.forEach((button) => {
     button.addEventListener("click", () => openPost(button.dataset.post));
   });
 
   closePostButtons.forEach((button) => {
-    button.addEventListener("click", () => {
-      closePost();
-      thinkSection.scrollIntoView({ behavior: "smooth", block: "start" });
-    });
+    button.addEventListener("click", returnFromPost);
   });
 
   workTabs.forEach((tab) => {
@@ -320,12 +396,27 @@
 
   if (cameraPlayback) {
     cameraPlayback.addEventListener("wheel", (event) => {
-      if (Math.abs(event.deltaY) < 12 || wheelLocked) return;
+      if (Math.abs(event.deltaY) < 12) return;
       const direction = event.deltaY > 0 ? 1 : -1;
-      if (!stepCamera(direction)) return;
+      const canStep = direction > 0
+        ? activeProjectIndex < activeProjects.length - 1
+        : activeProjectIndex > 0;
+
+      if (wheelLocked) {
+        event.preventDefault();
+        event.stopPropagation();
+        window.clearTimeout(wheelUnlockTimer);
+        wheelUnlockTimer = window.setTimeout(() => { wheelLocked = false; }, 180);
+        return;
+      }
+
+      if (!canStep) return;
       event.preventDefault();
+      event.stopPropagation();
+      stepCamera(direction);
       wheelLocked = true;
-      window.setTimeout(() => { wheelLocked = false; }, 360);
+      window.clearTimeout(wheelUnlockTimer);
+      wheelUnlockTimer = window.setTimeout(() => { wheelLocked = false; }, 180);
     }, { passive: false });
 
     cameraPlayback.addEventListener("keydown", (event) => {
@@ -336,7 +427,17 @@
 
     cameraPlayback.addEventListener("touchstart", (event) => {
       touchStartY = event.changedTouches[0].clientY;
+      touchCurrentY = touchStartY;
     }, { passive: true });
+
+    cameraPlayback.addEventListener("touchmove", (event) => {
+      touchCurrentY = event.changedTouches[0].clientY;
+      const direction = touchStartY - touchCurrentY > 0 ? 1 : -1;
+      const canStep = direction > 0
+        ? activeProjectIndex < activeProjects.length - 1
+        : activeProjectIndex > 0;
+      if (canStep) event.preventDefault();
+    }, { passive: false });
 
     cameraPlayback.addEventListener("touchend", (event) => {
       const distance = touchStartY - event.changedTouches[0].clientY;
@@ -349,7 +450,7 @@
   });
 
   closeProjectButtons.forEach((button) => {
-    button.addEventListener("click", closeProject);
+    button.addEventListener("click", returnFromProject);
   });
 
   if (videoOpen) {
@@ -370,15 +471,41 @@
     if (event.key === "Escape") closeVideoModal();
   });
 
-  if (window.location.hash === "#que-hago") {
-    showView("work", true);
-  } else if (window.location.hash === "#que-pienso") {
-    showView("think", true);
-  } else if (window.location.hash === "#contacto") {
-    showView("contact", true);
-  } else {
+  showWorkPanel("publicidad");
+
+  function applyPortfolioRoute(shouldScroll = true) {
+    const hash = decodeURIComponent(window.location.hash || "");
+    if (hash.startsWith("#que-hago/")) {
+      const project = hash.slice("#que-hago/".length);
+      showView("work", false);
+      if (selectCameraProject(project)) openProject(project, false);
+      return;
+    }
+    if (hash === "#que-hago") {
+      showView("work", shouldScroll);
+      return;
+    }
+    if (hash.startsWith("#que-pienso/")) {
+      const post = hash.slice("#que-pienso/".length);
+      showView("think", false);
+      openPost(post, false);
+      return;
+    }
+    if (hash === "#que-pienso") {
+      showView("think", shouldScroll);
+      return;
+    }
+    if (hash === "#contacto") {
+      showView("contact", shouldScroll);
+      return;
+    }
+    if (hash === "#quien-soy") {
+      showView("about", shouldScroll);
+      return;
+    }
     showView("about", false);
   }
 
-  showWorkPanel("publicidad");
+  window.addEventListener("popstate", () => applyPortfolioRoute(true));
+  applyPortfolioRoute(true);
 })();
