@@ -89,7 +89,7 @@
   const projectDetails = document.querySelectorAll("[data-project-detail]");
   const closeProjectButtons = document.querySelectorAll("[data-close-project]");
   const videoModal = document.querySelector("[data-video-modal]");
-  const videoOpen = document.querySelector("[data-video-open]");
+  const videoOpen = document.querySelectorAll("[data-video-open]");
   const videoClose = document.querySelector("[data-video-close]");
   const detailVideo = videoModal ? videoModal.querySelector("video") : null;
   const cameraPlayback = document.querySelector("[data-camera-playback]");
@@ -343,6 +343,35 @@
 
   window.addEventListener("scroll", updateNavSpy, { passive: true });
 
+  document.querySelectorAll("[data-reel]").forEach((reel) => {
+    const frames = Array.from(reel.querySelectorAll(".reel-frame"));
+    const captions = Array.from(reel.querySelectorAll(".reel-caption"));
+    const dots = Array.from(reel.querySelectorAll(".reel-dots span"));
+    if (!frames.length) return;
+
+    function updateReel() {
+      if (!frames[0].offsetParent) return;
+      const mid = window.innerHeight * 0.5;
+      let best = 0;
+      let bestDist = Infinity;
+      frames.forEach((frame, index) => {
+        const rect = frame.getBoundingClientRect();
+        const dist = Math.abs(rect.top + rect.height / 2 - mid);
+        if (dist < bestDist) {
+          bestDist = dist;
+          best = index;
+        }
+      });
+      frames.forEach((frame, index) => frame.classList.toggle("is-active", index === best));
+      captions.forEach((caption, index) => caption.classList.toggle("is-active", index === best));
+      dots.forEach((dot, index) => dot.classList.toggle("is-active", index === best));
+    }
+
+    window.addEventListener("scroll", updateReel, { passive: true });
+    window.addEventListener("resize", updateReel);
+    updateReel();
+  });
+
   const postButtons = document.querySelectorAll("[data-post]");
   const postDetails = document.querySelectorAll("[data-post-detail]");
   const thinkChooser = document.querySelector("[data-think-view='index']");
@@ -453,9 +482,9 @@
     button.addEventListener("click", returnFromProject);
   });
 
-  if (videoOpen) {
-    videoOpen.addEventListener("click", openVideoModal);
-  }
+  videoOpen.forEach((button) => {
+    button.addEventListener("click", openVideoModal);
+  });
 
   if (videoClose) {
     videoClose.addEventListener("click", closeVideoModal);
