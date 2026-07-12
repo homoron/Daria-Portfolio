@@ -290,6 +290,9 @@
       });
     }
     workSection.scrollIntoView({ behavior: "smooth", block: "start" });
+    // The detail was just revealed; let any reel inside recompute the padding
+    // that centers its first/last frame now that its frames have real heights.
+    window.dispatchEvent(new Event("resize"));
   }
 
   function closeProject() {
@@ -347,11 +350,42 @@
 
   window.addEventListener("scroll", updateNavSpy, { passive: true });
 
+  const reelDesktop = window.matchMedia("(min-width: 761px)");
+
   document.querySelectorAll("[data-reel]").forEach((reel) => {
+    const strip = reel.querySelector(".reel-strip");
     const frames = Array.from(reel.querySelectorAll(".reel-frame"));
     const captions = Array.from(reel.querySelectorAll(".reel-caption"));
     const dots = Array.from(reel.querySelectorAll(".reel-dots span"));
     if (!frames.length) return;
+
+    // Pad the strip so the first and last frames can rest centered against
+    // the sticky caption, regardless of each frame's aspect ratio.
+    let padCache = "";
+    function padStrip() {
+      if (!strip) return;
+      if (!reelDesktop.matches) {
+        if (padCache !== "off") {
+          strip.style.paddingTop = "";
+          strip.style.paddingBottom = "";
+          padCache = "off";
+        }
+        return;
+      }
+      const first = frames[0].getBoundingClientRect().height;
+      // Skip while hidden/not laid out yet, so we never write bogus padding
+      // computed against a zero-height frame.
+      if (first < 1) return;
+      const vh = window.innerHeight;
+      const last = frames[frames.length - 1].getBoundingClientRect().height;
+      const top = `${Math.max(16, (vh - first) / 2)}px`;
+      const bottom = `${Math.max(16, (vh - last) / 2)}px`;
+      const key = top + "|" + bottom;
+      if (key === padCache) return;
+      strip.style.paddingTop = top;
+      strip.style.paddingBottom = bottom;
+      padCache = key;
+    }
 
     function updateReel() {
       if (!frames[0].offsetParent) return;
@@ -371,9 +405,24 @@
       dots.forEach((dot, index) => dot.classList.toggle("is-active", index === best));
     }
 
-    window.addEventListener("scroll", updateReel, { passive: true });
-    window.addEventListener("resize", updateReel);
-    updateReel();
+    function refreshReel() {
+      padStrip();
+      updateReel();
+    }
+
+    window.addEventListener("scroll", refreshReel, { passive: true });
+    window.addEventListener("resize", refreshReel);
+    reel.querySelectorAll("img").forEach((img) => {
+      if (!img.complete) img.addEventListener("load", refreshReel, { once: true });
+    });
+    // Recompute when the reel becomes visible (project opened) or a frame
+    // resizes, so the padding that centers the first/last frame is correct.
+    if (typeof ResizeObserver !== "undefined") {
+      const ro = new ResizeObserver(() => refreshReel());
+      ro.observe(frames[0]);
+      ro.observe(frames[frames.length - 1]);
+    }
+    refreshReel();
   });
 
   const postButtons = document.querySelectorAll("[data-post]");

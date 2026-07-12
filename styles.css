@@ -1583,8 +1583,9 @@ a {
 
 .reel-strip {
   min-width: 0;
-  /* Lower the strip so the first (and last) frame rests centered against
-     the sticky caption. Half of a frame is ~19.5vw at these column widths. */
+  /* Top/bottom padding is set by JS so the first and last frames rest
+     centered against the sticky caption, whatever their aspect ratio.
+     This is a fallback for before the script runs. */
   padding-block: max(1rem, calc(50vh - 19.5vw));
 }
 
@@ -1658,9 +1659,48 @@ a {
   transition: filter 600ms ease, opacity 600ms ease;
 }
 
+.reel-frame img + img {
+  margin-top: 1.4rem;
+}
+
 .reel-frame.is-active img {
-  filter: none;
+  filter: grayscale(0) contrast(1.05);
   opacity: 1;
+}
+
+/* Video embeds (Vimeo/YouTube) and inline video inside a frame */
+.reel-frame iframe,
+.reel-frame video {
+  width: 100%;
+  display: block;
+  border: 0;
+  background: #050605;
+  filter: grayscale(1);
+  opacity: 0.62;
+  transition: filter 600ms ease, opacity 600ms ease;
+}
+
+.reel-frame iframe {
+  aspect-ratio: 16 / 9;
+}
+
+.reel-frame video + video,
+.reel-frame iframe + iframe {
+  margin-top: 1.4rem;
+}
+
+.reel-frame.is-active iframe,
+.reel-frame.is-active video {
+  filter: grayscale(0);
+  opacity: 1;
+}
+
+/* Bespoke media blocks kept from the old case layout sit on the dark frame */
+.reel-frame .cinecas-key-grid,
+.reel-frame .villarreal-action-grid,
+.reel-frame .cultura-display-set,
+.reel-frame .cultura-steps {
+  margin: 0;
 }
 
 .reel-play {
