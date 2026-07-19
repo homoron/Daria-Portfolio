@@ -125,8 +125,9 @@
   let activeWorkPanel = "publicidad";
   let wheelLocked = false;
   let wheelUnlockTimer = 0;
+  let touchStartX = 0;
   let touchStartY = 0;
-  let touchCurrentY = 0;
+  let touchAxis = null;
 
   function showView(view, shouldScroll = true) {
     if (!aboutSection || !workSection) return;
@@ -511,23 +512,33 @@
       if (stepCamera(direction)) event.preventDefault();
     });
 
+    // Touch: a horizontal swipe on the camera steps between projects, while
+    // vertical swipes keep scrolling the page normally (no scroll trap).
+    // Swipes that start on the thumbnail rail are left to its own scroll.
     cameraPlayback.addEventListener("touchstart", (event) => {
+      if (event.target.closest("[data-camera-thumbs]")) {
+        touchAxis = "skip";
+        return;
+      }
+      touchAxis = null;
+      touchStartX = event.changedTouches[0].clientX;
       touchStartY = event.changedTouches[0].clientY;
-      touchCurrentY = touchStartY;
     }, { passive: true });
 
     cameraPlayback.addEventListener("touchmove", (event) => {
-      touchCurrentY = event.changedTouches[0].clientY;
-      const direction = touchStartY - touchCurrentY > 0 ? 1 : -1;
-      const canStep = direction > 0
-        ? activeProjectIndex < activeProjects.length - 1
-        : activeProjectIndex > 0;
-      if (canStep) event.preventDefault();
+      if (touchAxis === "skip") return;
+      const dx = event.changedTouches[0].clientX - touchStartX;
+      const dy = event.changedTouches[0].clientY - touchStartY;
+      if (!touchAxis && (Math.abs(dx) > 8 || Math.abs(dy) > 8)) {
+        touchAxis = Math.abs(dx) > Math.abs(dy) ? "x" : "y";
+      }
+      if (touchAxis === "x") event.preventDefault();
     }, { passive: false });
 
     cameraPlayback.addEventListener("touchend", (event) => {
-      const distance = touchStartY - event.changedTouches[0].clientY;
-      if (Math.abs(distance) > 48) stepCamera(distance > 0 ? 1 : -1);
+      if (touchAxis !== "x") return;
+      const dx = event.changedTouches[0].clientX - touchStartX;
+      if (Math.abs(dx) > 40) stepCamera(dx < 0 ? 1 : -1);
     }, { passive: true });
   }
 

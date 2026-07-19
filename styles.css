@@ -1261,6 +1261,7 @@ a {
     0 0 0 0.4rem rgba(232, 237, 223, 0.12),
     0 2.5rem 7rem rgba(0, 0, 0, 0.7);
   outline: none;
+  touch-action: pan-y;
 }
 
 .camera-playback:focus-visible {
@@ -5523,12 +5524,12 @@ a {
 
   .camera-playback .work-switch button {
     min-width: 0;
-    min-height: 3.4rem;
-    padding: 0.45rem 0.55rem;
+    min-height: 2.8rem;
+    padding: 0.4rem 0.5rem;
   }
 
   .camera-status {
-    min-height: 2.4rem;
+    min-height: 2rem;
     justify-content: space-between;
     padding-right: 0;
   }
@@ -5539,7 +5540,7 @@ a {
 
   .camera-stage {
     grid-template-columns: 1fr;
-    grid-template-rows: minmax(22rem, 66vh) 5.3rem;
+    grid-template-rows: minmax(13rem, 34vh) 4.8rem;
     height: auto;
   }
 
@@ -5550,15 +5551,26 @@ a {
 
   .camera-thumbs {
     flex-direction: row;
-    gap: 0.35rem;
-    padding: 0.55rem;
+    gap: 0.4rem;
+    padding: 0.5rem;
     overflow-x: auto;
     overflow-y: hidden;
   }
 
   .camera-thumb {
-    grid-template-columns: 5.8rem 1.2rem;
-    width: 7.8rem;
+    grid-template-columns: 1fr;
+    width: 6.4rem;
+    padding: 0.22rem;
+  }
+
+  .camera-thumb span {
+    position: absolute;
+    right: 0.4rem;
+    bottom: 0.4rem;
+    padding: 0.05rem 0.28rem;
+    background: rgba(5, 6, 5, 0.85);
+    font-size: 0.58rem;
+    letter-spacing: 0.08em;
   }
 
   .camera-enter {
@@ -5582,11 +5594,18 @@ a {
 
   .camera-project-copy {
     grid-column: 1 / -1;
+    padding: 0.6rem 0.9rem;
     border-bottom: 1px solid rgba(232, 237, 223, 0.18);
   }
 
+  .camera-project-copy strong {
+    white-space: normal;
+    overflow-wrap: anywhere;
+    line-height: 1.25;
+  }
+
   .camera-play {
-    min-height: 3.8rem;
+    min-height: 3.2rem;
     border-right: 1px solid rgba(232, 237, 223, 0.18);
   }
 
@@ -5595,6 +5614,10 @@ a {
   }
 
   .camera-scroll-cue {
+    display: none;
+  }
+
+  .camera-hud-bottom {
     display: none;
   }
 }
