@@ -1,0 +1,448 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <title>Daria Karygina — CV</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+      :root {
+        --ink: #f4f1e8;
+        --acid: #b9eb8b;
+        --line-strong: rgba(244, 241, 232, 0.35);
+        --line-soft: rgba(244, 241, 232, 0.16);
+      }
+
+      @page { size: A4; margin: 0; }
+
+      * {
+        box-sizing: border-box;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+
+      html, body { margin: 0; padding: 0; }
+
+      body {
+        width: 210mm;
+        height: 297mm;
+        overflow: hidden;
+        color: var(--ink);
+        background:
+          radial-gradient(circle at 88% 4%, rgba(185, 235, 139, 0.1), transparent 90mm),
+          radial-gradient(circle at 4% 96%, rgba(185, 235, 139, 0.05), transparent 70mm),
+          #080908;
+        font-family: "IBM Plex Mono", monospace;
+      }
+
+      .sheet {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        padding: 11mm 12mm 10mm;
+      }
+
+      .kicker {
+        margin: 0 0 4mm;
+        color: var(--acid);
+        font-size: 7.2pt;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+      }
+
+      /* ---------- Cabecera ---------- */
+
+      .head {
+        display: grid;
+        grid-template-columns: 1fr 44mm;
+        gap: 10mm;
+        align-items: end;
+        margin-bottom: 6mm;
+      }
+
+      .head h1 {
+        margin: 0 0 4mm;
+        font-family: Georgia, "Times New Roman", serif;
+        font-weight: 400;
+        font-size: 37pt;
+        line-height: 0.9;
+      }
+
+      .head h1 span {
+        display: block;
+        color: transparent;
+        -webkit-text-stroke: 0.35mm rgba(244, 241, 232, 0.82);
+      }
+
+      .role {
+        margin: 0;
+        color: var(--acid);
+        font-size: 10.5pt;
+        font-weight: 500;
+        letter-spacing: 0.22em;
+        text-transform: uppercase;
+      }
+
+      .photo {
+        margin: 0;
+        padding: 1.6mm;
+        background: rgba(0, 0, 0, 0.45);
+        border: 0.3mm solid rgba(244, 241, 232, 0.25);
+      }
+
+      .photo img {
+        display: block;
+        width: 100%;
+        height: 46mm;
+        object-fit: cover;
+        filter: saturate(0.82) contrast(1.06);
+      }
+
+      /* ---------- Franja de contacto ---------- */
+
+      .contact {
+        display: grid;
+        grid-template-columns: 0.8fr 1fr 1.2fr;
+        border-top: 0.3mm solid var(--line-strong);
+        border-bottom: 0.3mm solid var(--line-strong);
+        margin-bottom: 7mm;
+      }
+
+      .contact div { padding: 3mm 4mm 3mm 0; }
+
+      .contact div + div {
+        padding-left: 4mm;
+        border-left: 0.3mm solid var(--line-strong);
+      }
+
+      .cell-label {
+        display: block;
+        margin-bottom: 1.2mm;
+        color: var(--acid);
+        font-size: 6.2pt;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+      }
+
+      .contact strong { font-weight: 400; font-size: 8.6pt; }
+
+      /* ---------- Cuerpo ---------- */
+
+      .body {
+        flex: 1;
+        display: grid;
+        grid-template-columns: 62mm 1fr;
+        gap: 9mm;
+        min-height: 0;
+      }
+
+      .block { margin-bottom: 7mm; }
+      .block:last-child { margin-bottom: 0; }
+
+      .blockhead {
+        margin-bottom: 3mm;
+        padding-bottom: 2mm;
+        border-bottom: 0.3mm solid var(--line-strong);
+      }
+
+      .blockhead .num {
+        display: block;
+        margin-bottom: 1.4mm;
+        color: var(--acid);
+        font-size: 6.4pt;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+      }
+
+      .blockhead h2 {
+        margin: 0;
+        font-family: Georgia, "Times New Roman", serif;
+        font-weight: 400;
+        font-size: 15.5pt;
+        line-height: 1;
+      }
+
+      .blockhead h2 em {
+        font-style: normal;
+        color: transparent;
+        -webkit-text-stroke: 0.22mm rgba(244, 241, 232, 0.82);
+      }
+
+      /* Formación */
+
+      .study {
+        padding: 3.2mm 0;
+        border-bottom: 0.3mm solid var(--line-soft);
+      }
+
+      .study:last-child { border-bottom: 0; }
+      .study .cell-label { margin-bottom: 1.6mm; }
+
+      .study h3 {
+        margin: 0 0 1.4mm;
+        font-family: Georgia, "Times New Roman", serif;
+        font-weight: 400;
+        font-size: 11pt;
+        line-height: 1.2;
+      }
+
+      .study p {
+        margin: 0;
+        font-size: 7.4pt;
+        line-height: 1.5;
+        opacity: 0.7;
+      }
+
+      /* Idiomas */
+
+      .langs { margin: 0; padding: 0; list-style: none; }
+
+      .langs li {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        gap: 3mm;
+        padding: 2.4mm 0;
+        border-bottom: 0.3mm solid var(--line-soft);
+      }
+
+      .langs li:last-child { border-bottom: 0; }
+
+      .langs span {
+        color: var(--acid);
+        font-size: 6.6pt;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+      }
+
+      .langs b { font-weight: 400; font-size: 7.8pt; text-align: right; }
+
+      /* Habilidades */
+
+      .skills { margin: 0; padding: 0; list-style: none; }
+
+      .skills li {
+        position: relative;
+        padding: 2.4mm 0 2.4mm 7mm;
+        border-bottom: 0.3mm solid var(--line-soft);
+        font-size: 7.4pt;
+        line-height: 1.55;
+      }
+
+      .skills li:last-child { border-bottom: 0; }
+
+      .skills li::before {
+        content: attr(data-n);
+        position: absolute;
+        left: 0;
+        top: 2.7mm;
+        color: var(--acid);
+        font-size: 6.4pt;
+        letter-spacing: 0.1em;
+      }
+
+      /* Experiencia(s) */
+
+      .exp {
+        padding: 3.4mm 0;
+        border-bottom: 0.3mm solid var(--line-soft);
+      }
+
+      .exp .cell-label { margin-bottom: 1.6mm; }
+
+      .exp h3 {
+        margin: 0 0 1.5mm;
+        font-family: Georgia, "Times New Roman", serif;
+        font-weight: 400;
+        font-size: 12.5pt;
+        line-height: 1.15;
+      }
+
+      .exp p {
+        margin: 0;
+        max-width: 105mm;
+        font-size: 7.6pt;
+        line-height: 1.6;
+        opacity: 0.78;
+      }
+
+      .fests {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        margin-top: 4mm;
+      }
+
+      .fests div { padding: 2.6mm 3.5mm 0 0; }
+
+      .fests div + div {
+        padding-left: 3.5mm;
+        border-left: 0.3mm solid var(--line-soft);
+      }
+
+      .fests h4 {
+        margin: 0 0 1.4mm;
+        font-family: Georgia, "Times New Roman", serif;
+        font-weight: 400;
+        font-size: 8.6pt;
+        line-height: 1.25;
+      }
+
+      .fests p {
+        margin: 0;
+        font-size: 6.6pt;
+        line-height: 1.55;
+        opacity: 0.72;
+      }
+
+      /* ---------- Pie / portfolio ---------- */
+
+      .foot {
+        display: flex;
+        align-items: baseline;
+        gap: 5mm;
+        margin-top: 6mm;
+        padding-top: 3.4mm;
+        border-top: 0.3mm solid var(--line-strong);
+      }
+
+      .foot .cell-label { margin: 0; white-space: nowrap; }
+
+      .foot .blank {
+        flex: 1;
+        border-bottom: 0.3mm dashed rgba(244, 241, 232, 0.45);
+        height: 4.5mm;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="sheet">
+      <p class="kicker">CV / 2025</p>
+
+      <header class="head">
+        <div>
+          <h1>Daria <span>Karygina</span></h1>
+          <p class="role">Communication Officer</p>
+        </div>
+        <figure class="photo">
+          <img src="../assets/quien-soy-retrato.jpg" alt="Daria Karygina">
+        </figure>
+      </header>
+
+      <div class="contact">
+        <div>
+          <span class="cell-label">Teléfono</span>
+          <strong>675 169 353</strong>
+        </div>
+        <div>
+          <span class="cell-label">Ubicación</span>
+          <strong>Burjassot (Valencia)</strong>
+        </div>
+        <div>
+          <span class="cell-label">Email</span>
+          <strong>dariakarygina@gmail.com</strong>
+        </div>
+      </div>
+
+      <div class="body">
+        <div class="col">
+          <section class="block">
+            <header class="blockhead">
+              <span class="num">01 / Estudios</span>
+              <h2>Forma<em>ción</em></h2>
+            </header>
+            <div class="study">
+              <span class="cell-label">2018 - 2022</span>
+              <h3>Graduada en Publicidad y RR.PP.</h3>
+              <p>Universitat Jaume I de Castellón</p>
+            </div>
+            <div class="study">
+              <span class="cell-label">2022 - 2024</span>
+              <h3>Graduada en Comunicación Audiovisual</h3>
+              <p>Universitat Jaume I de Castellón</p>
+            </div>
+          </section>
+
+          <section class="block">
+            <header class="blockhead">
+              <span class="num">02 / Lenguas</span>
+              <h2>Idio<em>mas</em></h2>
+            </header>
+            <ul class="langs">
+              <li><span>Ruso</span><b>Lengua nativa</b></li>
+              <li><span>Español</span><b>Segunda lengua nativa</b></li>
+              <li><span>Inglés</span><b>Nivel C1</b></li>
+              <li><span>Valenciano</span><b>Nivel B2</b></li>
+            </ul>
+          </section>
+
+          <section class="block">
+            <header class="blockhead">
+              <span class="num">03 / Herramientas</span>
+              <h2>Habili<em>dades</em></h2>
+            </header>
+            <ul class="skills">
+              <li data-n="01">Manejo de cámaras de fotografía y de vídeo</li>
+              <li data-n="02">Experiencia en dirección de cortometrajes y como guionista</li>
+              <li data-n="03">Edición de vídeo en A. Premiere Pro y DaVinci, de foto en Photoshop</li>
+              <li data-n="04">Diseño gráfico en Procreate, Adobe Illustrator y Canva</li>
+            </ul>
+          </section>
+        </div>
+
+        <div class="col">
+          <section class="block">
+            <header class="blockhead">
+              <span class="num">04 / Trayectoria</span>
+              <h2>Experiencia<em>(s)</em></h2>
+            </header>
+
+            <div class="exp">
+              <span class="cell-label">2025 - Actualidad</span>
+              <h3>Matteco</h3>
+              <p>Asistente de dirección y comunicación para el CTO de la empresa.</p>
+            </div>
+
+            <div class="exp">
+              <span class="cell-label">2025 - Actualidad</span>
+              <h3>Seal-Hydrogen</h3>
+              <p>Communication officer del proyecto europeo y organización de eventos.</p>
+            </div>
+
+            <div class="exp">
+              <span class="cell-label">Prácticas UJI 2024</span>
+              <h3>Beniwood Producciones</h3>
+              <p>Auxiliar de montaje y tareas de postproducción del largometraje MI CIELO TU INFIERNO (A. Evangelio, 2025).</p>
+            </div>
+
+            <div class="exp">
+              <span class="cell-label">Prácticas UJI 2022</span>
+              <h3>M4B - Marketing for Business</h3>
+              <p>Especialista en marketing digital: planificación, diseño gráfico y Community Manager.</p>
+            </div>
+
+            <div class="fests">
+              <div>
+                <h4>Brussels International Film Festival</h4>
+                <p>Parte del European Young Jury en la sección Director's Week (2024)</p>
+              </div>
+              <div>
+                <h4>Festival Cinemajove</h4>
+                <p>Parte del Jurat Jove en la sección de cortometrajes (2023)</p>
+              </div>
+              <div>
+                <h4>Festival Humans Fest</h4>
+                <p>Voluntaria en apoyo a la organización del festival (2023)</p>
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
+
+      <footer class="foot">
+        <span class="cell-label">Portfolio personal</span>
+        <span class="blank"></span>
+      </footer>
+    </div>
+  </body>
+</html>

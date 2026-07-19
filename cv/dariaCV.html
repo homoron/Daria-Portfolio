@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Daria Karygina — CV</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  @page { size: A4; margin: 0; }
+
+  * {
+    box-sizing: border-box;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  html, body { margin: 0; }
+
+  body {
+    width: 210mm;
+    height: 297mm;
+    padding: 12mm 13mm 11mm;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    background:
+      radial-gradient(circle at 88% 6%, rgba(185, 235, 139, 0.08), transparent 70mm),
+      #080908;
+    color: #f4f1e8;
+    font-family: "IBM Plex Mono", monospace;
+  }
+
+  .kicker {
+    margin: 0 0 7mm;
+    color: #b9eb8b;
+    font-size: 7pt;
+    text-transform: uppercase;
+  }
+
+  header.top {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 10mm;
+    align-items: end;
+  }
+
+  h1 {
+    margin: 0;
+    font-family: Georgia, "Times New Roman", serif;
+    font-weight: 400;
+    font-size: 44pt;
+    line-height: 0.88;
+  }
+
+  h1 span {
+    display: block;
+    color: transparent;
+    -webkit-text-stroke: 1px rgba(244, 241, 232, 0.85);
+  }
+
+  .role {
+    margin: 5.5mm 0 0;
+    color: #b9eb8b;
+    font-size: 9.5pt;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+  }
+
+  .contact {
+    display: grid;
+    gap: 3.4mm;
+    padding-bottom: 1.5mm;
+    text-align: right;
+  }
+
+  .contact small {
+    display: block;
+    margin-bottom: 0.8mm;
+    color: #b9eb8b;
+    font-size: 6pt;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  .contact b {
+    font-weight: 400;
+    font-size: 8.5pt;
+  }
+
+  hr.rule {
+    border: 0;
+    border-top: 1px solid rgba(244, 241, 232, 0.35);
+    margin: 7mm 0 0;
+  }
+
+  main {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 1.45fr 1fr;
+    column-gap: 8mm;
+    padding-top: 7mm;
+  }
+
+  .col-r {
+    padding-left: 8mm;
+    border-left: 1px solid rgba(244, 241, 232, 0.35);
+  }
+
+  .sec { margin-bottom: 8mm; }
+  .sec:last-child { margin-bottom: 0; }
+
+  .sec-head {
+    display: flex;
+    align-items: baseline;
+    gap: 3mm;
+    padding-bottom: 2.6mm;
+    border-bottom: 1px solid rgba(244, 241, 232, 0.35);
+  }
+
+  .sec-head small {
+    color: #b9eb8b;
+    font-size: 6.5pt;
+    letter-spacing: 0.12em;
+  }
+
+  .sec-head h2 {
+    margin: 0;
+    font-family: Georgia, "Times New Roman", serif;
+    font-weight: 400;
+    font-size: 15pt;
+  }
+
+  .sec-head h2 span {
+    color: transparent;
+    -webkit-text-stroke: 0.6px rgba(244, 241, 232, 0.85);
+  }
+
+  .xp {
+    padding: 3.6mm 0;
+    border-bottom: 1px solid rgba(244, 241, 232, 0.14);
+  }
+
+  .xp .meta {
+    margin: 0;
+    color: #b9eb8b;
+    font-size: 6.3pt;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+  }
+
+  .xp h3 {
+    margin: 1.6mm 0 1.8mm;
+    font-family: Georgia, "Times New Roman", serif;
+    font-weight: 400;
+    font-size: 12pt;
+  }
+
+  .xp p {
+    margin: 0;
+    max-width: 92%;
+    color: rgba(244, 241, 232, 0.75);
+    font-size: 7.6pt;
+    line-height: 1.6;
+  }
+
+  .fest {
+    padding: 2.8mm 0;
+    border-bottom: 1px solid rgba(244, 241, 232, 0.14);
+  }
+
+  .fest h3 {
+    margin: 0 0 1.2mm;
+    font-family: Georgia, "Times New Roman", serif;
+    font-weight: 400;
+    font-size: 9.5pt;
+  }
+
+  .fest p {
+    margin: 0;
+    color: rgba(244, 241, 232, 0.72);
+    font-size: 7.2pt;
+    line-height: 1.55;
+  }
+
+  .fest p em {
+    font-style: italic;
+  }
+
+  .study {
+    padding: 3.4mm 0;
+    border-bottom: 1px solid rgba(244, 241, 232, 0.14);
+  }
+
+  .study .meta {
+    margin: 0;
+    color: #b9eb8b;
+    font-size: 6.3pt;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+  }
+
+  .study h3 {
+    margin: 1.4mm 0 1.2mm;
+    font-family: Georgia, "Times New Roman", serif;
+    font-weight: 400;
+    font-size: 10.5pt;
+    line-height: 1.2;
+  }
+
+  .study p {
+    margin: 0;
+    color: rgba(244, 241, 232, 0.72);
+    font-size: 7.2pt;
+  }
+
+  .lang {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 3mm;
+    padding: 2.6mm 0;
+    border-bottom: 1px solid rgba(244, 241, 232, 0.14);
+  }
+
+  .lang span {
+    color: #b9eb8b;
+    font-size: 6.5pt;
+    letter-spacing: 0.14em;
+  }
+
+  .lang b {
+    font-weight: 400;
+    font-size: 7.6pt;
+    text-align: right;
+  }
+
+  .skill {
+    position: relative;
+    padding: 2.6mm 0 2.6mm 5mm;
+    border-bottom: 1px solid rgba(244, 241, 232, 0.14);
+    color: rgba(244, 241, 232, 0.82);
+    font-size: 7.3pt;
+    line-height: 1.55;
+  }
+
+  .skill::before {
+    content: "+";
+    position: absolute;
+    left: 0;
+    color: #b9eb8b;
+  }
+
+  footer {
+    display: flex;
+    align-items: flex-end;
+    gap: 6mm;
+    margin-top: auto;
+    padding-top: 4.5mm;
+    border-top: 1px solid rgba(244, 241, 232, 0.35);
+  }
+
+  footer .label {
+    color: #b9eb8b;
+    font-size: 6.5pt;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  footer .blank {
+    flex: 1;
+    height: 6mm;
+    border-bottom: 1px solid rgba(244, 241, 232, 0.3);
+  }
+</style>
+</head>
+<body>
+  <p class="kicker">Curriculum Vitae</p>
+
+  <header class="top">
+    <div>
+      <h1>Daria <span>Karygina</span></h1>
+      <p class="role">Communication Officer</p>
+    </div>
+    <div class="contact">
+      <div><small>Teléfono</small><b>675 169 353</b></div>
+      <div><small>Ubicación</small><b>Burjassot (Valencia)</b></div>
+      <div><small>Email</small><b>dariakarygina@gmail.com</b></div>
+    </div>
+  </header>
+
+  <hr class="rule">
+
+  <main>
+    <div class="col-l">
+      <section class="sec">
+        <div class="sec-head">
+          <small>01 /</small>
+          <h2>Experiencia<span>(s)</span></h2>
+        </div>
+
+        <article class="xp">
+          <p class="meta">2025 - Actualidad</p>
+          <h3>Matteco</h3>
+          <p>Asistente de Dirección y Comunicación para el CTO de la empresa.</p>
+        </article>
+
+        <article class="xp">
+          <p class="meta">2025 - Actualidad</p>
+          <h3>SEAL-HYDROGEN</h3>
+          <p>Communication Officer del proyecto europeo y organización de eventos.</p>
+        </article>
+
+        <article class="xp">
+          <p class="meta">Prácticas UJI 2024</p>
+          <h3>Beniwood Producciones</h3>
+          <p>Auxiliar de montaje y tareas de postproducción del largometraje MI CIELO TU INFIERNO (A. Evangelio, 2025).</p>
+        </article>
+
+        <article class="xp">
+          <p class="meta">Prácticas UJI 2022</p>
+          <h3>M4B - Marketing for Business</h3>
+          <p>Especialista en marketing digital: planificación, diseño gráfico y Community Manager.</p>
+        </article>
+
+        <article class="fest">
+          <h3>Brussels International Film Festival</h3>
+          <p>Parte del European Young Jury en la sección <em>Director's Week</em> (2024).</p>
+        </article>
+
+        <article class="fest">
+          <h3>Festival Cinema Jove</h3>
+          <p>Parte del Jurat Jove en la sección de cortometrajes (2023).</p>
+        </article>
+
+        <article class="fest">
+          <h3>Festival Humans Fest</h3>
+          <p>Voluntaria en apoyo a la organización del festival (2023).</p>
+        </article>
+      </section>
+    </div>
+
+    <div class="col-r">
+      <section class="sec">
+        <div class="sec-head">
+          <small>02 /</small>
+          <h2>Forma<span>ción</span></h2>
+        </div>
+
+        <article class="study">
+          <p class="meta">2018 - 2022</p>
+          <h3>Graduada en Publicidad y RR.PP.</h3>
+          <p>Universitat Jaume I de Castellón</p>
+        </article>
+
+        <article class="study">
+          <p class="meta">2022 - 2024</p>
+          <h3>Graduada en Comunicación Audiovisual</h3>
+          <p>Universitat Jaume I de Castellón</p>
+        </article>
+      </section>
+
+      <section class="sec">
+        <div class="sec-head">
+          <small>03 /</small>
+          <h2>Idio<span>mas</span></h2>
+        </div>
+
+        <div class="lang"><span>RUSO</span><b>Lengua nativa</b></div>
+        <div class="lang"><span>ESPAÑOL</span><b>Segunda lengua nativa</b></div>
+        <div class="lang"><span>INGLÉS</span><b>Nivel C1</b></div>
+        <div class="lang"><span>VALENCIANO</span><b>Nivel B2</b></div>
+      </section>
+
+      <section class="sec">
+        <div class="sec-head">
+          <small>04 /</small>
+          <h2>Habili<span>dades</span></h2>
+        </div>
+
+        <div class="skill">Manejo de cámaras de fotografía y de vídeo</div>
+        <div class="skill">Experiencia en dirección de cortometrajes y como guionista</div>
+        <div class="skill">Edición de vídeo en A. Premiere Pro y DaVinci, de foto en Photoshop</div>
+        <div class="skill">Diseño gráfico en Procreate, Adobe Illustrator y Canva</div>
+      </section>
+    </div>
+  </main>
+
+  <footer>
+    <span class="label">05 / Portfolio personal</span>
+    <span class="blank"></span>
+  </footer>
+</body>
+</html>
