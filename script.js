@@ -3,6 +3,8 @@
   const hero = document.getElementById("inicio");
   const fill = document.getElementById("timelineFill");
   const dot = document.getElementById("timelineDot");
+  const railFill = document.getElementById("vfRailFill");
+  const railDot = document.getElementById("vfRailDot");
   const cue = document.querySelector(".scroll-cue");
   const typedGreeting = document.getElementById("typedGreeting");
   const greeting = "Hola. Hello. Ey. Ye com va. Priviet.";
@@ -20,6 +22,8 @@
     const clamped = Math.max(0, Math.min(1, progress));
     if (fill) fill.style.width = `${clamped * 100}%`;
     if (dot) dot.style.left = `${clamped * 100}%`;
+    if (railFill) railFill.style.height = `${clamped * 100}%`;
+    if (railDot) railDot.style.top = `${clamped * 100}%`;
     updateTypedGreeting(clamped);
   }
 
@@ -103,11 +107,11 @@
   const previewOverrides = {
     beefeater: "assets/pub-beefeater-text.jpg",
     ecoembes: "assets/pub-ecoembes-text.jpg",
-    bruma: "assets/bruma-hero.jpg",
-    durex: "assets/durex-hero.jpg",
-    crocs: "assets/crocs-hero.png",
-    cultura: "assets/cultura-hero.png",
-    cinecas: "assets/cinecas-seats.jpg",
+    bruma: "assets/pub-bruma-text.jpg",
+    durex: "assets/pub-durex-text.jpg",
+    crocs: "assets/pub-crocs-text.jpeg",
+    cultura: "assets/pub-cultura-text.jpeg",
+    cinecas: "assets/pub-cinecas-text.jpeg",
     lafede: "assets/lafede-collage.jpg",
     villarreal: "assets/villarreal-collage.jpg",
     kachevnitsa: "assets/film-kachevnitsa-collage.jpg",

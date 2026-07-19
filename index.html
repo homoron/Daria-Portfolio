@@ -12,9 +12,6 @@
   </head>
   <body>
     <header class="site-header" aria-label="Navegación principal">
-      <a class="mark" href="#inicio" aria-label="Volver al inicio">
-        <span>K</span>
-      </a>
       <nav class="nav-links" aria-label="Secciones del portfolio">
         <a href="#inicio"><span>01</span>Inicio</a>
         <a href="#quien-soy" data-view-link="about"><span>02</span>Quién soy</a>
@@ -41,21 +38,26 @@
 
           <aside class="viewfinder" aria-hidden="true">
             <p class="vf-rec"><i></i>REC</p>
-            <div class="vf-strip"></div>
+            <div class="vf-strip">
+              <div class="vf-strip-fill" id="vfRailFill"></div>
+              <i style="top: 0%"></i>
+              <i style="top: 25%"></i>
+              <i style="top: 50%"></i>
+              <i style="top: 75%"></i>
+              <i style="top: 100%"></i>
+              <b id="vfRailDot"></b>
+            </div>
             <ul class="vf-data">
               <li>24 FPS</li>
               <li>f/1.8</li>
-              <li>1/48</li>
-              <li>ISO 400</li>
+              <li>1/500</li>
+              <li>ISO 100</li>
             </ul>
           </aside>
 
           <div class="bottom-interface" aria-hidden="true">
-            <div class="mute-icon">
-              <span></span>
-            </div>
             <div class="timeline">
-              <span class="timeline-current">01</span>
+              <span class="transport-icon transport-play timeline-current" title="Reproducir"></span>
               <div class="timeline-track">
                 <div class="timeline-fill" id="timelineFill"></div>
                 <i style="left: 14%"></i>
@@ -64,10 +66,7 @@
                 <i style="left: 86%"></i>
                 <b id="timelineDot"></b>
               </div>
-              <span>02</span>
-              <span>03</span>
-              <span>04</span>
-              <span>05</span>
+              <span class="transport-icon transport-stop" title="Detener"></span>
             </div>
             <button class="scroll-cue" type="button" aria-label="Bajar">
               <span></span>
@@ -89,12 +88,33 @@
 
           <div class="about-intro">
             <div class="about-copy">
-              <h1>Chica, <span>qué dices?</span></h1>
+              <h1>Chica<span class="about-comma">,</span> <span>¿qué dices?</span></h1>
               <p>Es en el margen entre lo que decimos y lo que hacemos donde nos descubrimos como personas. Por eso prefiero que me conozcas <a href="#que-hago" data-view-link="work">a través de mis proyectos</a>.</p>
-              <p>Aunque si lo que quieres es cotillear un poco sobre mi historia personal (very valid, won't judge) sigue scrolleando.</p>
+              <p>Aunque si lo que quieres es cotillear un poco sobre mi historia personal <span class="cell-label">(very valid, won't judge) </span>sigue scrolleando.</p>
             </div>
             <figure class="about-portrait">
-              <img src="assets/quien-soy-retrato.jpg" alt="Retrato de Daria Karygina">
+              <img class="about-portrait-scene" src="assets/daria-desenfocada.jpeg" alt="Daria Karygina en una calle de Castellón">
+              <div class="about-portrait-overlay" aria-hidden="true">
+                <span class="portrait-corner portrait-corner--tl"></span>
+                <span class="portrait-corner portrait-corner--tr"></span>
+                <span class="portrait-corner portrait-corner--bl"></span>
+                <span class="portrait-corner portrait-corner--br"></span>
+                <span class="portrait-archive">ARCHIVO / DK-02</span>
+                <span class="portrait-battery">99%</span>
+                <span class="portrait-target portrait-target--face"></span>
+                <span class="portrait-target portrait-target--body"></span>
+              </div>
+              <div class="about-portrait-card">
+                <strong>DARIA K.</strong>
+                <img src="assets/quien-soy-retrato.jpg" alt="Primer plano de Daria Karygina">
+                <div class="portrait-card-meta">
+                  <span>ID: DARIA KARYGINA</span>
+                  <span>STATUS: CREATING...</span>
+                </div>
+              </div>
+              <span class="portrait-callout portrait-callout--top">CREATIVA PUBLICITARIA</span>
+              <span class="portrait-callout portrait-callout--bottom">FILMMAKER</span>
+              <figcaption>OBSERVAR / PENSAR / CREAR</figcaption>
             </figure>
           </div>
 
@@ -131,7 +151,7 @@
               </div>
               <div class="lang-cell">
                 <span class="cell-label">VALENCIANO</span>
-                <strong>Certificat Oficial Administratiu C1(JQCV)</strong>
+                <strong>Certificat C1 (Junta Qualif. de Coneixements de Valencià)</strong>
               </div>
               <div class="lang-cell">
                 <span class="cell-label">INGLÉS</span>
@@ -149,24 +169,32 @@
                 <div class="exp-logo"><img src="assets/logo-matteco.png" alt="Matteco"></div>
                 <div class="exp-copy">
                   <h3><a href="https://matteco.com/" target="_blank" rel="noreferrer">Matteco, new materials for a better future <span aria-hidden="true">↗</span></a></h3>
-                  <p class="exp-meta">-- Contrato desde Abril del 2025</p>
+                  <p class="exp-meta">- Contrato desde Abril del 2025</p>
                   <p>Como Asistente de Dirección y Comunicación, me encargo de la gestión y coordinación de agendas, reuniones y eventos. Además colaboro estrechamente con el Dircom como Comms. Specialist para Gonzalo Abellán, Co-founder y CTO.</p>
                 </div>
               </article>
               <article class="exp-item">
-                <div class="exp-logo"><img src="assets/logo-m4b.png" alt="M4B"></div>
+                <div class="exp-logo"><img src="assets/logo-sealhydrogen.png" alt="SEAL-HYDROGEN"></div>
                 <div class="exp-copy">
-                  <h3><a href="https://m4business.es/" target="_blank" rel="noreferrer">M4B, Soluciones y Consultoría <span aria-hidden="true">↗</span></a></h3>
-                  <p class="exp-meta">-- Prácticas universitarias curriculares (2022)</p>
-                  <p>Especialista en marketing digital: desarrollo de campañas publicitarias, creación de contenido, diseño gráfico, edición de vídeo y tareas como Community Manager.</p>
+                  <h3><a href="https://seal-hydrogen.eu/" target="_blank" rel="noreferrer">SEAL-HYDROGEN <span aria-hidden="true">↗</span></a></h3>
+                  <p class="exp-meta">- Colaboradora desde Abril del 2025</p>
+                  <p>El proyecto SEAL-HYDROGEN es una iniciativa cofinanciada por la Unión Europea dedicada a avanzar en la investigación y desarrollo de tecnologías de hidrógeno. Como su portavoz, me encargo de la comunicación y divulgación del proyecto, así como de la organización de eventos y actividades relacionadas.</p>
                 </div>
               </article>
               <article class="exp-item">
                 <div class="exp-logo"><img src="assets/logo-beniwood.png" alt="Beniwood Producciones"></div>
                 <div class="exp-copy">
                   <h3><a href="https://beniwood.com/" target="_blank" rel="noreferrer">Beniwood Producciones <span aria-hidden="true">↗</span></a></h3>
-                  <p class="exp-meta">-- Prácticas universitarias curriculares (2024)</p>
+                  <p class="exp-meta">- Prácticas universitarias curriculares (2024)</p>
                   <p>Auxiliar de montaje y desarrollo de tareas de postproducción del largometraje MI CIELO TU INFIERNO (A. Evangelio, 2025). Diseño de sonido, rotulación y subtitulación con Aegisub, además de colaborar con otras áreas para la elaboración de dosieres de venta y la distribución de cortometrajes.</p>
+                </div>
+              </article>
+              <article class="exp-item">
+                <div class="exp-logo"><img src="assets/logo-m4b.png" alt="M4B"></div>
+                <div class="exp-copy">
+                  <h3><a href="https://m4business.es/" target="_blank" rel="noreferrer">M4B, Soluciones y Consultoría <span aria-hidden="true">↗</span></a></h3>
+                  <p class="exp-meta">- Prácticas universitarias curriculares (2022)</p>
+                  <p>Especialista en marketing digital: desarrollo de campañas publicitarias, creación de contenido, diseño gráfico, edición de vídeo y tareas como Community Manager.</p>
                 </div>
               </article>
             </div>
@@ -181,7 +209,7 @@
                 <p>Jurat Jove en la sección oficial de <a href="https://8723c968-0041-43f4-96e1-5dfd8479f17a.filesusr.com/ugd/241f2d_ec7d44889e6e4f42a3752d65b33570e1.pdf" target="_blank" rel="noreferrer">cortometrajes</a> en la edición número 38 del festival (2023).</p>
               </article>
               <article>
-                <div class="exp-logo"><img src="assets/logo-humans.png" alt="Humans Fest"></div>
+                <div class="exp-logo exp-logo--humans"><img src="assets/logo-humans.png" alt="Humans Fest"></div>
                 <p>Voluntaria en apoyo a la organización del festival en el año 2023.</p>
               </article>
             </div>
@@ -194,35 +222,35 @@
             <div class="course-grid">
               <article>
                 <h3>"GUION DE FICCIÓN CINEMATOGRÁFICA"</h3>
-                <p>Organizado e impartido por Radio Televisión Española - 2024</p>
+                <p>Organizado e impartido por Radio Televisión Española</p>
               </article>
               <article>
                 <h3>CURSO "LENGUAJE INCLUSIVO Y NO SEXISTA"</h3>
-                <p>Organizado por la Unidad de Igualdad y la Fundación Isonomia de la Universitat Jaume I - 2022</p>
+                <p>Organizado por la Unidad de Igualdad y la Fundación Isonomia de la Universitat Jaume I</p>
               </article>
               <article>
                 <h3>CURSO FORMATIVO "TIK TOK 101"</h3>
-                <p>Especialización en el manejo de la plataforma con fines publicitarios, organizado por Tik Tok Academy - 2023</p>
+                <p>Especialización en el manejo de la plataforma con fines publicitarios, organizado por Tik Tok Academy</p>
               </article>
               <article>
                 <h3>"COPYWRITING PARA COPYWRITERS"</h3>
-                <p>A través de la plataforma Domestika e impartido por la agencia creativa PutosModernos - 2023</p>
+                <p>A través de la plataforma Domestika e impartido por la agencia creativa PutosModernos</p>
               </article>
               <article>
                 <h3>"TÉCNICO EN DISEÑO GRÁFICO PARA RR.SS."</h3>
-                <p>A cargo de la plataforma Valenciactiva y el Ajuntament de València - 2024</p>
+                <p>A cargo de la plataforma Valenciactiva y el Ajuntament de València</p>
               </article>
               <article>
                 <h3>CURSO DE SOCIAL MEDIA MANAGER</h3>
-                <p>Organizado por la Oficina de Estudios de la Universitat Jaume I - 2022</p>
+                <p>Organizado por la Oficina de Estudios de la Universitat Jaume I</p>
               </article>
               <article>
                 <h3>CURSO EDICIÓN CON PHOTOSHOP</h3>
-                <p>Organizado por la Cámara de Comercio de Castellón de la Plana - 2023</p>
+                <p>Organizado por la Cámara de Comercio de Castellón de la Plana</p>
               </article>
               <article>
                 <h3>"CREACIÓN DE CORTOMETRAJES CON DSLR"</h3>
-                <p>A través de la plataforma Domestika e impartido por el filmmaker Rafa Jacinto - 2023</p>
+                <p>A través de la plataforma Domestika e impartido por el filmmaker Rafa Jacinto</p>
               </article>
             </div>
           </div>
@@ -313,13 +341,13 @@
                 <span><b>Bruma</b><small>Primavera</small></span>
               </button>
               <button class="project-tile tile-text" type="button" data-project="bruma" aria-label="Abrir Bruma">
-                <img src="assets/pub-item-6.jpg" alt="Bruma">
+                <img src="assets/pub-bruma-text.jpg" alt="Bruma">
                 <span><b>Bruma</b><small>Identidad de marca</small></span>
               </button>
             </div>
             <div class="project-pair">
               <button class="project-tile tile-text" type="button" data-project="durex" aria-label="Abrir Durex">
-                <img src="assets/pub-item-7.jpg" alt="Durex">
+                <img src="assets/pub-durex-text.jpg" alt="Durex">
                 <span><b>Durex</b><small>#ProtégeteDelCalentón</small></span>
               </button>
               <button class="project-tile tile-poster" type="button" data-project="durex" aria-label="Abrir Durex">
@@ -1705,6 +1733,22 @@
                 <p>Realización televisiva, turismo de sol y playa y el eco de los años 70 en Cuatro.</p>
               </div>
             </button>
+            <button class="post-card" type="button" data-post="irma-vep" aria-label="Leer el artículo sobre Irma Vep">
+              <figure><img src="assets/post-irma-vep-cover.jpg" alt="Irma Vep en Les Vampires"></figure>
+              <div>
+                <small>05 · Historia del cine</small>
+                <h2>El multiverso de Irma Vep</h2>
+                <p>Irma Vep se construye, en todo su ser, desde las sombras. Ya se bautiza de tal manera con su estreno en 1915.</p>
+              </div>
+            </button>
+            <button class="post-card" type="button" data-post="mujer-monstruo" aria-label="Leer el artículo sobre la mujer como monstruo en el cine de terror">
+              <figure><img src="assets/post-mujer-monstruo-cover.jpg" alt="Cartel de la película FurtiVOS"></figure>
+              <div>
+                <small>06 · Cine de terror</small>
+                <h2>La figura de la mujer como monstruo en el cine de terror</h2>
+                <p>El cine posee el enorme poder de construir discursos sociales y, mediante su repetición, es capaz de validarlos.</p>
+              </div>
+            </button>
           </div>
         </div>
 
@@ -1888,6 +1932,46 @@
             <blockquote>"Al más puro estilo de la década de los 70, una familia típica española inicia sus vacaciones. El seiscientos amarillo aparcado en la puerta de casa. Las maletas cargadas en la vaca del coche, la televisión portátil, el flotador y la niña con su mascota, un pequeño perro llamado ratón" (Mitele, 2023).</blockquote>
             <p>Esas vacaciones, llenas de costumbres y también de neveras portátiles, se retratan como exclusivamente nacionales y en cierta medida podrían estar datando la <strong>crisis económica</strong> que durante el año de emisión del programa estaba comenzando a experimentar la sociedad española. Esta lectura paralela sugiere que esas imágenes impregnadas de un <em>typical spanish</em> que por momentos roza lo absurdo (como cuando, en repetidas ocasiones, se hace un mapeo de las zonas de <em>cruising</em> de cada ubicación) sirve como una suerte de "alivio cómico" para las personas del momento a la vez que plantea rutas <em>low-cost</em> que hagan frente a las dificultades económicas que la mayoría de las familias españolas estaban experimentando. Por esto mismo, aunque se muestren escenas de esferas sociales distintas, <em>Ola, Ola</em> opta de manera firme por escoger como protagonistas a personas de niveles económicos más bajos, validando así aspiraciones vacacionales aptas para todos los bolsillos.</p>
             <p><strong>En conclusión</strong>, bajo una estética un tanto <em>kitsch</em> que por momentos parece parodiar la idea de "lo nuestro", la realización audiovisual del producto examinado responde a una voz que demanda el abandono de las formalidades para intentar mirar, por un momento, hacia otro lado.</p>
+          </div>
+        </article>
+
+        <article class="post-detail is-hidden" data-post-detail="irma-vep" aria-label="El multiverso de Irma Vep">
+          <button class="detail-back" type="button" data-close-post>Volver</button>
+          <header class="post-hero">
+            <p class="post-tag">05 · Historia del cine</p>
+            <h1>El multiverso de Irma Vep</h1>
+          </header>
+          <div class="post-body">
+            <p>Irma Vep se construye, en todo su ser, desde las sombras. Ya se bautiza de tal manera con su estreno en 1915, cuando su creador Louis Feuillade quedaba eclipsado por la figura de Griffith, que en ese mismo momento estaría cambiando de forma permanente el lenguaje del cine con <em>El Nacimiento De Una Nación</em>. Esa <strong><em>femme fatale</em></strong> silente y poderosa será retomada en dos ocasiones, primero bajo película y después bajo serial, desde la infinita idolatría de su admirador Olivier Assayas.</p>
+            <figure><img src="assets/post-irma-vep-cover.jpg" alt="Musidora como Irma Vep en Les Vampires" loading="lazy"></figure>
+            <p>El planteamiento de este cineasta da como fruto todo un universo construido a través de una <strong>intertextualidad</strong> casi enfermiza en la que se retoman e incluyen fragmentos de diversas líneas temporales. La <em>Irma Vep</em> de 1996 rascaba una superficie que solo su otra mitad ha podido desenterrar casi 30 años más tarde. He aquí su formulación: primero, una película de un rodaje de un <em>remake</em>; después, una serie del rodaje de otra serie que en realidad es un <em>remake</em> de <em>Les Vampires</em> de Feuillade, solo que planteada varios años después de haber rodado esa primera película que también es un <em>remake</em> de la misma. Nada más (y nada menos).</p>
+            <figure><img src="assets/post-irma-vep-still.webp" alt="Las tres encarnaciones audiovisuales de Irma Vep" loading="lazy"></figure>
+            <p>El producto ya ofrece mucho de lo que hablar pero, por un momento, cabe echar un vistazo desde el exterior para analizar la concepción de este último serial como parte del catálogo de un gigante del <em>streaming</em> como lo es <strong>HBO Max</strong>. Podría decirse que Assayas crea una serie como tributo a la esencia del “cine original” en un lugar en el que precisamente corre el peligro de quedar bajo la sombra de las típicas series de ver y tirar. Un lugar cuyo espectador es cada vez más acomodado y más exigente pero que sigue siendo, en muchas ocasiones, reticente a las obras más modernas (obras que sin embargo nos quieren llevar, como en este caso, al pasado). Y Assayas lo hace invocando al propio cine, pensando más allá de la forma y dialogando con la liquidez del formato. ¿Feuillade estaba haciendo un serial o la película más larga de aquel entonces? ¿Y Assayas en 1996? ¿Y en HBO Max? ¿Y a qué nos remite la propia intro de esta plataforma si no es a esta misma idea? ¿Y a quién le importa?</p>
+            <p>La conversación constante y la fluidez de la experimentación de las formas propias del cine primitivo en realidad siguen haciéndose hueco bajo los pliegues más comerciales de nuestra televisión (o bajo lo que queda de ella). En su serie, Assayas se burla de todo planteamiento hollywoodiense que llegue si quiera a rozar cualquier tipo de efecto especial, al igual que una cansada Alicia Vikander cuando, en una entrevista en la que parece confundirse con su propio personaje, menciona “<strong><em>I don’t need a hit, I need a good movie</em></strong>”.</p>
+            <p>Y lo hace sin miedo cuando René Vidal o Assayas o quien sea que fuera en ese momento de la serie se enreda en la “cultura de la cancelación” a raíz de la filmación de su escena más icónica. En el rapto de Irma Vep, el director está lo suficientemente cerca (y lejos) para no quemarse, solo que lo evita gracias a un monitor que tiene el poder de capturar lo espectral. El serial original ya estuvo envuelto en ello, aunque fue la propia Musidora la que protestó para reivindicar la esencia del propio cine. ¿Los productos audiovisuales tienen que ser complacientes o tienen que provocar al público? René, respondiendo a que “<em>si acaso le excita</em>” esa escena, responde con un rotundo sí, añadiendo que “<em>si no me excitara a mi, no podría excitar al público</em>”.</p>
+          </div>
+        </article>
+
+        <article class="post-detail is-hidden" data-post-detail="mujer-monstruo" aria-label="La figura de la mujer como monstruo en el cine de terror">
+          <button class="detail-back" type="button" data-close-post>Volver</button>
+          <header class="post-hero">
+            <p class="post-tag">06 · Cine de terror</p>
+            <h1>La figura de la mujer como monstruo en el cine de terror</h1>
+          </header>
+          <div class="post-body">
+            <p>El cine posee el enorme poder de construir discursos sociales y, mediante su repetición, es capaz de validarlos en diversos ámbitos como puede ser el de nuestra educación. Desde esta industria se ha de ser consciente de su capacidad para estructurar la realidad social que nos rodea, por lo que debemos intentar fomentar en todo momento la construcción de narrativas que queden libres de injusticias sociales.</p>
+            <p>Por lo que respecta al género cinematográfico en concreto que nos ocupa, el cine de terror, se trata de un caso particular el cual desde hace años hace uso de una serie de figuras clave</p>
+            <p>para construir a la mujer madura y anciana: <strong>la madre fálica</strong> y <strong>la bruja anciana</strong>, respectivamente.</p>
+            <p>Se trata de dos personajes recurrentes a los que separa una cuestión de edad y que son definidos como monstruos poderosos que amenazan sobre el orden establecido. Unos monstruos que alteran la paz que reina en ese mundo ficticio. Por esto mismo, en las narrativas en las que aparecen han de ser destruidos o desplazados con tal de frenar y desactivar su poder.</p>
+            <p><strong>Barbara Creed</strong>, profesora de estudios cinematográficos en la Escuela de Cultura y Comunicación de la Universidad de Melbourne, señala que en toda sociedad y cultura existe la idea de feminidad como algo monstruoso, como una figura que resulta ser perturbadora. Este concepto que defiende en diversos ensayos se puede relacionar directamente con el deseo primigenio sobre la madre, descrito por Freud en su teoría del psicoanálisis.</p>
+            <p>Llevado al cine, esta figura femenina amenaza sobre la identidad del protagonista principal del film, sobre el cual genera una suerte de angustia o rechazo.</p>
+            <figure class="tall"><img src="assets/post-mujer-monstruo-cover.jpg" alt="Cartel de Furtivos" loading="lazy"></figure>
+            <p>En el <strong>cine español</strong> podemos observar producciones como <em>Furtivos</em> (1975), <em>La Abuela</em> (2021) o <em>Las Brujas de Zugarramurdi</em> (2013), relatos que de diversas maneras recrean una y otra vez a la mujer monstruosa-freudiana. El caso de <em>Furtivos</em> es especialmente destacable por la manera del director de tratar esa feminidad, que la exagera hasta convertirla en algo salvaje. Una idea que puede apreciarse en el póster del film, en el que la "madre protectora" toma forma de animal amenazante.</p>
+            <p>Desde un punto de vista internacional, cabe destacar la lectura de tal rol desde dos ejemplos concretos, ambos de la productora A24. <strong><em>La Bruja</em></strong> (2015) narra la historia de una familia del siglo XVII que ha sido desterrada de su pueblo y que ahora vive junto al bosque. A lo largo de la película, iremos conociendo a sus peculiares personajes, especialmente a la hija mayor, que al final descubriremos que ha sentido la llamada de las brujas para unirse a ellas. Nos daremos cuenta de que esa “brujería” va a ser condenada por su familia pero no por su director, pues el film va a tratarlo en cierta clave positiva como una liberación de la mujer. Sin embargo, resulta relevante analizar la manera en la que se trata este proceso dentro de la narrativa, pues se hace a través de una chica joven y no desde una anciana (o por ejemplo, a través de la madre y no de la hija), que es como el imaginario común nos viene acostumbrando a pensar en una bruja estándar. Es una chica de tez blanca, de hermoso rostro y cuya figura desnuda encaja en los estándares de belleza de los tiempos que corren. Qué sorpresa, ¿no?</p>
+            <figure><img src="assets/post-mujer-bruja.jpeg" alt="Thomasin en La Bruja" loading="lazy"></figure>
+            <p>La segunda película es <strong><em>X</em></strong> (2022) y trata de un grupo de cineastas que alquilan una granja para grabar en ella una película para adultos. Acabaran siendo asesinados por los dueños de la casa pero, mientras esto ocurre, la dueña (que ahora sí es una anciana) desarrollará una especie de obsesión por una de las chicas. El relato la perfila a través del cuerpo femenino y de una sexualización contrastada entre esa diferencia de edades, la cual retratará desde lo repugnante y grotesco a la anciana (y obviamente desde lo deseable a la joven). Esta bruja anciana va a ser la “fuerza malvada” contra la que luchen los cineastas hasta no quedar ninguno de ellos en pie, pues la única superviviente será esa joven, que logra matarla.</p>
+            <figure><img src="assets/post-mujer-x.jpg" alt="Pearl en X" loading="lazy"></figure>
+            <p>En los ejemplos expuestos queda latente un tratamiento peyorativo de la mujer anciana que, en cierta medida, queda estrechamente relacionado con el <strong>edadismo</strong>, una tendencia que de manera silenciosa cala en discursos actuales de muy diversa índole.</p>
           </div>
         </article>
       </section>
