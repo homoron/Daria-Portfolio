@@ -364,6 +364,19 @@
     const dots = Array.from(reel.querySelectorAll(".reel-dots span"));
     if (!frames.length) return;
 
+    if (strip) {
+      strip.tabIndex = 0;
+      strip.setAttribute("aria-label", "Fotogramas del proyecto");
+    }
+
+    function scrollToFrame(index, behavior = "smooth") {
+      if (!strip || !frames[index]) return;
+      const stripRect = strip.getBoundingClientRect();
+      const frameRect = frames[index].getBoundingClientRect();
+      const left = strip.scrollLeft + frameRect.left - stripRect.left - (strip.clientWidth - frameRect.width) / 2;
+      strip.scrollTo({ left, behavior });
+    }
+
     // Pad the strip so the first and last frames can rest centered against
     // the sticky caption, regardless of each frame's aspect ratio.
     let padCache = "";
@@ -394,17 +407,30 @@
 
     function updateReel() {
       if (!frames[0].offsetParent) return;
-      const mid = window.innerHeight * 0.5;
       let best = 0;
       let bestDist = Infinity;
-      frames.forEach((frame, index) => {
-        const rect = frame.getBoundingClientRect();
-        const dist = Math.abs(rect.top + rect.height / 2 - mid);
-        if (dist < bestDist) {
-          bestDist = dist;
-          best = index;
-        }
-      });
+      if (!reelDesktop.matches && strip) {
+        const stripRect = strip.getBoundingClientRect();
+        const mid = stripRect.left + stripRect.width / 2;
+        frames.forEach((frame, index) => {
+          const rect = frame.getBoundingClientRect();
+          const dist = Math.abs(rect.left + rect.width / 2 - mid);
+          if (dist < bestDist) {
+            bestDist = dist;
+            best = index;
+          }
+        });
+      } else {
+        const mid = window.innerHeight * 0.5;
+        frames.forEach((frame, index) => {
+          const rect = frame.getBoundingClientRect();
+          const dist = Math.abs(rect.top + rect.height / 2 - mid);
+          if (dist < bestDist) {
+            bestDist = dist;
+            best = index;
+          }
+        });
+      }
       frames.forEach((frame, index) => frame.classList.toggle("is-active", index === best));
       captions.forEach((caption, index) => caption.classList.toggle("is-active", index === best));
       dots.forEach((dot, index) => dot.classList.toggle("is-active", index === best));
@@ -417,6 +443,15 @@
 
     window.addEventListener("scroll", refreshReel, { passive: true });
     window.addEventListener("resize", refreshReel);
+    strip?.addEventListener("scroll", refreshReel, { passive: true });
+    strip?.addEventListener("keydown", (event) => {
+      if (reelDesktop.matches || (event.key !== "ArrowLeft" && event.key !== "ArrowRight")) return;
+      event.preventDefault();
+      const active = frames.findIndex((frame) => frame.classList.contains("is-active"));
+      const direction = event.key === "ArrowRight" ? 1 : -1;
+      const next = Math.max(0, Math.min(frames.length - 1, active + direction));
+      scrollToFrame(next);
+    });
     reel.querySelectorAll("img").forEach((img) => {
       if (!img.complete) img.addEventListener("load", refreshReel, { once: true });
     });
