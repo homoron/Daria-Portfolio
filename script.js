@@ -364,11 +364,27 @@
     const frames = Array.from(reel.querySelectorAll(".reel-frame"));
     const captions = Array.from(reel.querySelectorAll(".reel-caption"));
     const dots = Array.from(reel.querySelectorAll(".reel-dots span"));
+    const mobileDots = [];
     if (!frames.length) return;
 
     if (strip) {
       strip.tabIndex = 0;
       strip.setAttribute("aria-label", "Fotogramas del proyecto");
+
+      const mobileDotsNav = document.createElement("div");
+      mobileDotsNav.className = "reel-mobile-dots";
+      mobileDotsNav.setAttribute("aria-label", "Navegación de imágenes");
+
+      frames.forEach((frame, index) => {
+        const mobileDot = document.createElement("button");
+        mobileDot.type = "button";
+        mobileDot.setAttribute("aria-label", `Ir a la imagen ${index + 1} de ${frames.length}`);
+        mobileDot.addEventListener("click", () => scrollToFrame(index));
+        mobileDotsNav.appendChild(mobileDot);
+        mobileDots.push(mobileDot);
+      });
+
+      reel.insertBefore(mobileDotsNav, strip);
     }
 
     function scrollToFrame(index, behavior = "smooth") {
@@ -436,6 +452,11 @@
       frames.forEach((frame, index) => frame.classList.toggle("is-active", index === best));
       captions.forEach((caption, index) => caption.classList.toggle("is-active", index === best));
       dots.forEach((dot, index) => dot.classList.toggle("is-active", index === best));
+      mobileDots.forEach((dot, index) => {
+        const isActive = index === best;
+        dot.classList.toggle("is-active", isActive);
+        dot.setAttribute("aria-current", isActive ? "true" : "false");
+      });
     }
 
     function refreshReel() {

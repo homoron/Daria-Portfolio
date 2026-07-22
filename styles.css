@@ -1833,7 +1833,10 @@ a {
   border: 1px solid var(--acid);
   border-radius: 50%;
   background: var(--acid);
+  padding: 0 0 0.14rem 0.03rem;
+  font-family: Arial, Helvetica, sans-serif;
   font-size: 1.15rem;
+  font-weight: 700;
   line-height: 1;
   letter-spacing: 0;
   transition: color 180ms ease, background 180ms ease, transform 180ms ease;
@@ -2170,6 +2173,10 @@ a {
 .reel-video-btn:hover::before,
 .reel-video-btn:focus-visible::before {
   color: #0a0b09;
+}
+
+.reel-mobile-dots {
+  display: none;
 }
 
 .reel-dots {
@@ -5272,6 +5279,39 @@ a {
   .reel-layout {
     display: block;
     padding-top: 0.5rem;
+  }
+
+  .reel-mobile-dots {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.55rem;
+    min-height: 1.65rem;
+    padding: 0.1rem 1rem 0.2rem;
+  }
+
+  .reel-mobile-dots button {
+    width: 0.48rem;
+    height: 0.48rem;
+    padding: 0;
+    color: inherit;
+    border: 1px solid rgba(185, 235, 139, 0.72);
+    border-radius: 50%;
+    background: rgba(5, 7, 5, 0.72);
+    cursor: pointer;
+    touch-action: manipulation;
+    transition: background 180ms ease, box-shadow 180ms ease, transform 180ms ease;
+  }
+
+  .reel-mobile-dots button.is-active {
+    background: var(--acid);
+    box-shadow: 0 0 0 0.18rem rgba(185, 235, 139, 0.14);
+    transform: scale(1.24);
+  }
+
+  .reel-mobile-dots button:focus-visible {
+    outline: 2px solid var(--acid);
+    outline-offset: 0.22rem;
   }
 
   .reel-strip {
