@@ -5798,8 +5798,69 @@ a {
   }
 
   .detail-back {
+    --back-cut: 0.45rem;
     top: 5.35rem;
-    margin-bottom: 0.9rem;
+    grid-template-columns: 2rem auto;
+    min-width: 8rem;
+    min-height: 2.55rem;
+    margin-bottom: 0.65rem;
+    padding: 0.25rem 0.62rem 0.25rem 0.25rem;
+    font-size: 0.57rem;
+    letter-spacing: 0.09em;
+    filter: drop-shadow(0 0.45rem 0.85rem rgba(0, 0, 0, 0.34));
+  }
+
+  .detail-back-icon {
+    clip-path: polygon(
+      0.3rem 0,
+      100% 0,
+      100% 100%,
+      0.3rem 100%,
+      0 calc(100% - 0.3rem),
+      0 0.3rem
+    );
+  }
+
+  .detail-back-arrow {
+    width: 0.98rem;
+    height: 0.68rem;
+  }
+
+  .detail-back-arrow::before {
+    left: 0.05rem;
+    width: 0.84rem;
+    height: 1.5px;
+  }
+
+  .detail-back-arrow::after {
+    left: 0.05rem;
+    width: 0.36rem;
+    height: 0.36rem;
+    border-width: 0 0 1.5px 1.5px;
+  }
+
+  .detail-back-label {
+    gap: 0.55rem;
+    min-width: 5.2rem;
+    padding: 0.04rem 0.05rem 0 0.52rem;
+  }
+
+  .detail-back-label::after {
+    width: 0.21rem;
+    height: 0.21rem;
+    box-shadow: 0 0 0 0.12rem rgba(185, 235, 139, 0.12);
+  }
+
+  .detail-back-perforations {
+    left: 2.75rem;
+    bottom: 0.19rem;
+    width: 3.2rem;
+    height: 0.12rem;
+    background: repeating-linear-gradient(
+      90deg,
+      rgba(244, 241, 232, 0.24) 0 0.3rem,
+      transparent 0.3rem 0.5rem
+    );
   }
 
   .post-hero h1,
