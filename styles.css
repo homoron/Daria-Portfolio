@@ -5637,8 +5637,13 @@ a {
     padding-right: 0.7rem;
   }
 
+  .work-section.has-open-project {
+    padding-top: 1rem;
+  }
+
   .detail-back {
     top: 5.35rem;
+    margin-bottom: 0.9rem;
   }
 
   .post-hero h1,

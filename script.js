@@ -286,6 +286,7 @@
       );
     }
     workChooser.classList.add("is-hidden");
+    workSection.classList.add("has-open-project");
     projectDetails.forEach((detail) => {
       detail.classList.toggle("is-hidden", detail.dataset.projectDetail !== project);
     });
@@ -302,6 +303,7 @@
 
   function closeProject() {
     if (workChooser) workChooser.classList.remove("is-hidden");
+    workSection.classList.remove("has-open-project");
     projectDetails.forEach((detail) => {
       detail.querySelectorAll("video").forEach((projectVideo) => projectVideo.pause());
     });
