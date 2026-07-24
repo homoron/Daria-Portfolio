@@ -9,6 +9,7 @@
   const typedGreeting = document.getElementById("typedGreeting");
   const greeting = "Hola. Hello. Ey. Ye com va. Priviet.";
   const compact = window.matchMedia("(max-width: 640px)");
+  const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 
   if (!video || !hero) return;
 
@@ -29,7 +30,7 @@
 
   function updateTypedGreeting(progress) {
     if (!typedGreeting) return;
-    if (compact.matches) {
+    if (reducedMotion.matches) {
       typedGreeting.textContent = greeting;
       return;
     }
@@ -68,6 +69,7 @@
   window.addEventListener("scroll", requestTick, { passive: true });
   window.addEventListener("resize", requestTick);
   compact.addEventListener("change", requestTick);
+  reducedMotion.addEventListener("change", requestTick);
   updateScrollState();
 
   if (cue) {

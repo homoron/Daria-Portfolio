@@ -5586,11 +5586,11 @@ a {
   }
 
   .scroll-hero {
-    height: 100vh;
+    height: 160vh;
   }
 
   .hero-sticky {
-    position: relative;
+    position: sticky;
   }
 
   .hero-video {
