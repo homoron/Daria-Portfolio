@@ -1042,6 +1042,20 @@ a {
   margin: 0 auto;
 }
 
+.work-chooser {
+  --camera-frame-width: min(
+    100%,
+    92rem,
+    max(48rem, calc(155vh - 31rem))
+  );
+}
+
+.work-chooser > .section-kicker {
+  width: var(--camera-frame-width);
+  margin-left: auto;
+  margin-right: auto;
+}
+
 .work-switch {
   display: flex;
   justify-content: center;
@@ -1251,7 +1265,7 @@ a {
 }
 
 .camera-playback {
-  width: min(100%, 92rem);
+  width: var(--camera-frame-width);
   margin: clamp(1.5rem, 3vw, 2.5rem) auto 0;
   color: #e9eddf;
   background: #090b09;
@@ -1562,30 +1576,42 @@ a {
   background-size: 12.5% 100%;
 }
 
-.camera-focus {
-  position: absolute;
-  z-index: 2;
-  top: 50%;
-  left: 50%;
-  width: clamp(4rem, 8vw, 7rem);
-  aspect-ratio: 1.6;
-  border: 1px solid rgba(232, 237, 223, 0.58);
-  opacity: 0.36;
-  transform: translate(-50%, -50%);
-  pointer-events: none;
-}
-
 .camera-enter {
+  --bracket-thickness: 1.5px;
+  --bracket-length: 14px;
   position: absolute;
   z-index: 4;
   top: 50%;
   left: 50%;
-  display: grid;
-  justify-items: center;
-  gap: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  padding: 0.85rem 1.4rem;
   opacity: 0;
   transform: translate(-50%, -42%);
-  transition: opacity 220ms ease, transform 220ms ease;
+  transition: opacity 220ms ease, transform 220ms ease, padding 220ms ease;
+  background-image:
+    linear-gradient(var(--acid), var(--acid)),
+    linear-gradient(var(--acid), var(--acid)),
+    linear-gradient(var(--acid), var(--acid)),
+    linear-gradient(var(--acid), var(--acid)),
+    linear-gradient(var(--acid), var(--acid)),
+    linear-gradient(var(--acid), var(--acid)),
+    linear-gradient(var(--acid), var(--acid)),
+    linear-gradient(var(--acid), var(--acid));
+  background-repeat: no-repeat;
+  background-position:
+    top left, top left, top right, top right, bottom left, bottom left,
+    bottom right, bottom right;
+  background-size:
+    var(--bracket-length) var(--bracket-thickness),
+    var(--bracket-thickness) var(--bracket-length),
+    var(--bracket-length) var(--bracket-thickness),
+    var(--bracket-thickness) var(--bracket-length),
+    var(--bracket-length) var(--bracket-thickness),
+    var(--bracket-thickness) var(--bracket-length),
+    var(--bracket-length) var(--bracket-thickness),
+    var(--bracket-thickness) var(--bracket-length);
 }
 
 .camera-enter i,
@@ -1597,15 +1623,23 @@ a {
   border-left: 1.55rem solid var(--acid);
 }
 
+.camera-enter i {
+  border-top-width: 0.55rem;
+  border-bottom-width: 0.55rem;
+  border-left-width: 0.85rem;
+}
+
 .camera-enter b {
   color: var(--acid);
   font-size: clamp(0.78rem, 1vw, 0.95rem);
   font-weight: 500;
+  letter-spacing: 0.08em;
   white-space: nowrap;
 }
 
 .camera-screen:hover .camera-enter,
 .camera-screen:focus-visible .camera-enter {
+  padding: 0.7rem 1.2rem;
   opacity: 1;
   transform: translate(-50%, -50%);
 }
@@ -4664,13 +4698,20 @@ a {
 }
 
 .post-detail {
+  --post-copy-width: 60rem;
+  --post-title-overhang: 0.6rem;
+  --post-layout-width: 80rem;
+  --post-copy-inset: 1rem;
   color: #f4f1e8;
 }
 
 .post-hero {
-  max-width: 76rem;
+  width: min(100%, var(--post-layout-width));
   margin: 0 auto clamp(2rem, 4vw, 3rem);
-  padding-right: clamp(0rem, 8vw, 8rem);
+  padding-left: max(
+    var(--post-copy-inset),
+    calc((min(100%, var(--post-layout-width)) - var(--post-copy-width)) / 2)
+  );
 }
 
 .post-tag {
@@ -4682,7 +4723,9 @@ a {
 }
 
 .post-hero h1 {
-  margin: 0;
+  width: min(100%, calc(var(--post-copy-width) + var(--post-title-overhang) * 2));
+  margin: 0 0 0 calc(var(--post-title-overhang) * -1);
+  text-align: left;
   font-family: Georgia, "Times New Roman", serif;
   font-size: clamp(2.2rem, 5vw, 4.8rem);
   font-weight: 400;
@@ -4690,20 +4733,22 @@ a {
 }
 
 .post-body {
-  max-width: 78rem;
+  max-width: var(--post-layout-width);
   margin: 0 auto;
   padding-bottom: clamp(3rem, 6vw, 5rem);
 }
 
 .post-body p {
-  max-width: 76ch;
+  width: min(calc(100% - 2rem), var(--post-copy-width));
   margin: 0 auto 1.65rem;
   font-size: clamp(1rem, 1.15vw, 1.12rem);
   line-height: 1.85;
+  text-align: justify;
+  text-justify: inter-word;
+  hyphens: auto;
 }
 
 .post-body > p:first-child {
-  max-width: 68ch;
   margin-bottom: clamp(2.6rem, 5vw, 4.5rem);
   font-family: Georgia, "Times New Roman", serif;
   font-size: clamp(1.2rem, 2vw, 1.65rem);
@@ -4719,7 +4764,7 @@ a {
 }
 
 .post-body h2 {
-  max-width: 76rem;
+  width: min(calc(100% - 2rem), var(--post-copy-width));
   margin: clamp(4rem, 8vw, 7rem) auto clamp(2rem, 4vw, 3rem);
   padding: 1.2rem 0;
   border-top: 1px solid rgba(184, 233, 134, 0.65);
