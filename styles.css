@@ -1790,185 +1790,50 @@ a {
 }
 
 .detail-back {
-  --back-cut: 0.62rem;
   position: sticky;
   z-index: 8;
   top: 6rem;
-  isolation: isolate;
-  display: inline-grid;
-  grid-template-columns: 2.75rem auto;
-  align-items: stretch;
-  min-width: 10.8rem;
-  min-height: 3.35rem;
+  display: block;
+  width: clamp(6rem, 10vw, 7.6rem);
+  aspect-ratio: 560 / 412;
   margin: 0 0 1.6rem;
-  padding: 0.34rem 1.1rem 0.34rem 0.34rem;
-  overflow: hidden;
-  color: var(--ink);
+  padding: 0;
   border: 0;
-  background: transparent;
-  filter: drop-shadow(0 0.7rem 1.2rem rgba(0, 0, 0, 0.36));
-  clip-path: polygon(
-    var(--back-cut) 0,
-    calc(100% - var(--back-cut)) 0,
-    100% var(--back-cut),
-    100% calc(100% - var(--back-cut)),
-    calc(100% - var(--back-cut)) 100%,
-    var(--back-cut) 100%,
-    0 calc(100% - var(--back-cut)),
-    0 var(--back-cut)
-  );
-  -webkit-backdrop-filter: blur(12px);
-  backdrop-filter: blur(12px);
-  font: 600 0.7rem/1 "IBM Plex Mono", monospace;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
+  background: url("assets/volver-ticket.webp") center / contain no-repeat;
+  font-size: 0;
+  line-height: 0;
+  color: transparent;
   cursor: pointer;
-  transition: filter 180ms ease, transform 160ms ease;
+  filter: drop-shadow(0 0.5rem 0.85rem rgba(0, 0, 0, 0.5));
+  transition: transform 200ms ease, filter 200ms ease;
 }
 
-.detail-back::before {
-  content: "";
-  position: absolute;
-  z-index: 0;
-  inset: 0;
-  background: var(--acid);
-  clip-path: inherit;
-}
-
-.detail-back::after {
-  content: "";
-  position: absolute;
-  z-index: 1;
-  inset: 1px;
-  background:
-    linear-gradient(100deg, rgba(185, 235, 139, 0.1), transparent 64%),
-    rgba(5, 7, 5, 0.94);
-  clip-path: polygon(
-    calc(var(--back-cut) - 1px) 0,
-    calc(100% - var(--back-cut) + 1px) 0,
-    100% calc(var(--back-cut) - 1px),
-    100% calc(100% - var(--back-cut) + 1px),
-    calc(100% - var(--back-cut) + 1px) 100%,
-    calc(var(--back-cut) - 1px) 100%,
-    0 calc(100% - var(--back-cut) + 1px),
-    0 calc(var(--back-cut) - 1px)
-  );
-  transition: background 180ms ease;
-}
-
-.detail-back-icon,
-.detail-back-label,
-.detail-back-perforations {
-  position: relative;
-  z-index: 2;
-}
-
-.detail-back-icon {
-  display: grid;
-  place-items: center;
-  color: #071007;
-  background: var(--acid);
-  clip-path: polygon(
-    0.42rem 0,
-    100% 0,
-    100% 100%,
-    0.42rem 100%,
-    0 calc(100% - 0.42rem),
-    0 0.42rem
-  );
-}
-
-.detail-back-arrow {
-  position: relative;
-  width: 1.28rem;
-  height: 0.9rem;
-  transition: transform 160ms steps(2, end);
-}
-
-.detail-back-arrow::before {
-  content: "";
-  position: absolute;
-  top: 50%;
-  left: 0.08rem;
-  width: 1.12rem;
-  height: 2px;
-  background: currentColor;
-  transform: translateY(-50%);
-}
-
-.detail-back-arrow::after {
-  content: "";
-  position: absolute;
-  top: 50%;
-  left: 0.08rem;
-  width: 0.48rem;
-  height: 0.48rem;
-  border-left: 2px solid currentColor;
-  border-bottom: 2px solid currentColor;
-  transform: translateY(-50%) rotate(45deg);
-}
-
-.detail-back-label {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  min-width: 7rem;
-  padding: 0.06rem 0.15rem 0 0.75rem;
-  color: var(--ink);
-}
-
-.detail-back-label::after {
-  content: "";
-  flex: 0 0 auto;
-  width: 0.28rem;
-  height: 0.28rem;
-  border-radius: 50%;
-  background: var(--acid);
-  box-shadow: 0 0 0 0.18rem rgba(185, 235, 139, 0.12);
-  transition: box-shadow 180ms ease;
-}
-
-.detail-back-perforations {
-  position: absolute;
-  z-index: 3;
-  left: 3.85rem;
-  bottom: 0.26rem;
-  width: 4.4rem;
-  height: 0.16rem;
-  background: repeating-linear-gradient(
-    90deg,
-    rgba(244, 241, 232, 0.26) 0 0.45rem,
-    transparent 0.45rem 0.7rem
-  );
-}
-
-.detail-back:hover::after,
-.detail-back:focus-visible::after {
-  background:
-    linear-gradient(100deg, rgba(185, 235, 139, 0.19), transparent 72%),
-    rgba(5, 7, 5, 0.97);
-}
-
-.detail-back:hover .detail-back-arrow,
-.detail-back:focus-visible .detail-back-arrow {
-  transform: translateX(-0.18rem);
-}
-
-.detail-back:hover .detail-back-label::after,
-.detail-back:focus-visible .detail-back-label::after {
-  box-shadow: 0 0 0 0.22rem rgba(185, 235, 139, 0.18), 0 0 0.6rem rgba(185, 235, 139, 0.8);
+.detail-back:hover {
+  animation: back-ticket-wobble 560ms ease;
 }
 
 .detail-back:focus-visible {
   filter:
     drop-shadow(0 0 0.22rem rgba(185, 235, 139, 0.95))
-    drop-shadow(0 0.7rem 1.2rem rgba(0, 0, 0, 0.36));
+    drop-shadow(0 0.6rem 1rem rgba(0, 0, 0, 0.4));
   outline: none;
 }
 
 .detail-back:active {
   transform: translateY(2px);
+}
+
+@keyframes back-ticket-wobble {
+  0% { transform: rotate(0) translateY(0); }
+  28% { transform: rotate(2.4deg) translateY(-3px); }
+  60% { transform: rotate(-1.6deg) translateY(-1px); }
+  100% { transform: rotate(0) translateY(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .detail-back:hover {
+    animation: none;
+  }
 }
 
 .reel-detail {
@@ -5810,20 +5675,15 @@ a {
   }
 
   .project-detail .detail-back {
-    --back-cut: 0.45rem;
     position: relative;
     top: auto;
     grid-column: 1;
     grid-row: 1;
     align-self: center;
     justify-self: start;
-    grid-template-columns: 2rem auto;
-    min-width: 8rem;
-    min-height: 2.55rem;
+    width: 5rem;
+    height: auto;
     margin: 0 0 0.35rem;
-    padding: 0.25rem 0.62rem 0.25rem 0.25rem;
-    font-size: 0.57rem;
-    letter-spacing: 0.09em;
     filter: drop-shadow(0 0.45rem 0.85rem rgba(0, 0, 0, 0.34));
   }
 
@@ -5849,59 +5709,6 @@ a {
   .project-detail .reel-panel {
     grid-column: 1 / -1;
     grid-row: 4;
-  }
-
-  .detail-back-icon {
-    clip-path: polygon(
-      0.3rem 0,
-      100% 0,
-      100% 100%,
-      0.3rem 100%,
-      0 calc(100% - 0.3rem),
-      0 0.3rem
-    );
-  }
-
-  .detail-back-arrow {
-    width: 0.98rem;
-    height: 0.68rem;
-  }
-
-  .detail-back-arrow::before {
-    left: 0.05rem;
-    width: 0.84rem;
-    height: 1.5px;
-  }
-
-  .detail-back-arrow::after {
-    left: 0.05rem;
-    width: 0.36rem;
-    height: 0.36rem;
-    border-width: 0 0 1.5px 1.5px;
-  }
-
-  .detail-back-label {
-    gap: 0.55rem;
-    min-width: 5.2rem;
-    padding: 0.04rem 0.05rem 0 0.52rem;
-  }
-
-  .detail-back-label::after {
-    width: 0.21rem;
-    height: 0.21rem;
-    box-shadow: 0 0 0 0.12rem rgba(185, 235, 139, 0.12);
-  }
-
-  .detail-back-perforations {
-    left: 2.75rem;
-    bottom: 0.19rem;
-    width: 3.2rem;
-    height: 0.12rem;
-    background: repeating-linear-gradient(
-      90deg,
-      rgba(244, 241, 232, 0.24) 0 0.3rem,
-      transparent 0.3rem 0.5rem
-    );
   }
 
   .post-hero h1,

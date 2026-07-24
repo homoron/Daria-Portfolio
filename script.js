@@ -108,22 +108,7 @@
   const cameraOpenButtons = document.querySelectorAll("[data-camera-open], [data-camera-play]");
 
   document.querySelectorAll(".detail-back").forEach((button) => {
-    const icon = document.createElement("span");
-    const arrow = document.createElement("span");
-    const label = document.createElement("span");
-    const perforations = document.createElement("span");
-
-    icon.className = "detail-back-icon";
-    icon.setAttribute("aria-hidden", "true");
-    arrow.className = "detail-back-arrow";
-    label.className = "detail-back-label";
-    label.textContent = "Volver";
-    perforations.className = "detail-back-perforations";
-    perforations.setAttribute("aria-hidden", "true");
-
-    icon.appendChild(arrow);
-    button.setAttribute("aria-label", "Volver");
-    button.replaceChildren(icon, label, perforations);
+    button.title = button.textContent.trim();
   });
 
   const previewOverrides = {
