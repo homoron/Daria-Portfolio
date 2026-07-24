@@ -434,7 +434,9 @@
       if (first < 1) return;
       const vh = window.innerHeight;
       const last = frames[frames.length - 1].getBoundingClientRect().height;
-      const top = `${Math.max(16, (vh - first) / 2)}px`;
+      // Let the first frame enter near the top of the project instead of
+      // spending half of the available viewport space before it begins.
+      const top = `${Math.max(16, Math.min(80, (vh - first) * 0.2))}px`;
       const bottom = `${Math.max(16, (vh - last) / 2)}px`;
       const key = top + "|" + bottom;
       if (key === padCache) return;

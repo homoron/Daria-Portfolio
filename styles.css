@@ -5800,9 +5800,8 @@ a {
 
   .project-detail:not(.is-hidden) {
     display: grid;
-    grid-template-columns: auto minmax(0, 1fr);
+    grid-template-columns: minmax(0, 1fr);
     align-items: center;
-    column-gap: 0.45rem;
     width: 100%;
   }
 
@@ -5817,6 +5816,7 @@ a {
     grid-column: 1;
     grid-row: 1;
     align-self: center;
+    justify-self: start;
     grid-template-columns: 2rem auto;
     min-width: 8rem;
     min-height: 2.55rem;
@@ -5828,13 +5828,16 @@ a {
   }
 
   .project-detail .reel-mobile-dots {
-    grid-column: 2;
-    grid-row: 1;
-    align-self: stretch;
+    grid-column: 1;
+    grid-row: 3;
+    align-self: center;
+    justify-self: stretch;
     min-width: 0;
-    min-height: 2.55rem;
-    margin: 0 0 0.35rem;
-    padding: 0 0.25rem 0 0;
+    min-height: 2rem;
+    margin: 0.1rem 0 0.35rem;
+    padding: 0.25rem 0.5rem;
+    border-block: 1px solid rgba(244, 241, 232, 0.13);
+    background: rgba(4, 5, 4, 0.66);
   }
 
   .project-detail .reel-strip {
@@ -5845,7 +5848,7 @@ a {
 
   .project-detail .reel-panel {
     grid-column: 1 / -1;
-    grid-row: 3;
+    grid-row: 4;
   }
 
   .detail-back-icon {
