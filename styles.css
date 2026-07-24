@@ -4699,7 +4699,10 @@ a {
 
 .post-detail {
   --post-copy-width: 60rem;
-  --post-title-overhang: 0.6rem;
+  --post-title-overhang: max(
+    0rem,
+    min(2.4rem, calc((100vw - var(--post-copy-width) - 2rem) / 4))
+  );
   --post-layout-width: 80rem;
   --post-copy-inset: 1rem;
   color: #f4f1e8;
