@@ -5579,9 +5579,10 @@ a {
 
   .hero-copy {
     left: 1rem;
-    /* En % del alto visible del héroe, no del viewport grande: así el
-       bloque queda centrado en pantalla y algo por encima del medio. */
-    top: 47%;
+    /* En % del alto visible del héroe, no del viewport grande. El bloque
+       sube a la mitad superior; el mínimo en rem evita que se meta debajo
+       de la barra de navegación en pantallas cortas. */
+    top: max(34%, 11.5rem);
   }
 
   .logo-collage {
