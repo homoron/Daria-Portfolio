@@ -4808,6 +4808,21 @@ a {
   margin-right: auto;
 }
 
+/* Mosaicos de fotogramas: cada plano es su propia imagen y el hueco lo pone el
+   grid, no un marco blanco quemado en el JPG. */
+.post-body figure.frame-row,
+.post-body figure.frame-stack {
+  display: grid;
+  gap: clamp(0.35rem, 0.8vw, 0.6rem);
+}
+
+/* --frame-cols reparte el ancho cuando los planos no comparten proporción,
+   de modo que sigan alineados por arriba y por abajo. */
+.post-body figure.frame-row {
+  grid-template-columns: var(--frame-cols, 1fr 1fr);
+  align-items: var(--frame-align, start);
+}
+
 .contact-section {
   position: relative;
   isolation: isolate;
@@ -4969,6 +4984,10 @@ a {
 
   .post-body p {
     line-height: 1.75;
+  }
+
+  .post-body figure.frame-row {
+    grid-template-columns: 1fr;
   }
 
   .contact-heading h1 {

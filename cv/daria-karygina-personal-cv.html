@@ -1,0 +1,820 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <title>Daria Karygina — CV</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+      /* ============================================================
+         CV Daria Karygina — hoja de cuaderno sobre mesa oscura.
+         Paleta y tipografías del portfolio, invertidas:
+         tinta #0f110e sobre papel #f4f1e8, subrayador ácido #b9eb8b.
+         Una sola página A4 (210 x 297 mm).
+         ============================================================ */
+
+      :root {
+        --paper: #f4f1e8;
+        --ink: #0f110e;
+        --ink-soft: rgba(15, 17, 14, 0.74);
+        --ink-faint: rgba(15, 17, 14, 0.52);
+        --line: rgba(15, 17, 14, 0.5);
+        --line-soft: rgba(15, 17, 14, 0.24);
+        --dotted: rgba(15, 17, 14, 0.32);
+        --acid: #b9eb8b;
+        --acid-ink: #b1de7e;      /* #b9eb8b multiplicado sobre el papel */
+        --acid-ink-soft: #d2e7b3; /* el mismo trazo, ya perdiendo tinta */
+        --acid-deep: #486c34;
+        --desk: #0a0b0a;
+      }
+
+      @page { size: A4; margin: 0; }
+
+      * {
+        box-sizing: border-box;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+
+      html, body { margin: 0; padding: 0; }
+
+      body {
+        background: var(--desk);
+        color: var(--ink);
+        font-family: "IBM Plex Mono", monospace;
+      }
+
+      /* ---------- Mesa (sólo pantalla) ---------- */
+
+      .desk {
+        display: grid;
+        place-items: center;
+        min-height: 100vh;
+        padding: 6mm;
+        background:
+          radial-gradient(circle at 76% 8%, rgba(185, 235, 139, 0.08), transparent 60%),
+          radial-gradient(circle at 12% 92%, rgba(185, 235, 139, 0.05), transparent 55%),
+          var(--desk);
+      }
+
+      .desk::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        z-index: 0;
+        pointer-events: none;
+        opacity: 0.5;
+        background-image:
+          radial-gradient(rgba(244, 241, 232, 0.09) 0.5px, transparent 0.6px),
+          radial-gradient(rgba(244, 241, 232, 0.06) 0.5px, transparent 0.6px);
+        background-size: 3px 3px, 7px 7px;
+        background-position: 0 0, 2px 3px;
+      }
+
+      /* Confeti de estrellitas sobre la mesa (sólo pantalla) */
+
+      .desk-stars {
+        position: fixed;
+        inset: 0;
+        z-index: 0;
+        pointer-events: none;
+        color: rgba(244, 241, 232, 0.5);
+        font-size: 4mm;
+      }
+
+      .desk-stars span { position: absolute; }
+      .desk-stars span:nth-child(1) { top: 7%;  left: 6%;  transform: rotate(12deg); }
+      .desk-stars span:nth-child(2) { top: 24%; left: 3%;  font-size: 2.5mm; opacity: 0.7; }
+      .desk-stars span:nth-child(3) { top: 61%; left: 7%;  font-size: 3mm; transform: rotate(-14deg); }
+      .desk-stars span:nth-child(4) { top: 88%; left: 4%;  font-size: 5mm; opacity: 0.45; }
+      .desk-stars span:nth-child(5) { top: 12%; right: 5%; font-size: 3mm; transform: rotate(-8deg); }
+      .desk-stars span:nth-child(6) { top: 38%; right: 3%; color: var(--acid); opacity: 0.55; }
+      .desk-stars span:nth-child(7) { top: 70%; right: 6%; font-size: 2.5mm; opacity: 0.7; }
+      .desk-stars span:nth-child(8) { bottom: 6%; right: 9%; font-size: 4.5mm; transform: rotate(16deg); opacity: 0.5; }
+
+      /* ---------- Hoja A4 ---------- */
+
+      .sheet {
+        position: relative;
+        z-index: 1;
+        display: flex;
+        flex-direction: column;
+        width: 210mm;
+        height: 297mm;
+        padding: 10mm 12mm 8mm 22mm;
+        overflow: hidden;
+        background:
+          repeating-linear-gradient(0deg, rgba(15, 17, 14, 0.016) 0 1px, transparent 1px 3px),
+          radial-gradient(circle at 84% 3%, rgba(185, 235, 139, 0.22), transparent 42%),
+          radial-gradient(circle at 5% 97%, rgba(15, 17, 14, 0.05), transparent 38%),
+          var(--paper);
+        box-shadow:
+          0 0 0 1px rgba(244, 241, 232, 0.06),
+          2mm 3mm 12mm rgba(0, 0, 0, 0.7);
+      }
+
+      /* Margen perforado de cuaderno */
+
+      .binder {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        width: 15mm;
+        border-right: 0.3mm dashed rgba(15, 17, 14, 0.26);
+        background: linear-gradient(90deg, rgba(15, 17, 14, 0.07), rgba(15, 17, 14, 0.01) 60%, transparent);
+      }
+
+      .binder i {
+        position: absolute;
+        left: 5.6mm;
+        width: 4.6mm;
+        height: 4.6mm;
+        border-radius: 50%;
+        background: var(--desk);
+        box-shadow: inset 0 0.4mm 0.6mm rgba(0, 0, 0, 0.9);
+      }
+
+      /* Anilla metálica atravesando el agujero */
+      .binder i::after {
+        content: "";
+        position: absolute;
+        left: -3.4mm;
+        top: -1.1mm;
+        width: 11mm;
+        height: 6.8mm;
+        border: 0.75mm solid rgba(15, 17, 14, 0.42);
+        border-radius: 50%;
+        background: linear-gradient(180deg, rgba(15, 17, 14, 0.05), transparent 55%);
+      }
+
+      .binder i:nth-child(1) { top: 26mm; }
+      .binder i:nth-child(2) { top: 96mm; }
+      .binder i:nth-child(3) { top: 176mm; }
+      .binder i:nth-child(4) { top: 252mm; }
+
+      /* Marcas de encuadre (guiño al visor de la web) */
+
+      .crop {
+        position: absolute;
+        width: 5mm;
+        height: 5mm;
+        border: 0.3mm solid rgba(15, 17, 14, 0.4);
+      }
+
+      .crop--tl { top: 5mm; left: 18mm; border-right: 0; border-bottom: 0; }
+      .crop--tr { top: 5mm; right: 5mm; border-left: 0; border-bottom: 0; }
+      .crop--br { bottom: 5mm; right: 5mm; border-left: 0; border-top: 0; }
+      .crop--bl { bottom: 5mm; left: 18mm; border-right: 0; border-top: 0; }
+
+      /* ---------- Rotulador ----------
+         Sin mix-blend-mode a propósito: al imprimir, el modo de fusión
+         obliga a Chrome a rasterizar el texto, y las frases subrayadas
+         dejan de ser seleccionables en el PDF. --acid-ink y --acid-ink-soft son el
+         verde ácido ya multiplicado sobre el papel, así que el trazo
+         se ve igual pero las letras siguen siendo vectoriales.
+         ------------------------------------------------------------ */
+
+      .mk {
+        padding: 0.08em 0.14em 0.04em;
+        background: linear-gradient(
+          96deg,
+          var(--acid-ink-soft) 0,
+          var(--acid-ink) 4%,
+          var(--acid-ink) 94%,
+          var(--acid-ink-soft) 100%
+        );
+        -webkit-box-decoration-break: clone;
+        box-decoration-break: clone;
+      }
+
+      /* Subrayado: el mismo rotulador, de canto. Va como fondo y no como
+         pseudo-elemento para que aguante si la frase parte de línea. */
+
+      .mk-sub {
+        padding-bottom: 0.2mm;
+        background:
+          linear-gradient(
+            92deg,
+            var(--acid-ink-soft) 0,
+            var(--acid-ink) 6%,
+            var(--acid-ink) 93%,
+            var(--acid-ink-soft) 100%
+          ) no-repeat 0 100% / 100% 0.62mm;
+        -webkit-box-decoration-break: clone;
+        box-decoration-break: clone;
+      }
+
+      /* Círculo a boli: dos óvalos irregulares girados en sentidos opuestos,
+         que es lo que evita que parezca una elipse de CSS. */
+
+      .mk-cir {
+        position: relative;
+        margin: 0 0.7mm;
+        white-space: nowrap;
+      }
+
+      .mk-cir::before,
+      .mk-cir::after {
+        content: "";
+        position: absolute;
+        inset: -0.85mm -1.1mm;
+        border: 0.28mm solid var(--acid-deep);
+      }
+
+      .mk-cir::before {
+        border-radius: 52% 48% 47% 53% / 58% 62% 38% 42%;
+        transform: rotate(-1.9deg);
+      }
+
+      .mk-cir::after {
+        border-radius: 46% 54% 55% 45% / 63% 54% 46% 37%;
+        opacity: 0.42;
+        transform: rotate(2.1deg) translateY(0.14mm);
+      }
+
+      /* ---------- Etiquetas tipo píldora ---------- */
+
+      .pill {
+        display: inline-block;
+        padding: 1.05mm 3.1mm 1mm;
+        border: 0.32mm solid var(--ink);
+        border-radius: 20mm;
+        font-size: 6.5pt;
+        font-weight: 500;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        white-space: nowrap;
+      }
+
+      /* ---------- Cabecera ---------- */
+
+      .head {
+        display: grid;
+        margin-top: 2mm;
+        grid-template-columns: 1fr 45mm;
+        gap: 7mm;
+        align-items: start;
+      }
+
+      /* El nombre es el collage de letras recortadas del portfolio.
+         Detras va el mismo texto en color papel: invisible sobre la
+         hoja, pero mantiene "Daria Karygina" seleccionable en el PDF
+         y disponible para lectores de pantalla. */
+
+      .name {
+        position: relative;
+        width: 76mm;
+        margin: 0 0 3.2mm;
+        font-size: 9pt;
+        line-height: 1.2;
+      }
+
+      .name img {
+        display: block;
+        width: 100%;
+        filter: drop-shadow(0.5mm 0.8mm 0.6mm rgba(15, 17, 14, 0.26));
+      }
+
+      .name span {
+        position: absolute;
+        z-index: -1;
+        inset: 0;
+        color: var(--paper);
+      }
+
+      .role { margin: 0 0 3mm; }
+
+      .profile {
+        margin: 0 0 3.4mm;
+        max-width: 118mm;
+        font-size: 7.5pt;
+        line-height: 1.66;
+        color: var(--ink-soft);
+      }
+
+      .profile strong { font-weight: 500; color: var(--ink); }
+
+      /* Franja de contacto */
+
+      .contact {
+        display: grid;
+        grid-template-columns: repeat(2, auto);
+        gap: 1.9mm 7mm;
+        justify-content: start;
+        padding-top: 2.4mm;
+        border-top: 0.3mm solid var(--line);
+      }
+
+      .contact div {
+        display: flex;
+        align-items: baseline;
+        gap: 2.2mm;
+        font-size: 7.5pt;
+      }
+
+      .contact small {
+        color: var(--acid-deep);
+        font-size: 6.1pt;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+      }
+
+      /* Polaroid */
+
+      .polaroid {
+        position: relative;
+        margin: 1.5mm 0 0;
+        padding: 2.3mm 2.3mm 6.6mm;
+        background: #fbfaf4;
+        box-shadow:
+          0.15mm 0.25mm 0.6mm rgba(15, 17, 14, 0.055),
+          0.4mm 0.8mm 4.2mm rgba(15, 17, 14, 0.115);
+        transform: rotate(2.4deg);
+      }
+
+      .polaroid img {
+        display: block;
+        width: 100%;
+        height: 46mm;
+        object-fit: cover;
+        object-position: 58% 24%;
+        filter: grayscale(1) contrast(1.14) brightness(1.02);
+      }
+
+      /* Celo sujetando la foto */
+      .polaroid::before,
+      .polaroid::after {
+        content: "";
+        position: absolute;
+        z-index: 3;
+        width: 12mm;
+        height: 3.8mm;
+        background: rgba(177, 222, 126, 0.62);
+        border-left: 0.3mm dashed rgba(15, 17, 14, 0.28);
+        border-right: 0.3mm dashed rgba(15, 17, 14, 0.28);
+        box-shadow: 0 0.2mm 0.5mm rgba(15, 17, 14, 0.12);
+      }
+
+      .polaroid::before {
+        top: -0.4mm;
+        left: -3.4mm;
+        transform: rotate(-44deg);
+      }
+
+      .polaroid::after {
+        right: -3.4mm;
+        bottom: -0.4mm;
+        transform: rotate(-44deg);
+      }
+
+      /* ---------- Cuerpo ---------- */
+
+      .body {
+        flex: 1;
+        display: grid;
+        grid-template-columns: 1.44fr 1fr;
+        column-gap: 8mm;
+        align-content: start;
+        min-height: 0;
+        margin-top: 5.5mm;
+      }
+
+      .col-r {
+        padding-left: 8mm;
+        border-left: 0.3mm dashed var(--line-soft);
+      }
+
+      .block + .block { margin-top: 6.5mm; }
+
+      .blockhead {
+        display: flex;
+        align-items: center;
+        gap: 2.4mm;
+        margin-bottom: 2mm;
+      }
+
+      .blockhead .num {
+        color: var(--acid-deep);
+        font-size: 6.3pt;
+        letter-spacing: 0.12em;
+      }
+
+      .blockhead .rule {
+        flex: 1;
+        height: 0.3mm;
+        background: var(--line-soft);
+      }
+
+      /* Experiencia */
+
+      .exp {
+        padding: 4.6mm 0;
+        border-bottom: 0.3mm dotted var(--dotted);
+      }
+
+      .exp:first-of-type { padding-top: 1.6mm; }
+
+      .exp-top {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: 3mm;
+        margin-bottom: 1.2mm;
+      }
+
+      .exp h3 {
+        margin: 0;
+        font-family: Georgia, "Times New Roman", serif;
+        font-weight: 400;
+        font-size: 12.2pt;
+        line-height: 1.1;
+      }
+
+      .when {
+        flex: none;
+        color: var(--acid-deep);
+        font-size: 6.1pt;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        white-space: nowrap;
+      }
+
+      .exp p {
+        margin: 0;
+        font-size: 7.4pt;
+        line-height: 1.74;
+        color: var(--ink-soft);
+      }
+
+      /* Listas con asterisco */
+
+      .starred { margin: 0; padding: 0; list-style: none; }
+
+      .starred li {
+        position: relative;
+        padding: 2.2mm 0 2.2mm 5.2mm;
+        border-bottom: 0.3mm dotted var(--dotted);
+        color: var(--ink-soft);
+        font-size: 7.3pt;
+        line-height: 1.58;
+      }
+
+      .starred li::before {
+        content: "✳";
+        position: absolute;
+        left: 0;
+        top: 2.1mm;
+        color: var(--acid-deep);
+        font-size: 7.4pt;
+      }
+
+      .starred li b {
+        display: block;
+        color: var(--ink);
+        font-family: Georgia, "Times New Roman", serif;
+        font-weight: 400;
+        font-size: 9.2pt;
+        line-height: 1.22;
+      }
+
+      .starred li .when { display: block; margin-bottom: 0.8mm; }
+
+      .starred li em { font-style: italic; color: var(--ink); }
+
+      /* Idiomas con medidor */
+
+      .langs { margin: 0; padding: 0; list-style: none; }
+
+      .langs li {
+        display: grid;
+        grid-template-columns: 1fr 17mm;
+        gap: 0.4mm 2.4mm;
+        align-items: center;
+        padding: 2mm 0;
+        border-bottom: 0.3mm dotted var(--dotted);
+      }
+
+      .langs b {
+        font-weight: 500;
+        font-size: 6.9pt;
+        letter-spacing: 0.13em;
+        text-transform: uppercase;
+      }
+
+      .langs small {
+        grid-column: 1;
+        color: var(--ink-faint);
+        font-size: 6pt;
+        line-height: 1.3;
+      }
+
+      .meter {
+        grid-column: 2;
+        grid-row: 1 / span 2;
+        height: 2.2mm;
+        border: 0.3mm solid var(--ink);
+        border-radius: 20mm;
+        overflow: hidden;
+      }
+
+      .meter i {
+        display: block;
+        height: 100%;
+        background: var(--acid);
+        border-right: 0.3mm solid var(--ink);
+      }
+
+      .meter i.full { border-right: 0; }
+
+      /* Software */
+
+      .software {
+        display: grid;
+        grid-template-columns: repeat(6, 1fr);
+        gap: 2.4mm;
+        margin: 2mm 0 0;
+        padding: 0;
+        list-style: none;
+      }
+
+      .software li { text-align: center; }
+
+      .software b {
+        display: grid;
+        place-items: center;
+        aspect-ratio: 1 / 1;
+        margin-bottom: 1.1mm;
+        background: var(--ink);
+        border-radius: 2.4mm;
+        color: var(--acid);
+        font-family: Georgia, "Times New Roman", serif;
+        font-weight: 400;
+        font-size: 12.5pt;
+        line-height: 1;
+      }
+
+      .software svg {
+        display: block;
+        width: 62%;
+        height: auto;
+      }
+
+      .software .cala { fill: var(--ink); }
+
+      /* Cada marca pide su tamaño: la roseta de tres pétalos tiene mucho
+         hueco interior y el trazo de Procreate ocupa la diagonal. */
+      .software .sw-resolve { width: 72%; }
+      .software .sw-procreate { width: 68%; }
+
+      .software small {
+        display: block;
+        color: var(--ink-faint);
+        font-size: 5.2pt;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+      }
+
+      /* ---------- Impresión ---------- */
+
+      @media print {
+        body { background: var(--paper); }
+
+        .desk {
+          display: block;
+          min-height: 0;
+          padding: 0;
+          background: none;
+        }
+
+        .desk::before,
+        .desk-stars { display: none; }
+
+        .sheet { box-shadow: none; }
+
+        .binder i { background: rgba(15, 17, 14, 0.86); box-shadow: none; }
+      }
+
+      /* Encaje de la hoja en ventanas pequeñas (sólo pantalla) */
+
+      @media screen and (max-width: 232mm) {
+        .desk { align-items: start; }
+        .sheet { transform-origin: top center; transform: scale(0.62); margin-bottom: -113mm; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="desk">
+      <div class="desk-stars" aria-hidden="true">
+        <span>✦</span><span>✦</span><span>✳</span><span>✦</span>
+        <span>✳</span><span>✦</span><span>✦</span><span>✳</span>
+      </div>
+
+      <div class="sheet">
+        <div class="binder" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+        <span class="crop crop--tl" aria-hidden="true"></span>
+        <span class="crop crop--tr" aria-hidden="true"></span>
+        <span class="crop crop--br" aria-hidden="true"></span>
+        <span class="crop crop--bl" aria-hidden="true"></span>
+
+        <header class="head">
+          <div>
+            <h1 class="name">
+              <img src="../assets/daria-karygina.avif" alt="" aria-hidden="true">
+              <span>Daria Karygina</span>
+            </h1>
+
+            <p class="role"><span class="pill">Creativa publicitaria &amp; filmmaker</span></p>
+
+            <p class="profile">
+              Graduada en Publicidad y RR.PP. y en Comunicación Audiovisual por la Universitat Jaume
+              I. Ahora mismo soy <strong class="mk">Communication Officer</strong> del proyecto europeo
+              SEAL-HYDROGEN y asistente de dirección y comunicación en Matteco, sin dejar de
+              <strong class="mk">dirigir, escribir y montar</strong> mis propias piezas. Me interesa el
+              punto en el que una idea bien escrita se convierte en imagen.
+            </p>
+
+            <div class="contact">
+              <div><small>Email</small><span>dariakarygina@gmail.com</span></div>
+              <div><small>Tel</small><span>675 169 353</span></div>
+              <div><small>Ubicación</small><span>Burjassot (Valencia)</span></div>
+              <div><small>LinkedIn</small><span>/in/dariakarygina</span></div>
+            </div>
+          </div>
+
+          <figure class="polaroid">
+            <img src="../assets/quien-soy-retrato.jpg" alt="Retrato de Daria Karygina">
+          </figure>
+        </header>
+
+        <div class="body">
+          <div class="col-l">
+            <section class="block">
+              <header class="blockhead">
+                <span class="num">01 /</span>
+                <span class="pill">Experiencia(s)</span>
+                <span class="rule"></span>
+              </header>
+
+              <article class="exp">
+                <div class="exp-top">
+                  <h3><span class="mk">Matteco</span></h3>
+                  <span class="when">Abr. 2025 — actualidad</span>
+                </div>
+                <p>
+                  <strong class="mk-sub">Asistente de Dirección y Comunicación</strong>: gestión y
+                  coordinación de agendas, reuniones y eventos. Colaboro con el Dircom como Comms.
+                  Specialist para el <span class="mk-cir">Co-founder y CTO</span> de la empresa.
+                </p>
+              </article>
+
+              <article class="exp">
+                <div class="exp-top">
+                  <h3><span class="mk">SEAL-HYDROGEN</span></h3>
+                  <span class="when">Abr. 2025 — actualidad</span>
+                </div>
+                <p>
+                  <strong class="mk-sub">Communication Officer</strong> y portavoz de esta iniciativa
+                  cofinanciada por la <span class="mk-cir">Unión Europea</span> sobre tecnologías del
+                  hidrógeno: divulgación, contenidos y organización de eventos y actividades.
+                </p>
+              </article>
+
+              <article class="exp">
+                <div class="exp-top">
+                  <h3><span class="mk">Beniwood Producciones</span></h3>
+                  <span class="when">Prácticas UJI 2024</span>
+                </div>
+                <p>
+                  <strong class="mk-sub">Auxiliar de montaje</strong> y postproducción del largometraje
+                  <em>Mi cielo tu infierno</em> (A. Evangelio, 2025): <span class="mk-cir">diseño de
+                  sonido</span>, rotulación y subtitulación, dosieres de venta y distribución de
+                  cortometrajes.
+                </p>
+              </article>
+
+              <article class="exp">
+                <div class="exp-top">
+                  <h3><span class="mk">M4B — Marketing for Business</span></h3>
+                  <span class="when">Prácticas UJI 2022</span>
+                </div>
+                <p>
+                  <strong class="mk-sub">Especialista en marketing digital</strong>: campañas
+                  publicitarias, creación de contenido, diseño gráfico, edición de vídeo y tareas de
+                  <span class="mk-cir">Community Manager</span>.
+                </p>
+              </article>
+            </section>
+
+            <section class="block">
+              <header class="blockhead">
+                <span class="num">02 /</span>
+                <span class="pill">Software</span>
+                <span class="rule"></span>
+              </header>
+
+              <ul class="software">
+                <li><b>Ps</b><small>Photoshop</small></li>
+                <li><b>Ai</b><small>Illustrator</small></li>
+                <li><b>Pr</b><small>Premiere</small></li>
+                <li>
+                  <b><svg class="sw-resolve" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8.1 4.5a3.9 3.9 0 1 1 7.8 0c0 3.1-2.2 5-3.9 6.2-1.7-1.2-3.9-3.1-3.9-6.2Z"/><path d="M8.1 4.5a3.9 3.9 0 1 1 7.8 0c0 3.1-2.2 5-3.9 6.2-1.7-1.2-3.9-3.1-3.9-6.2Z" transform="rotate(120 12 12)"/><path d="M8.1 4.5a3.9 3.9 0 1 1 7.8 0c0 3.1-2.2 5-3.9 6.2-1.7-1.2-3.9-3.1-3.9-6.2Z" transform="rotate(240 12 12)"/></svg></b>
+                  <small>DaVinci</small>
+                </li>
+                <li>
+                  <b><svg class="sw-procreate" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6.6 20.8C9.4 14.6 12.6 13.2 15 11.6 17.6 9.8 19.4 8 19 3.8 16.6 8.6 13.8 10 11 11.2 8 12.5 4.8 14.6 6.6 20.8Z"/></svg></b>
+                  <small>Procreate</small>
+                </li>
+                <li>
+                  <b><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="11" fill="currentColor"/><text class="cala" x="12" y="12" text-anchor="middle" dominant-baseline="central" font-family="Georgia, &quot;Times New Roman&quot;, serif" font-style="italic" font-size="18">C</text></svg></b>
+                  <small>Canva</small>
+                </li>
+              </ul>
+            </section>
+          </div>
+
+          <div class="col-r">
+            <section class="block">
+              <header class="blockhead">
+                <span class="num">03 /</span>
+                <span class="pill">Formación</span>
+                <span class="rule"></span>
+              </header>
+
+              <ul class="starred">
+                <li>
+                  <span class="when">2018 — 2022</span>
+                  <b>Graduada en Publicidad y RR.PP.</b>
+                  Universitat Jaume I de Castellón
+                </li>
+                <li>
+                  <span class="when">2022 — 2024</span>
+                  <b>Graduada en Comunicación Audiovisual</b>
+                  Universitat Jaume I de Castellón
+                </li>
+              </ul>
+            </section>
+
+            <section class="block">
+              <header class="blockhead">
+                <span class="num">04 /</span>
+                <span class="pill">Idiomas</span>
+                <span class="rule"></span>
+              </header>
+
+              <ul class="langs">
+                <li>
+                  <b>Ruso</b>
+                  <span class="meter"><i class="full" style="width: 100%"></i></span>
+                  <small>Lengua nativa</small>
+                </li>
+                <li>
+                  <b>Español</b>
+                  <span class="meter"><i class="full" style="width: 100%"></i></span>
+                  <small>Segunda lengua nativa</small>
+                </li>
+                <li>
+                  <b>Inglés</b>
+                  <span class="meter"><i style="width: 86%"></i></span>
+                  <small>C1 Advanced — Cambridge</small>
+                </li>
+                <li>
+                  <b>Valenciano</b>
+                  <span class="meter"><i style="width: 86%"></i></span>
+                  <small>Certificat C1 — JQCV</small>
+                </li>
+              </ul>
+            </section>
+
+            <section class="block">
+              <header class="blockhead">
+                <span class="num">05 /</span>
+                <span class="pill">Jurados &amp; festivales</span>
+                <span class="rule"></span>
+              </header>
+
+              <ul class="starred">
+                <li>
+                  <span class="when">2024</span>
+                  <b>Brussels International Film Festival</b>
+                  Parte del <em>European Young Jury</em> en la sección Director's Week.
+                </li>
+                <li>
+                  <span class="when">2023</span>
+                  <b>Festival Cinema Jove</b>
+                  Jurat Jove en la sección oficial de cortometrajes, 38ª edición.
+                </li>
+                <li>
+                  <span class="when">2023</span>
+                  <b>Festival Humans Fest</b>
+                  Voluntaria en apoyo a la organización del festival.
+                </li>
+              </ul>
+            </section>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
