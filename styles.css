@@ -5523,6 +5523,11 @@ a {
 
   .hero-sticky {
     position: sticky;
+    /* 100vh en el móvil cuenta también la franja que tapa la barra del
+       navegador, así que la composición caía por debajo de lo que se ve.
+       dvh mide el alto visible de verdad; vh queda como reserva. */
+    height: 100vh;
+    height: 100dvh;
   }
 
   .hero-video {
@@ -5574,7 +5579,9 @@ a {
 
   .hero-copy {
     left: 1rem;
-    top: 48vh;
+    /* En % del alto visible del héroe, no del viewport grande: así el
+       bloque queda centrado en pantalla y algo por encima del medio. */
+    top: 47%;
   }
 
   .logo-collage {
