@@ -61,6 +61,17 @@
     video.play().catch(() => {});
   }
 
+  // El HTML trae el 720p: ligero y de sobra para el movil, y es lo que se
+  // queda si no hay JS. En pantalla grande subimos al master en 4K, salvo
+  // que el navegador pida ahorro de datos o vaya por una red muy lenta.
+  const heroMaster = video.dataset.heroMaster;
+  const conexion = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+  const ahorrandoDatos = !!conexion && (conexion.saveData === true || /(^|-)2g$/.test(conexion.effectiveType || ""));
+
+  if (heroMaster && !compact.matches && !ahorrandoDatos) {
+    video.src = heroMaster;
+  }
+
   video.addEventListener("loadeddata", playHeroVideo);
   video.addEventListener("canplay", playHeroVideo);
   video.load();
