@@ -5577,20 +5577,28 @@ a {
     flex: 0 0 auto;
   }
 
+  /* En móvil el bloque va centrado en el eje horizontal, no alineado a la
+     izquierda como en escritorio. El top va en % del alto visible del
+     héroe (no del viewport grande) y sube a la mitad superior; el mínimo
+     en rem evita que se meta debajo de la barra de navegación en
+     pantallas cortas. */
+
   .hero-copy {
-    left: 1rem;
-    /* En % del alto visible del héroe, no del viewport grande. El bloque
-       sube a la mitad superior; el mínimo en rem evita que se meta debajo
-       de la barra de navegación en pantallas cortas. */
+    left: 50%;
     top: max(34%, 11.5rem);
+    width: min(34rem, calc(100vw - 2rem));
+    transform: translate(-50%, -50%);
+    text-align: center;
   }
 
   .logo-collage {
     min-width: 0;
-    width: min(92vw, calc(100% - 2rem));
+    width: min(92vw, 100%);
+    margin-inline: auto;
   }
 
   .type-line {
+    justify-content: center;
     margin-top: 1.6rem;
     font-size: 1.15rem;
   }
