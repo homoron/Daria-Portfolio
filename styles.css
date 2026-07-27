@@ -1838,7 +1838,6 @@ a {
   line-height: 0;
   color: transparent;
   cursor: pointer;
-  filter: drop-shadow(0 0.5rem 0.85rem rgba(0, 0, 0, 0.5));
   transition: transform 200ms ease, filter 200ms ease;
 }
 
@@ -1847,9 +1846,7 @@ a {
 }
 
 .detail-back:focus-visible {
-  filter:
-    drop-shadow(0 0 0.22rem rgba(185, 235, 139, 0.95))
-    drop-shadow(0 0.6rem 1rem rgba(0, 0, 0, 0.4));
+  filter: drop-shadow(0 0 0.22rem rgba(185, 235, 139, 0.95));
   outline: none;
 }
 
@@ -5767,7 +5764,6 @@ a {
     width: 5rem;
     height: auto;
     margin: 0 0 0.35rem;
-    filter: drop-shadow(0 0.45rem 0.85rem rgba(0, 0, 0, 0.34));
   }
 
   .project-detail .reel-mobile-dots {
@@ -5903,14 +5899,9 @@ a {
     letter-spacing: 0.08em;
   }
 
+  /* En móvil el proyecto se abre desde el botón VER PROYECTO de abajo. */
   .camera-enter {
-    opacity: 1;
-    transform: translate(-50%, -50%);
-  }
-
-  .camera-enter b {
-    padding: 0.35rem 0.5rem;
-    background: rgba(0, 0, 0, 0.68);
+    display: none;
   }
 
   .camera-controls {
