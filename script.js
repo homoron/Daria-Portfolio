@@ -13,6 +13,66 @@
 
   if (!video || !hero) return;
 
+  // ---- Arranque de los vídeos de fondo ----
+  // iOS solo reproduce solo si el vídeo va silenciado y en línea, y aun así
+  // rechaza el play() cuando el elemento todavía no tiene datos o el teléfono
+  // está en modo de bajo consumo. Antes se llamaba a play() una sola vez y el
+  // fallo se descartaba en silencio, así que en iPhone el fondo se quedaba
+  // congelado. Ahora cada intento se reintenta cuando llegan los datos y, como
+  // último recurso, al primer gesto del visitante.
+
+  const FONDOS = ".hero-video, .about-smoke video, .work-smoke video";
+  const reintentando = new WeakSet();
+  const pendientesDeGesto = new Set();
+  const GESTOS = ["touchstart", "pointerdown", "keydown"];
+  let escuchandoGesto = false;
+
+  function alPrimerGesto(reintento) {
+    pendientesDeGesto.add(reintento);
+    if (escuchandoGesto) return;
+    escuchandoGesto = true;
+    const lanzar = () => {
+      pendientesDeGesto.forEach((fn) => fn());
+      pendientesDeGesto.clear();
+      escuchandoGesto = false;
+      GESTOS.forEach((ev) => document.removeEventListener(ev, lanzar));
+    };
+    GESTOS.forEach((ev) => document.addEventListener(ev, lanzar, { passive: true }));
+  }
+
+  function reproducirEnSilencio(medio) {
+    if (!medio) return;
+    medio.muted = true;
+    const intento = medio.play();
+    if (!intento || typeof intento.catch !== "function") return;
+    intento.catch(() => {
+      if (reintentando.has(medio)) return;
+      reintentando.add(medio);
+      const reintento = () => {
+        medio.muted = true;
+        const otro = medio.play();
+        if (otro && typeof otro.then === "function") {
+          otro.then(() => reintentando.delete(medio), () => {});
+        }
+      };
+      medio.addEventListener("loadedmetadata", reintento);
+      medio.addEventListener("canplay", reintento);
+      medio.addEventListener("playing", () => reintentando.delete(medio), { once: true });
+      alPrimerGesto(reintento);
+    });
+  }
+
+  function reanudarFondosVisibles() {
+    document.querySelectorAll(FONDOS).forEach((medio) => {
+      if (medio.paused && medio.offsetParent !== null) reproducirEnSilencio(medio);
+    });
+  }
+
+  // iOS pausa el vídeo al cambiar de app o de pestaña y no siempre lo reanuda.
+  document.addEventListener("visibilitychange", () => {
+    if (!document.hidden) reanudarFondosVisibles();
+  });
+
   if ("scrollRestoration" in history) {
     history.scrollRestoration = "manual";
   }
@@ -57,8 +117,7 @@
   }
 
   function playHeroVideo() {
-    video.muted = true;
-    video.play().catch(() => {});
+    reproducirEnSilencio(video);
   }
 
   // El HTML trae el 720p: ligero y de sobra para el movil, y es lo que se
@@ -159,18 +218,18 @@
     if (view === "work") {
       closeProject();
       workSection.querySelectorAll(".work-smoke video").forEach((sectionVideo) => {
-        sectionVideo.play().catch(() => {});
+        reproducirEnSilencio(sectionVideo);
       });
     }
     if (view === "think") {
       closePost();
       thinkSection.querySelectorAll(".work-smoke video").forEach((sectionVideo) => {
-        sectionVideo.play().catch(() => {});
+        reproducirEnSilencio(sectionVideo);
       });
     }
     if (view === "contact") {
       contactSection.querySelectorAll(".work-smoke video").forEach((sectionVideo) => {
-        sectionVideo.play().catch(() => {});
+        reproducirEnSilencio(sectionVideo);
       });
     }
     if (shouldScroll) {
