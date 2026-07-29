@@ -615,6 +615,7 @@
     `(?<![\\p{L}\\p{N}])(${escapedMediaTitles.join("|")})(?![\\p{L}\\p{N}])`,
     "gu"
   );
+  const italicOnlyMediaTitles = new Set(["Birdman", "Irma Vep"]);
 
   document.querySelectorAll(".post-body").forEach((body) => {
     const walker = document.createTreeWalker(body, NodeFilter.SHOW_TEXT);
@@ -628,6 +629,7 @@
 
     textNodes.forEach((textNode) => {
       const text = textNode.nodeValue;
+      const isItalicized = Boolean(textNode.parentElement.closest("em"));
       mediaTitlePattern.lastIndex = 0;
       if (!mediaTitlePattern.test(text)) return;
 
@@ -637,10 +639,14 @@
 
       text.replace(mediaTitlePattern, (match, title, offset) => {
         fragment.append(text.slice(cursor, offset));
-        const markedTitle = document.createElement("span");
-        markedTitle.className = "media-title";
-        markedTitle.textContent = title;
-        fragment.append(markedTitle);
+        if (italicOnlyMediaTitles.has(title) && !isItalicized) {
+          fragment.append(match);
+        } else {
+          const markedTitle = document.createElement("span");
+          markedTitle.className = "media-title";
+          markedTitle.textContent = title;
+          fragment.append(markedTitle);
+        }
         cursor = offset + match.length;
         return match;
       });
