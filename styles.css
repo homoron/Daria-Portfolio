@@ -4829,6 +4829,14 @@ a {
   border: 1px solid rgba(244, 241, 232, 0.14);
 }
 
+.post-body figure figcaption {
+  width: min(100%, var(--post-copy-width));
+  margin: 0.75rem auto 0;
+  color: rgba(244, 241, 232, 0.68);
+  font-size: clamp(0.76rem, 0.9vw, 0.88rem);
+  line-height: 1.55;
+}
+
 .post-body figure.tall {
   max-width: 30rem;
   margin-left: auto;
