@@ -6070,7 +6070,8 @@ a {
   position: relative;
   isolation: isolate;
   display: grid;
-  grid-template-areas: "stage";
+  grid-template-columns: minmax(0, 1.08fr) minmax(20rem, 0.92fr);
+  grid-template-areas: "media copy";
   width: min(100%, 76rem);
   height: clamp(32rem, 82vh, 54rem);
   min-height: 0;
@@ -6126,12 +6127,12 @@ a {
 
 .cinema-reel .reel-strip,
 .cinema-reel .reel-panel {
-  grid-area: stage;
   min-width: 0;
   min-height: 0;
 }
 
 .cinema-reel .reel-strip {
+  grid-area: media;
   position: relative;
   display: block;
   width: 100%;
@@ -6266,11 +6267,16 @@ a {
 }
 
 .cinema-reel .reel-panel {
+  grid-area: copy;
   position: relative;
   z-index: 12;
   inset: auto;
   width: 100%;
   height: 100%;
+  border-left: 1px solid rgba(244, 241, 232, 0.16);
+  background:
+    radial-gradient(circle at 42% 48%, rgba(18, 21, 17, 0.94), rgba(4, 5, 4, 0.99) 72%),
+    #050605;
   pointer-events: none;
 }
 
@@ -6310,7 +6316,7 @@ a {
   align-items: center;
   width: 100%;
   height: 100%;
-  padding: clamp(2.5rem, 5vw, 4.5rem) clamp(3.5rem, 7vw, 7rem);
+  padding: clamp(2.5rem, 5vw, 4.5rem) clamp(1.4rem, 3.6vw, 3.5rem);
 }
 
 .cinema-reel .reel-panel-inner::after {
@@ -6339,26 +6345,22 @@ a {
   align-self: center;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
-  width: min(80%, 52rem);
+  width: 100%;
   max-width: none;
   max-height: calc(100% - 1rem);
-  padding: clamp(1.25rem, 2.5vw, 2.3rem) clamp(1.2rem, 3vw, 2.8rem);
+  padding: clamp(1rem, 2vw, 1.75rem) 0;
   overflow-x: hidden;
   overflow-y: auto;
   overscroll-behavior: contain;
   color: var(--ink);
-  border: 1px solid rgba(244, 241, 232, 0.15);
-  background:
-    radial-gradient(circle at 50% 45%, rgba(4, 5, 4, 0.76), rgba(4, 5, 4, 0.9)),
-    rgba(4, 5, 4, 0.78);
-  box-shadow:
-    0 1rem 3.5rem rgba(0, 0, 0, 0.34),
-    inset 0 0 2rem rgba(255, 255, 255, 0.018);
-  text-align: center;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+  text-align: left;
   text-shadow: 0 0.12rem 0.7rem rgba(0, 0, 0, 0.72);
-  backdrop-filter: blur(0.38rem);
+  backdrop-filter: none;
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
@@ -6437,9 +6439,9 @@ a {
 
 .cinema-reel .reel-caption blockquote {
   margin: 0.75rem 0 0;
-  padding: 0.85rem 0;
+  padding: 0.2rem 0 0.2rem 1rem;
   border: 0;
-  border-block: 1px solid rgba(185, 235, 139, 0.48);
+  border-left: 2px solid rgba(185, 235, 139, 0.7);
   font-family: Georgia, "Times New Roman", serif;
   font-size: clamp(0.96rem, 1.45vw, 1.24rem);
   font-style: italic;
@@ -6628,15 +6630,16 @@ a {
   .cinema-reel {
     width: 100%;
     height: clamp(31rem, 78vh, 47rem);
+    grid-template-columns: minmax(0, 1fr) minmax(18rem, 1fr);
     padding-inline: clamp(0.7rem, 2vw, 1.25rem);
   }
 
   .cinema-reel .reel-panel-inner {
-    padding-inline: clamp(2.8rem, 7vw, 4.5rem);
+    padding-inline: clamp(1rem, 3vw, 2rem);
   }
 
   .cinema-reel .reel-caption {
-    width: min(88%, 46rem);
+    width: 100%;
   }
 }
 
@@ -6644,7 +6647,8 @@ a {
   .project-detail .cinema-reel,
   .cinema-reel {
     display: grid;
-    grid-template-areas: "stage";
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    grid-template-areas: "media copy";
     width: 100%;
     height: clamp(33rem, 80svh, 44rem);
     min-height: 0;
@@ -6658,12 +6662,21 @@ a {
   }
 
   .project-detail .cinema-reel .reel-strip,
+  .cinema-reel .reel-strip {
+    grid-column: auto;
+    grid-row: auto;
+    grid-area: media;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+  }
+
   .project-detail .cinema-reel .reel-panel,
-  .cinema-reel .reel-strip,
   .cinema-reel .reel-panel {
     grid-column: auto;
     grid-row: auto;
-    grid-area: stage;
+    grid-area: copy;
     width: 100%;
     height: 100%;
     margin: 0;
@@ -6703,7 +6716,7 @@ a {
     inset: 0;
     display: grid;
     height: 100%;
-    padding: 2.65rem 2.6rem 3.2rem;
+    padding: 2.35rem clamp(0.75rem, 3vw, 1.2rem) 2.8rem;
   }
 
   .cinema-reel .reel-captions {
@@ -6717,11 +6730,11 @@ a {
     width: 100%;
     max-width: none;
     max-height: calc(100% - 0.25rem);
-    padding: 1rem 0.85rem;
+    padding: 0.8rem 0;
     overflow-x: hidden;
     overflow-y: auto;
-    border-color: rgba(244, 241, 232, 0.13);
-    background: rgba(4, 5, 4, 0.84);
+    border: 0;
+    background: transparent;
   }
 
   .cinema-reel .reel-caption:not(.is-active):not([class*="is-leaving-"]) {
