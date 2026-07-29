@@ -433,7 +433,7 @@
 
   window.addEventListener("scroll", updateNavSpy, { passive: true });
 
-  document.querySelectorAll("[data-reel]").forEach((reel) => {
+  document.querySelectorAll("[data-cinema-reel-disabled]").forEach((reel) => {
     const strip = reel.querySelector(".reel-strip");
     const frames = Array.from(reel.querySelectorAll(".reel-frame"));
     const captions = Array.from(reel.querySelectorAll(".reel-caption"));
@@ -637,6 +637,139 @@
     }, { passive: true });
 
     updateState();
+  });
+
+  const reelDesktop = window.matchMedia("(min-width: 761px)");
+
+  document.querySelectorAll("[data-reel]").forEach((reel) => {
+    const strip = reel.querySelector(".reel-strip");
+    const frames = Array.from(reel.querySelectorAll(".reel-frame"));
+    const captions = Array.from(reel.querySelectorAll(".reel-caption"));
+    const dots = Array.from(reel.querySelectorAll(".reel-dots span"));
+    const mobileDots = [];
+    if (!frames.length) return;
+
+    if (strip) {
+      strip.tabIndex = 0;
+      strip.setAttribute("aria-label", "Fotogramas del proyecto");
+
+      const mobileDotsNav = document.createElement("div");
+      mobileDotsNav.className = "reel-mobile-dots";
+      mobileDotsNav.setAttribute("aria-label", "Navegación de imágenes");
+
+      frames.forEach((frame, index) => {
+        const mobileDot = document.createElement("button");
+        mobileDot.type = "button";
+        mobileDot.setAttribute("aria-label", `Ir a la imagen ${index + 1} de ${frames.length}`);
+        mobileDot.addEventListener("click", () => scrollToFrame(index));
+        mobileDotsNav.appendChild(mobileDot);
+        mobileDots.push(mobileDot);
+      });
+
+      reel.insertBefore(mobileDotsNav, strip);
+    }
+
+    function scrollToFrame(index, behavior = "smooth") {
+      if (!strip || !frames[index]) return;
+      const stripRect = strip.getBoundingClientRect();
+      const frameRect = frames[index].getBoundingClientRect();
+      const left = strip.scrollLeft + frameRect.left - stripRect.left - (strip.clientWidth - frameRect.width) / 2;
+      strip.scrollTo({ left, behavior });
+    }
+
+    // Pad the strip so the first and last frames can rest centered against
+    // the sticky caption, regardless of each frame's aspect ratio.
+    let padCache = "";
+    function padStrip() {
+      if (!strip) return;
+      if (!reelDesktop.matches) {
+        if (padCache !== "off") {
+          strip.style.paddingTop = "";
+          strip.style.paddingBottom = "";
+          padCache = "off";
+        }
+        return;
+      }
+      const first = frames[0].getBoundingClientRect().height;
+      // Skip while hidden/not laid out yet, so we never write bogus padding
+      // computed against a zero-height frame.
+      if (first < 1) return;
+      const vh = window.innerHeight;
+      const last = frames[frames.length - 1].getBoundingClientRect().height;
+      // Let the first frame enter near the top of the project instead of
+      // spending half of the available viewport space before it begins.
+      const top = `${Math.max(16, Math.min(80, (vh - first) * 0.2))}px`;
+      const bottom = `${Math.max(16, (vh - last) / 2)}px`;
+      const key = top + "|" + bottom;
+      if (key === padCache) return;
+      strip.style.paddingTop = top;
+      strip.style.paddingBottom = bottom;
+      padCache = key;
+    }
+
+    function updateReel() {
+      if (!frames[0].offsetParent) return;
+      let best = 0;
+      let bestDist = Infinity;
+      if (!reelDesktop.matches && strip) {
+        const stripRect = strip.getBoundingClientRect();
+        const mid = stripRect.left + stripRect.width / 2;
+        frames.forEach((frame, index) => {
+          const rect = frame.getBoundingClientRect();
+          const dist = Math.abs(rect.left + rect.width / 2 - mid);
+          if (dist < bestDist) {
+            bestDist = dist;
+            best = index;
+          }
+        });
+      } else {
+        const mid = window.innerHeight * 0.5;
+        frames.forEach((frame, index) => {
+          const rect = frame.getBoundingClientRect();
+          const dist = Math.abs(rect.top + rect.height / 2 - mid);
+          if (dist < bestDist) {
+            bestDist = dist;
+            best = index;
+          }
+        });
+      }
+      frames.forEach((frame, index) => frame.classList.toggle("is-active", index === best));
+      captions.forEach((caption, index) => caption.classList.toggle("is-active", index === best));
+      dots.forEach((dot, index) => dot.classList.toggle("is-active", index === best));
+      mobileDots.forEach((dot, index) => {
+        const isActive = index === best;
+        dot.classList.toggle("is-active", isActive);
+        dot.setAttribute("aria-current", isActive ? "true" : "false");
+      });
+    }
+
+    function refreshReel() {
+      padStrip();
+      updateReel();
+    }
+
+    window.addEventListener("scroll", refreshReel, { passive: true });
+    window.addEventListener("resize", refreshReel);
+    strip?.addEventListener("scroll", refreshReel, { passive: true });
+    strip?.addEventListener("keydown", (event) => {
+      if (reelDesktop.matches || (event.key !== "ArrowLeft" && event.key !== "ArrowRight")) return;
+      event.preventDefault();
+      const active = frames.findIndex((frame) => frame.classList.contains("is-active"));
+      const direction = event.key === "ArrowRight" ? 1 : -1;
+      const next = Math.max(0, Math.min(frames.length - 1, active + direction));
+      scrollToFrame(next);
+    });
+    reel.querySelectorAll("img").forEach((img) => {
+      if (!img.complete) img.addEventListener("load", refreshReel, { once: true });
+    });
+    // Recompute when the reel becomes visible (project opened) or a frame
+    // resizes, so the padding that centers the first/last frame is correct.
+    if (typeof ResizeObserver !== "undefined") {
+      const ro = new ResizeObserver(() => refreshReel());
+      ro.observe(frames[0]);
+      ro.observe(frames[frames.length - 1]);
+    }
+    refreshReel();
   });
 
   const postButtons = document.querySelectorAll("[data-post]");
