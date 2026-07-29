@@ -1833,12 +1833,12 @@ a {
   margin: 0 0 1.6rem;
   padding: 0;
   border: 0;
-  background: url("assets/volver-ticket.webp") center / contain no-repeat;
+  background: url("assets/volver-ticket-flat.webp") center / contain no-repeat;
   font-size: 0;
   line-height: 0;
   color: transparent;
   cursor: pointer;
-  transition: transform 200ms ease, filter 200ms ease;
+  transition: transform 200ms ease;
 }
 
 .detail-back:hover {
@@ -1846,8 +1846,8 @@ a {
 }
 
 .detail-back:focus-visible {
-  filter: drop-shadow(0 0 0.22rem rgba(185, 235, 139, 0.95));
-  outline: none;
+  outline: 2px solid var(--acid);
+  outline-offset: 0.2rem;
 }
 
 .detail-back:active {
