@@ -140,6 +140,21 @@ a {
 }
 
 @media (min-width: 901px) {
+  .nav-links {
+    --nav-cv-width: 2.65rem;
+    --nav-cv-half: 1.325rem;
+  }
+
+  .nav-links::before {
+    right: var(--nav-cv-half);
+  }
+
+  .nav-links .nav-cv {
+    flex: 0 0 var(--nav-cv-width);
+    width: var(--nav-cv-width);
+    justify-content: center;
+  }
+
   .nav-links .nav-cv::after {
     left: 50%;
     bottom: -1.09rem;
