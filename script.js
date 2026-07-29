@@ -187,7 +187,6 @@
     bruma: "assets/pub-bruma-text.jpg",
     durex: "assets/pub-durex-text.jpg",
     crocs: "assets/pub-crocs-text.jpeg",
-    cultura: "assets/pub-cultura-text.jpeg",
     lafede: "assets/lafede-collage.jpg",
     villarreal: "assets/villarreal-collage.jpg",
     kachevnitsa: "assets/film-kachevnitsa-collage.jpg",
