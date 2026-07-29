@@ -1471,10 +1471,20 @@ a {
    scroll below the camera). The stage flexes to absorb the remaining
    height instead of guessing it with a constant. */
 @media (min-width: 901px) {
+  .work-section:not(.has-open-project) {
+    padding-top: clamp(3rem, 5vw, 4.5rem);
+    padding-bottom: clamp(3rem, 5vw, 4.5rem);
+  }
+
   .work-chooser {
+    --camera-frame-width: min(
+      100%,
+      100rem,
+      max(54rem, calc(155vh - 18rem))
+    );
     display: flex;
     flex-direction: column;
-    height: calc(100vh - 2 * clamp(5rem, 9vw, 8rem));
+    height: calc(100vh - 2 * clamp(3rem, 5vw, 4.5rem));
   }
 
   .camera-playback {
@@ -2007,6 +2017,29 @@ a {
 .reel-frame .cultura-display-set,
 .reel-frame .cultura-steps {
   margin: 0;
+}
+
+.lafede-triptych {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(0.3rem, 0.8vw, 0.7rem);
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+}
+
+.lafede-triptych img {
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+  margin: 0;
+  object-fit: contain;
+}
+
+.lafede-triptych img + img {
+  margin-top: 0;
 }
 
 .reel-play {
@@ -6921,6 +6954,52 @@ a {
   .smooth-reel .reel-frame video + video,
   .smooth-reel .reel-frame iframe + iframe {
     margin-top: 0;
+  }
+
+  .smooth-reel .lafede-triptych {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-rows: 1.08fr 0.92fr;
+    gap: clamp(0.45rem, 0.9vw, 0.85rem);
+  }
+
+  .smooth-reel .lafede-triptych img:first-child {
+    grid-column: 1 / -1;
+  }
+
+  .smooth-reel .reel-frame .villarreal-action-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: clamp(0.35rem, 0.7vw, 0.7rem);
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    max-height: 100%;
+    align-items: stretch;
+  }
+
+  .smooth-reel .villarreal-action-grid article {
+    min-width: 0;
+    padding: clamp(0.45rem, 0.75vw, 0.75rem);
+    gap: clamp(0.35rem, 0.65vw, 0.65rem);
+    overflow: hidden;
+  }
+
+  .smooth-reel .villarreal-action-grid img {
+    width: 100%;
+    height: clamp(8rem, 24vh, 13rem);
+    aspect-ratio: auto;
+    object-fit: contain;
+    background: #f4f4ef;
+  }
+
+  .smooth-reel .villarreal-action-grid h3 {
+    font-size: clamp(0.9rem, 1.15vw, 1.2rem);
+    line-height: 1.05;
+  }
+
+  .smooth-reel .villarreal-action-grid p {
+    font-size: clamp(0.62rem, 0.75vw, 0.78rem);
+    line-height: 1.4;
   }
 
   .smooth-reel .reel-frame[class*="is-leaving-"] img,
