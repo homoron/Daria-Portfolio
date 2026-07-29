@@ -572,6 +572,84 @@
   const thinkChooser = document.querySelector("[data-think-view='index']");
   const closePostButtons = document.querySelectorAll("[data-close-post]");
 
+  const mediaTitles = [
+    "Birdman o (La inesperada virtud de la ignorancia) (Birdman or [The Unexpected Virtue of Ignorance]",
+    "Mujeres y Hombres y Viceversa",
+    "El Turismo Es Un Gran Invento",
+    "Las Brujas de Zugarramurdi",
+    "El Nacimiento De Una Nación",
+    "Callejeros Viajeros",
+    "The Amazing Spider-Man",
+    "El Crepúsculo de los Dioses",
+    "Los Cuatrocientos Golpes",
+    "Tirad Sobre el Pianista",
+    "Jules et Jim",
+    "Viajando con Chester",
+    "Los Gipsy Kings",
+    "Breaking Bad",
+    "Cuarto Milenio",
+    "Besos Robados",
+    "Les Vampires",
+    "First Dates",
+    "Birdman 3",
+    "Black Swan",
+    "Cisne Negro",
+    "Irma Vep",
+    "Callejeros",
+    "Ola, Ola",
+    "Ola Ola",
+    "La Abuela",
+    "La Bruja",
+    "Múltiple",
+    "Furtivos",
+    "Batman",
+    "Birdman",
+    "Split",
+    "X"
+  ].sort((a, b) => b.length - a.length);
+
+  const escapedMediaTitles = mediaTitles.map((title) =>
+    title.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")
+  );
+  const mediaTitlePattern = new RegExp(
+    `(?<![\\p{L}\\p{N}])(${escapedMediaTitles.join("|")})(?![\\p{L}\\p{N}])`,
+    "gu"
+  );
+
+  document.querySelectorAll(".post-body").forEach((body) => {
+    const walker = document.createTreeWalker(body, NodeFilter.SHOW_TEXT);
+    const textNodes = [];
+
+    while (walker.nextNode()) {
+      if (!walker.currentNode.parentElement.closest(".media-title")) {
+        textNodes.push(walker.currentNode);
+      }
+    }
+
+    textNodes.forEach((textNode) => {
+      const text = textNode.nodeValue;
+      mediaTitlePattern.lastIndex = 0;
+      if (!mediaTitlePattern.test(text)) return;
+
+      const fragment = document.createDocumentFragment();
+      let cursor = 0;
+      mediaTitlePattern.lastIndex = 0;
+
+      text.replace(mediaTitlePattern, (match, title, offset) => {
+        fragment.append(text.slice(cursor, offset));
+        const markedTitle = document.createElement("span");
+        markedTitle.className = "media-title";
+        markedTitle.textContent = title;
+        fragment.append(markedTitle);
+        cursor = offset + match.length;
+        return match;
+      });
+
+      fragment.append(text.slice(cursor));
+      textNode.replaceWith(fragment);
+    });
+  });
+
   function openPost(post, updateHistory = true) {
     const activePost = document.querySelector(`[data-post-detail="${post}"]`);
     if (!thinkChooser || !activePost) return;
