@@ -188,7 +188,6 @@
     durex: "assets/pub-durex-text.jpg",
     crocs: "assets/pub-crocs-text.jpeg",
     cultura: "assets/pub-cultura-text.jpeg",
-    cinecas: "assets/pub-cinecas-text.jpeg",
     lafede: "assets/lafede-collage.jpg",
     villarreal: "assets/villarreal-collage.jpg",
     kachevnitsa: "assets/film-kachevnitsa-collage.jpg",
@@ -435,13 +434,11 @@
   window.addEventListener("scroll", updateNavSpy, { passive: true });
 
   const reelDesktop = window.matchMedia("(min-width: 761px)");
-  const reelSplitView = window.matchMedia("(min-width: 901px)");
 
   document.querySelectorAll("[data-reel]").forEach((reel) => {
     const strip = reel.querySelector(".reel-strip");
     const frames = Array.from(reel.querySelectorAll(".reel-frame"));
     const captions = Array.from(reel.querySelectorAll(".reel-caption"));
-    const captionsTrack = reel.querySelector(".reel-captions");
     const dots = Array.from(reel.querySelectorAll(".reel-dots span"));
     const mobileDots = [];
     let reelAnimationFrame = 0;
@@ -471,12 +468,17 @@
       if (!strip || !frames[index]) return;
       const stripRect = strip.getBoundingClientRect();
       const frameRect = frames[index].getBoundingClientRect();
-      const left = strip.scrollLeft + frameRect.left - stripRect.left - (strip.clientWidth - frameRect.width) / 2;
-      strip.scrollTo({ left, behavior });
+      if (reelDesktop.matches) {
+        const top = strip.scrollTop + frameRect.top - stripRect.top - (strip.clientHeight - frameRect.height) / 2;
+        strip.scrollTo({ top, behavior });
+      } else {
+        const left = strip.scrollLeft + frameRect.left - stripRect.left - (strip.clientWidth - frameRect.width) / 2;
+        strip.scrollTo({ left, behavior });
+      }
     }
 
-    // Pad the strip so the first and last frames can rest centered against
-    // the sticky caption, regardless of each frame's aspect ratio.
+    // Let the first and last frames snap to the middle of the internal reel,
+    // leaving a glimpse of the neighbouring frames above and below.
     let padCache = "";
     function padStrip() {
       if (!strip) return;
@@ -489,15 +491,10 @@
         return;
       }
       const first = frames[0].getBoundingClientRect().height;
-      // Skip while hidden/not laid out yet, so we never write bogus padding
-      // computed against a zero-height frame.
       if (first < 1) return;
-      const vh = window.innerHeight;
       const last = frames[frames.length - 1].getBoundingClientRect().height;
-      // Let the first frame enter near the top of the project instead of
-      // spending half of the available viewport space before it begins.
-      const top = `${Math.max(16, Math.min(80, (vh - first) * 0.2))}px`;
-      const bottom = `${Math.max(16, (vh - last) / 2)}px`;
+      const top = `${Math.max(16, (strip.clientHeight - first) / 2)}px`;
+      const bottom = `${Math.max(16, (strip.clientHeight - last) / 2)}px`;
       const key = top + "|" + bottom;
       if (key === padCache) return;
       strip.style.paddingTop = top;
@@ -521,7 +518,8 @@
           }
         });
       } else {
-        const mid = window.innerHeight * 0.5;
+        const stripRect = strip.getBoundingClientRect();
+        const mid = stripRect.top + stripRect.height / 2;
         frames.forEach((frame, index) => {
           const rect = frame.getBoundingClientRect();
           const dist = Math.abs(rect.top + rect.height / 2 - mid);
@@ -530,40 +528,6 @@
             best = index;
           }
         });
-
-        if (captionsTrack && reelSplitView.matches) {
-          const activeRect = frames[best].getBoundingClientRect();
-          const activeMid = activeRect.top + activeRect.height / 2;
-          const trackRect = captionsTrack.getBoundingClientRect();
-          const renderedTransform = window.getComputedStyle(captionsTrack).transform;
-          let renderedShift = 0;
-          if (renderedTransform && renderedTransform !== "none") {
-            const matrixValues = renderedTransform
-              .slice(renderedTransform.indexOf("(") + 1, -1)
-              .split(",")
-              .map(Number);
-            renderedShift = renderedTransform.startsWith("matrix3d")
-              ? matrixValues[13] || 0
-              : matrixValues[5] || 0;
-          }
-          const trackMid = trackRect.top + trackRect.height / 2 - renderedShift;
-          const captionHeight = captions[best]?.offsetHeight || 0;
-          const safeInset = 24;
-          const fitsViewport = captionHeight <= window.innerHeight - safeInset * 2;
-          const desiredMid = fitsViewport
-            ? Math.max(
-              safeInset + captionHeight / 2,
-              Math.min(window.innerHeight - safeInset - captionHeight / 2, activeMid)
-            )
-            : mid;
-          const shift = desiredMid - trackMid;
-          captionsTrack.style.setProperty("--reel-caption-shift", `${shift}px`);
-        } else if (captionsTrack) {
-          captionsTrack.style.removeProperty("--reel-caption-shift");
-        }
-      }
-      if (!reelDesktop.matches && captionsTrack) {
-        captionsTrack.style.removeProperty("--reel-caption-shift");
       }
       frames.forEach((frame, index) => frame.classList.toggle("is-active", index === best));
       captions.forEach((caption, index) => caption.classList.toggle("is-active", index === best));
@@ -592,18 +556,33 @@
     window.addEventListener("resize", refreshReel);
     strip?.addEventListener("scroll", scheduleReelUpdate, { passive: true });
     strip?.addEventListener("keydown", (event) => {
-      if (reelDesktop.matches || (event.key !== "ArrowLeft" && event.key !== "ArrowRight")) return;
+      const previousKey = reelDesktop.matches ? "ArrowUp" : "ArrowLeft";
+      const nextKey = reelDesktop.matches ? "ArrowDown" : "ArrowRight";
+      if (event.key !== previousKey && event.key !== nextKey) return;
       event.preventDefault();
       const active = frames.findIndex((frame) => frame.classList.contains("is-active"));
-      const direction = event.key === "ArrowRight" ? 1 : -1;
+      const direction = event.key === nextKey ? 1 : -1;
       const next = Math.max(0, Math.min(frames.length - 1, active + direction));
       scrollToFrame(next);
     });
+    reel.addEventListener("wheel", (event) => {
+      if (!reelDesktop.matches || !strip || Math.abs(event.deltaY) <= Math.abs(event.deltaX)) return;
+      const activeCaption = event.target.closest?.(".reel-caption.is-active");
+      if (activeCaption && activeCaption.scrollHeight > activeCaption.clientHeight + 1) {
+        const captionAtStart = activeCaption.scrollTop <= 1;
+        const captionAtEnd = activeCaption.scrollTop + activeCaption.clientHeight >= activeCaption.scrollHeight - 1;
+        if (!((event.deltaY < 0 && captionAtStart) || (event.deltaY > 0 && captionAtEnd))) return;
+      }
+      const atStart = strip.scrollTop <= 1;
+      const atEnd = strip.scrollTop + strip.clientHeight >= strip.scrollHeight - 1;
+      if ((event.deltaY < 0 && atStart) || (event.deltaY > 0 && atEnd)) return;
+      event.preventDefault();
+      strip.scrollTop += event.deltaY;
+    }, { passive: false });
     reel.querySelectorAll("img").forEach((img) => {
       if (!img.complete) img.addEventListener("load", refreshReel, { once: true });
     });
-    // Recompute when the reel becomes visible (project opened) or a frame
-    // resizes, so the padding that centers the first/last frame is correct.
+    // Recompute when the reel becomes visible or either edge frame resizes.
     if (typeof ResizeObserver !== "undefined") {
       const ro = new ResizeObserver(() => refreshReel());
       ro.observe(frames[0]);
