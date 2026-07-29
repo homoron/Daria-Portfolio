@@ -433,162 +433,210 @@
 
   window.addEventListener("scroll", updateNavSpy, { passive: true });
 
-  const reelDesktop = window.matchMedia("(min-width: 761px)");
-
   document.querySelectorAll("[data-reel]").forEach((reel) => {
     const strip = reel.querySelector(".reel-strip");
     const frames = Array.from(reel.querySelectorAll(".reel-frame"));
     const captions = Array.from(reel.querySelectorAll(".reel-caption"));
-    const dots = Array.from(reel.querySelectorAll(".reel-dots span"));
-    const mobileDots = [];
-    let reelAnimationFrame = 0;
-    if (!frames.length) return;
+    const dotShell = reel.querySelector(".reel-dots");
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    if (!strip || !frames.length || frames.length !== captions.length) return;
 
-    if (strip) {
-      strip.tabIndex = 0;
-      strip.setAttribute("aria-label", "Fotogramas del proyecto");
+    reel.classList.add("cinema-reel");
+    reel.tabIndex = 0;
+    reel.setAttribute("role", "region");
+    reel.setAttribute("aria-roledescription", "carrusel");
+    reel.setAttribute(
+      "aria-label",
+      `Fotogramas de ${reel.closest("[data-project-detail]")?.getAttribute("aria-label") || "este proyecto"}`
+    );
 
-      const mobileDotsNav = document.createElement("div");
-      mobileDotsNav.className = "reel-mobile-dots";
-      mobileDotsNav.setAttribute("aria-label", "Navegación de imágenes");
+    let current = Math.max(0, frames.findIndex((frame) => frame.classList.contains("is-active")));
+    let transitioning = false;
+    let transitionTimer = 0;
+    let wheelTotal = 0;
+    let wheelResetTimer = 0;
+    let touchStartY = null;
+    let touchShouldNavigate = false;
+    let touchCaption = null;
 
-      frames.forEach((frame, index) => {
-        const mobileDot = document.createElement("button");
-        mobileDot.type = "button";
-        mobileDot.setAttribute("aria-label", `Ir a la imagen ${index + 1} de ${frames.length}`);
-        mobileDot.addEventListener("click", () => scrollToFrame(index));
-        mobileDotsNav.appendChild(mobileDot);
-        mobileDots.push(mobileDot);
-      });
-
-      reel.insertBefore(mobileDotsNav, strip);
-    }
-
-    function scrollToFrame(index, behavior = "smooth") {
-      if (!strip || !frames[index]) return;
-      const stripRect = strip.getBoundingClientRect();
-      const frameRect = frames[index].getBoundingClientRect();
-      if (reelDesktop.matches) {
-        const top = strip.scrollTop + frameRect.top - stripRect.top - (strip.clientHeight - frameRect.height) / 2;
-        strip.scrollTo({ top, behavior });
-      } else {
-        const left = strip.scrollLeft + frameRect.left - stripRect.left - (strip.clientWidth - frameRect.width) / 2;
-        strip.scrollTo({ left, behavior });
-      }
-    }
-
-    // Let the first and last frames snap to the middle of the internal reel,
-    // leaving a glimpse of the neighbouring frames above and below.
-    let padCache = "";
-    function padStrip() {
-      if (!strip) return;
-      if (!reelDesktop.matches) {
-        if (padCache !== "off") {
-          strip.style.paddingTop = "";
-          strip.style.paddingBottom = "";
-          padCache = "off";
-        }
-        return;
-      }
-      const first = frames[0].getBoundingClientRect().height;
-      if (first < 1) return;
-      const last = frames[frames.length - 1].getBoundingClientRect().height;
-      const top = `${Math.max(16, (strip.clientHeight - first) / 2)}px`;
-      const bottom = `${Math.max(16, (strip.clientHeight - last) / 2)}px`;
-      const key = top + "|" + bottom;
-      if (key === padCache) return;
-      strip.style.paddingTop = top;
-      strip.style.paddingBottom = bottom;
-      padCache = key;
-    }
-
-    function updateReel() {
-      if (!frames[0].offsetParent) return;
-      let best = 0;
-      let bestDist = Infinity;
-      if (!reelDesktop.matches && strip) {
-        const stripRect = strip.getBoundingClientRect();
-        const mid = stripRect.left + stripRect.width / 2;
-        frames.forEach((frame, index) => {
-          const rect = frame.getBoundingClientRect();
-          const dist = Math.abs(rect.left + rect.width / 2 - mid);
-          if (dist < bestDist) {
-            bestDist = dist;
-            best = index;
-          }
-        });
-      } else {
-        const stripRect = strip.getBoundingClientRect();
-        const mid = stripRect.top + stripRect.height / 2;
-        frames.forEach((frame, index) => {
-          const rect = frame.getBoundingClientRect();
-          const dist = Math.abs(rect.top + rect.height / 2 - mid);
-          if (dist < bestDist) {
-            bestDist = dist;
-            best = index;
-          }
-        });
-      }
-      frames.forEach((frame, index) => frame.classList.toggle("is-active", index === best));
-      captions.forEach((caption, index) => caption.classList.toggle("is-active", index === best));
-      dots.forEach((dot, index) => dot.classList.toggle("is-active", index === best));
-      mobileDots.forEach((dot, index) => {
-        const isActive = index === best;
-        dot.classList.toggle("is-active", isActive);
-        dot.setAttribute("aria-current", isActive ? "true" : "false");
-      });
-    }
-
-    function refreshReel() {
-      padStrip();
-      updateReel();
-    }
-
-    function scheduleReelUpdate() {
-      if (!frames[0].offsetParent || reelAnimationFrame) return;
-      reelAnimationFrame = window.requestAnimationFrame(() => {
-        reelAnimationFrame = 0;
-        updateReel();
-      });
-    }
-
-    window.addEventListener("scroll", scheduleReelUpdate, { passive: true });
-    window.addEventListener("resize", refreshReel);
-    strip?.addEventListener("scroll", scheduleReelUpdate, { passive: true });
-    strip?.addEventListener("keydown", (event) => {
-      const previousKey = reelDesktop.matches ? "ArrowUp" : "ArrowLeft";
-      const nextKey = reelDesktop.matches ? "ArrowDown" : "ArrowRight";
-      if (event.key !== previousKey && event.key !== nextKey) return;
-      event.preventDefault();
-      const active = frames.findIndex((frame) => frame.classList.contains("is-active"));
-      const direction = event.key === nextKey ? 1 : -1;
-      const next = Math.max(0, Math.min(frames.length - 1, active + direction));
-      scrollToFrame(next);
+    const dots = Array.from(dotShell?.querySelectorAll("span") || []).map((span, index) => {
+      const dot = document.createElement("button");
+      dot.type = "button";
+      dot.className = span.className;
+      dot.setAttribute("aria-label", `Ir al fotograma ${index + 1} de ${frames.length}`);
+      span.replaceWith(dot);
+      dot.addEventListener("click", () => showFrame(index, index > current ? 1 : -1));
+      return dot;
     });
+
+    if (dotShell) {
+      dotShell.removeAttribute("aria-hidden");
+      dotShell.setAttribute("aria-label", "Elegir fotograma");
+    }
+
+    const controls = document.createElement("div");
+    controls.className = "reel-controls";
+    const previous = document.createElement("button");
+    previous.type = "button";
+    previous.className = "reel-nav reel-nav-prev";
+    previous.setAttribute("aria-label", "Fotograma anterior");
+    previous.innerHTML = '<span aria-hidden="true">←</span>';
+    const next = document.createElement("button");
+    next.type = "button";
+    next.className = "reel-nav reel-nav-next";
+    next.setAttribute("aria-label", "Fotograma siguiente");
+    next.innerHTML = '<span aria-hidden="true">→</span>';
+    controls.append(previous, next);
+    reel.appendChild(controls);
+
+    function updateState() {
+      frames.forEach((frame, index) => {
+        const active = index === current;
+        frame.classList.toggle("is-active", active);
+        frame.setAttribute("aria-hidden", active ? "false" : "true");
+        frame.inert = !active;
+      });
+      captions.forEach((caption, index) => {
+        const active = index === current;
+        caption.classList.toggle("is-active", active);
+        caption.setAttribute("aria-hidden", active ? "false" : "true");
+        caption.inert = !active;
+        if (!active) caption.scrollTop = 0;
+      });
+      dots.forEach((dot, index) => {
+        const active = index === current;
+        dot.classList.toggle("is-active", active);
+        dot.setAttribute("aria-current", active ? "true" : "false");
+      });
+      previous.disabled = current === 0;
+      next.disabled = current === frames.length - 1;
+      reel.dataset.current = String(current + 1).padStart(2, "0");
+      reel.style.setProperty("--reel-progress", `${((current + 1) / frames.length) * 100}%`);
+    }
+
+    function pauseFrame(frame) {
+      frame.querySelectorAll("video").forEach((video) => video.pause());
+      frame.querySelectorAll('iframe[src*="vimeo"]').forEach((iframe) => {
+        iframe.contentWindow?.postMessage(JSON.stringify({ method: "pause" }), "*");
+      });
+    }
+
+    function finishTransition(oldFrame, oldCaption, newFrame, newCaption) {
+      window.clearTimeout(transitionTimer);
+      [oldFrame, oldCaption, newFrame, newCaption].forEach((element) => {
+        element?.classList.remove(
+          "is-entering-next",
+          "is-entering-prev",
+          "is-leaving-next",
+          "is-leaving-prev"
+        );
+      });
+      reel.classList.remove("is-transitioning");
+      transitioning = false;
+      updateState();
+    }
+
+    function showFrame(index, direction = index > current ? 1 : -1) {
+      if (transitioning || index === current || index < 0 || index >= frames.length) return false;
+      const oldIndex = current;
+      const oldFrame = frames[oldIndex];
+      const oldCaption = captions[oldIndex];
+      const newFrame = frames[index];
+      const newCaption = captions[index];
+      const suffix = direction > 0 ? "next" : "prev";
+
+      transitioning = true;
+      current = index;
+      pauseFrame(oldFrame);
+      newFrame.classList.add("is-active", `is-entering-${suffix}`);
+      newCaption.classList.add("is-active", `is-entering-${suffix}`);
+      oldFrame.classList.add(`is-leaving-${suffix}`);
+      oldCaption.classList.add(`is-leaving-${suffix}`);
+      reel.classList.add("is-transitioning");
+      updateState();
+
+      if (reducedMotion.matches) {
+        finishTransition(oldFrame, oldCaption, newFrame, newCaption);
+      } else {
+        transitionTimer = window.setTimeout(
+          () => finishTransition(oldFrame, oldCaption, newFrame, newCaption),
+          820
+        );
+      }
+      return true;
+    }
+
+    previous.addEventListener("click", () => showFrame(current - 1, -1));
+    next.addEventListener("click", () => showFrame(current + 1, 1));
+
+    reel.addEventListener("keydown", (event) => {
+      const goingBack = event.key === "ArrowLeft" || event.key === "ArrowUp";
+      const goingForward = event.key === "ArrowRight" || event.key === "ArrowDown";
+      if (!goingBack && !goingForward) return;
+      event.preventDefault();
+      showFrame(current + (goingForward ? 1 : -1), goingForward ? 1 : -1);
+    });
+
     reel.addEventListener("wheel", (event) => {
-      if (!reelDesktop.matches || !strip || Math.abs(event.deltaY) <= Math.abs(event.deltaX)) return;
+      if (Math.abs(event.deltaY) <= Math.abs(event.deltaX)) return;
       const activeCaption = event.target.closest?.(".reel-caption.is-active");
       if (activeCaption && activeCaption.scrollHeight > activeCaption.clientHeight + 1) {
-        const captionAtStart = activeCaption.scrollTop <= 1;
-        const captionAtEnd = activeCaption.scrollTop + activeCaption.clientHeight >= activeCaption.scrollHeight - 1;
-        if (!((event.deltaY < 0 && captionAtStart) || (event.deltaY > 0 && captionAtEnd))) return;
+        const atTop = activeCaption.scrollTop <= 1;
+        const atBottom = activeCaption.scrollTop + activeCaption.clientHeight >= activeCaption.scrollHeight - 1;
+        if (!((event.deltaY < 0 && atTop) || (event.deltaY > 0 && atBottom))) return;
       }
-      const atStart = strip.scrollTop <= 1;
-      const atEnd = strip.scrollTop + strip.clientHeight >= strip.scrollHeight - 1;
-      if ((event.deltaY < 0 && atStart) || (event.deltaY > 0 && atEnd)) return;
+
+      const direction = event.deltaY > 0 ? 1 : -1;
+      if ((direction < 0 && current === 0) || (direction > 0 && current === frames.length - 1)) return;
       event.preventDefault();
-      strip.scrollTop += event.deltaY;
+      if (transitioning) return;
+
+      wheelTotal += event.deltaY;
+      window.clearTimeout(wheelResetTimer);
+      wheelResetTimer = window.setTimeout(() => { wheelTotal = 0; }, 140);
+      if (Math.abs(wheelTotal) < 24) return;
+      const wheelDirection = wheelTotal > 0 ? 1 : -1;
+      wheelTotal = 0;
+      showFrame(current + wheelDirection, wheelDirection);
     }, { passive: false });
-    reel.querySelectorAll("img").forEach((img) => {
-      if (!img.complete) img.addEventListener("load", refreshReel, { once: true });
-    });
-    // Recompute when the reel becomes visible or either edge frame resizes.
-    if (typeof ResizeObserver !== "undefined") {
-      const ro = new ResizeObserver(() => refreshReel());
-      ro.observe(frames[0]);
-      ro.observe(frames[frames.length - 1]);
-    }
-    refreshReel();
+
+    reel.addEventListener("touchstart", (event) => {
+      if (event.target.closest("a, button, iframe, video")) return;
+      touchStartY = event.touches[0]?.clientY ?? null;
+      touchShouldNavigate = false;
+      touchCaption = event.target.closest(".reel-caption.is-active");
+    }, { passive: true });
+
+    reel.addEventListener("touchmove", (event) => {
+      if (touchStartY === null) return;
+      const delta = touchStartY - (event.touches[0]?.clientY ?? touchStartY);
+      const direction = delta > 0 ? 1 : -1;
+      if (touchCaption && touchCaption.scrollHeight > touchCaption.clientHeight + 1) {
+        const atTop = touchCaption.scrollTop <= 1;
+        const atBottom = touchCaption.scrollTop + touchCaption.clientHeight >= touchCaption.scrollHeight - 1;
+        if (!((direction < 0 && atTop) || (direction > 0 && atBottom))) return;
+      }
+      const canNavigate = Math.abs(delta) > 12
+        && !((direction < 0 && current === 0) || (direction > 0 && current === frames.length - 1));
+      if (!canNavigate) return;
+      touchShouldNavigate = true;
+      event.preventDefault();
+    }, { passive: false });
+
+    reel.addEventListener("touchend", (event) => {
+      if (touchStartY === null) return;
+      const endY = event.changedTouches[0]?.clientY ?? touchStartY;
+      const delta = touchStartY - endY;
+      if (touchShouldNavigate && Math.abs(delta) > 48) {
+        const direction = delta > 0 ? 1 : -1;
+        showFrame(current + direction, direction);
+      }
+      touchStartY = null;
+      touchShouldNavigate = false;
+      touchCaption = null;
+    }, { passive: true });
+
+    updateState();
   });
 
   const postButtons = document.querySelectorAll("[data-post]");
