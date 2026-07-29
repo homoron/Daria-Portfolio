@@ -435,13 +435,16 @@
   window.addEventListener("scroll", updateNavSpy, { passive: true });
 
   const reelDesktop = window.matchMedia("(min-width: 761px)");
+  const reelSplitView = window.matchMedia("(min-width: 901px)");
 
   document.querySelectorAll("[data-reel]").forEach((reel) => {
     const strip = reel.querySelector(".reel-strip");
     const frames = Array.from(reel.querySelectorAll(".reel-frame"));
     const captions = Array.from(reel.querySelectorAll(".reel-caption"));
+    const captionsTrack = reel.querySelector(".reel-captions");
     const dots = Array.from(reel.querySelectorAll(".reel-dots span"));
     const mobileDots = [];
+    let reelAnimationFrame = 0;
     if (!frames.length) return;
 
     if (strip) {
@@ -527,6 +530,40 @@
             best = index;
           }
         });
+
+        if (captionsTrack && reelSplitView.matches) {
+          const activeRect = frames[best].getBoundingClientRect();
+          const activeMid = activeRect.top + activeRect.height / 2;
+          const trackRect = captionsTrack.getBoundingClientRect();
+          const renderedTransform = window.getComputedStyle(captionsTrack).transform;
+          let renderedShift = 0;
+          if (renderedTransform && renderedTransform !== "none") {
+            const matrixValues = renderedTransform
+              .slice(renderedTransform.indexOf("(") + 1, -1)
+              .split(",")
+              .map(Number);
+            renderedShift = renderedTransform.startsWith("matrix3d")
+              ? matrixValues[13] || 0
+              : matrixValues[5] || 0;
+          }
+          const trackMid = trackRect.top + trackRect.height / 2 - renderedShift;
+          const captionHeight = captions[best]?.offsetHeight || 0;
+          const safeInset = 24;
+          const fitsViewport = captionHeight <= window.innerHeight - safeInset * 2;
+          const desiredMid = fitsViewport
+            ? Math.max(
+              safeInset + captionHeight / 2,
+              Math.min(window.innerHeight - safeInset - captionHeight / 2, activeMid)
+            )
+            : mid;
+          const shift = desiredMid - trackMid;
+          captionsTrack.style.setProperty("--reel-caption-shift", `${shift}px`);
+        } else if (captionsTrack) {
+          captionsTrack.style.removeProperty("--reel-caption-shift");
+        }
+      }
+      if (!reelDesktop.matches && captionsTrack) {
+        captionsTrack.style.removeProperty("--reel-caption-shift");
       }
       frames.forEach((frame, index) => frame.classList.toggle("is-active", index === best));
       captions.forEach((caption, index) => caption.classList.toggle("is-active", index === best));
@@ -543,9 +580,17 @@
       updateReel();
     }
 
-    window.addEventListener("scroll", refreshReel, { passive: true });
+    function scheduleReelUpdate() {
+      if (!frames[0].offsetParent || reelAnimationFrame) return;
+      reelAnimationFrame = window.requestAnimationFrame(() => {
+        reelAnimationFrame = 0;
+        updateReel();
+      });
+    }
+
+    window.addEventListener("scroll", scheduleReelUpdate, { passive: true });
     window.addEventListener("resize", refreshReel);
-    strip?.addEventListener("scroll", refreshReel, { passive: true });
+    strip?.addEventListener("scroll", scheduleReelUpdate, { passive: true });
     strip?.addEventListener("keydown", (event) => {
       if (reelDesktop.matches || (event.key !== "ArrowLeft" && event.key !== "ArrowRight")) return;
       event.preventDefault();

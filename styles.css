@@ -1905,6 +1905,9 @@ a {
   flex: 1;
   display: grid;
   min-width: 0;
+  transform: translate3d(0, var(--reel-caption-shift, 0), 0);
+  transition: transform 180ms cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform;
 }
 
 .reel-frame {
@@ -1913,6 +1916,20 @@ a {
   padding: 1.5rem 2.5rem;
   background: #060706;
   border-inline: 1px solid rgba(244, 241, 232, 0.3);
+  opacity: 0.76;
+  transform: scale(0.982);
+  transform-origin: center;
+  transition:
+    opacity 420ms ease,
+    transform 560ms cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 420ms ease;
+  will-change: transform, opacity;
+}
+
+.reel-frame.is-active {
+  border-inline-color: rgba(185, 235, 139, 0.5);
+  opacity: 1;
+  transform: scale(1);
 }
 
 .reel-frame::before,
@@ -2045,11 +2062,29 @@ a {
   align-self: center;
   max-width: 34rem;
   opacity: 0;
-  transition: opacity 420ms ease;
+  pointer-events: none;
+  transform: translate3d(0, 0.9rem, 0) scale(0.99);
+  transition:
+    opacity 360ms ease,
+    transform 520ms cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform, opacity;
 }
 
 .reel-caption.is-active {
   opacity: 1;
+  pointer-events: auto;
+  transform: translate3d(0, 0, 0) scale(1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reel-captions,
+  .reel-frame,
+  .reel-frame img,
+  .reel-frame iframe,
+  .reel-frame video,
+  .reel-caption {
+    transition: none;
+  }
 }
 
 .reel-caption p {
@@ -5168,6 +5203,10 @@ a {
 
   .reel-layout {
     grid-template-columns: 1fr;
+  }
+
+  .reel-captions {
+    transform: none;
   }
 
   .reel-strip {
