@@ -647,7 +647,16 @@
     const captions = Array.from(reel.querySelectorAll(".reel-caption"));
     const dots = Array.from(reel.querySelectorAll(".reel-dots span"));
     const mobileDots = [];
+    let activeIndex = -1;
+    let transitionTimer = 0;
+    let reelAnimationFrame = 0;
     if (!frames.length) return;
+
+    reel.classList.add("smooth-reel");
+    reel.style.setProperty(
+      "--reel-scroll-height",
+      `${100 + Math.max(0, frames.length - 1) * 42}vh`
+    );
 
     if (strip) {
       strip.tabIndex = 0;
@@ -677,41 +686,57 @@
       strip.scrollTo({ left, behavior });
     }
 
-    // Pad the strip so the first and last frames can rest centered against
-    // the sticky caption, regardless of each frame's aspect ratio.
-    let padCache = "";
-    function padStrip() {
-      if (!strip) return;
-      if (!reelDesktop.matches) {
-        if (padCache !== "off") {
-          strip.style.paddingTop = "";
-          strip.style.paddingBottom = "";
-          padCache = "off";
-        }
-        return;
+    function activateFrame(index) {
+      if (index === activeIndex || !frames[index]) return;
+      const previousIndex = activeIndex >= 0
+        ? activeIndex
+        : Math.max(0, frames.findIndex((frame) => frame.classList.contains("is-active")));
+      const previousFrame = frames[previousIndex];
+      const nextFrame = frames[index];
+      const suffix = index > previousIndex ? "next" : "prev";
+
+      window.clearTimeout(transitionTimer);
+      frames.forEach((frame) => {
+        frame.classList.remove(
+          "is-entering-next",
+          "is-entering-prev",
+          "is-leaving-next",
+          "is-leaving-prev"
+        );
+      });
+
+      frames.forEach((frame, frameIndex) => {
+        frame.classList.toggle("is-active", frameIndex === index);
+        frame.classList.toggle("is-prev", frameIndex === index - 1);
+        frame.classList.toggle("is-next", frameIndex === index + 1);
+      });
+
+      if (activeIndex >= 0 && previousIndex !== index) {
+        previousFrame.classList.add(`is-leaving-${suffix}`);
+        nextFrame.classList.add(`is-entering-${suffix}`);
+        transitionTimer = window.setTimeout(() => {
+          previousFrame.classList.remove(`is-leaving-${suffix}`);
+          nextFrame.classList.remove(`is-entering-${suffix}`);
+        }, 720);
       }
-      const first = frames[0].getBoundingClientRect().height;
-      // Skip while hidden/not laid out yet, so we never write bogus padding
-      // computed against a zero-height frame.
-      if (first < 1) return;
-      const vh = window.innerHeight;
-      const last = frames[frames.length - 1].getBoundingClientRect().height;
-      // Let the first frame enter near the top of the project instead of
-      // spending half of the available viewport space before it begins.
-      const top = `${Math.max(16, Math.min(80, (vh - first) * 0.2))}px`;
-      const bottom = `${Math.max(16, (vh - last) / 2)}px`;
-      const key = top + "|" + bottom;
-      if (key === padCache) return;
-      strip.style.paddingTop = top;
-      strip.style.paddingBottom = bottom;
-      padCache = key;
+
+      activeIndex = index;
+      captions.forEach((caption, captionIndex) => {
+        caption.classList.toggle("is-active", captionIndex === index);
+      });
+      dots.forEach((dot, dotIndex) => dot.classList.toggle("is-active", dotIndex === index));
+      mobileDots.forEach((dot, dotIndex) => {
+        const isActive = dotIndex === index;
+        dot.classList.toggle("is-active", isActive);
+        dot.setAttribute("aria-current", isActive ? "true" : "false");
+      });
     }
 
     function updateReel() {
       if (!frames[0].offsetParent) return;
       let best = 0;
-      let bestDist = Infinity;
       if (!reelDesktop.matches && strip) {
+        let bestDist = Infinity;
         const stripRect = strip.getBoundingClientRect();
         const mid = stripRect.left + stripRect.width / 2;
         frames.forEach((frame, index) => {
@@ -723,38 +748,35 @@
           }
         });
       } else {
-        const mid = window.innerHeight * 0.5;
-        frames.forEach((frame, index) => {
-          const rect = frame.getBoundingClientRect();
-          const dist = Math.abs(rect.top + rect.height / 2 - mid);
-          if (dist < bestDist) {
-            bestDist = dist;
-            best = index;
-          }
-        });
+        const reelRect = reel.getBoundingClientRect();
+        const scrollDistance = Math.max(1, reelRect.height - window.innerHeight);
+        const progress = Math.max(0, Math.min(1, -reelRect.top / scrollDistance));
+        best = Math.round(progress * (frames.length - 1));
       }
-      frames.forEach((frame, index) => frame.classList.toggle("is-active", index === best));
-      captions.forEach((caption, index) => caption.classList.toggle("is-active", index === best));
-      dots.forEach((dot, index) => dot.classList.toggle("is-active", index === best));
-      mobileDots.forEach((dot, index) => {
-        const isActive = index === best;
-        dot.classList.toggle("is-active", isActive);
-        dot.setAttribute("aria-current", isActive ? "true" : "false");
-      });
+      activateFrame(best);
     }
 
     function refreshReel() {
-      padStrip();
       updateReel();
     }
 
-    window.addEventListener("scroll", refreshReel, { passive: true });
+    function scheduleReelUpdate() {
+      if (!frames[0].offsetParent || reelAnimationFrame) return;
+      reelAnimationFrame = window.requestAnimationFrame(() => {
+        reelAnimationFrame = 0;
+        updateReel();
+      });
+    }
+
+    window.addEventListener("scroll", scheduleReelUpdate, { passive: true });
     window.addEventListener("resize", refreshReel);
-    strip?.addEventListener("scroll", refreshReel, { passive: true });
+    strip?.addEventListener("scroll", scheduleReelUpdate, { passive: true });
     strip?.addEventListener("keydown", (event) => {
       if (reelDesktop.matches || (event.key !== "ArrowLeft" && event.key !== "ArrowRight")) return;
       event.preventDefault();
-      const active = frames.findIndex((frame) => frame.classList.contains("is-active"));
+      const active = activeIndex >= 0
+        ? activeIndex
+        : frames.findIndex((frame) => frame.classList.contains("is-active"));
       const direction = event.key === "ArrowRight" ? 1 : -1;
       const next = Math.max(0, Math.min(frames.length - 1, active + direction));
       scrollToFrame(next);
